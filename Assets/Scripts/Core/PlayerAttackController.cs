@@ -7,7 +7,9 @@ public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private LayerMask _enemyLayer;
     private IWeapon _weapon;
-    public GameObject _attackPoint;
+    public GameObject _attackSource;
+    private GameObject _sword;
+    private int _meleeDirection = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,11 +24,11 @@ public class PlayerAttackController : MonoBehaviour
 
         if (_weapon is IRanged)
         {
-            AttackRanged(_attackPoint.transform.position);
+            AttackRanged(_attackSource.transform.position);
         }
         else
         {
-            AttackMelee(_attackPoint.transform.position);
+            AttackMelee(_attackSource.transform.position);
         }
 
     }
@@ -37,7 +39,8 @@ public class PlayerAttackController : MonoBehaviour
         var arcValue = (ConvertAngleToValue(_weapon.AttackArc / 2) * -1);
         source = new Vector3(source.x, 0, source.z);
 
-        Debug.Log(arcValue);
+        StartCoroutine(ShowMeleeAttack(.2f));
+
         Collider[] hitEnemies = Physics.OverlapSphere(source, _weapon.AttackRange, _enemyLayer);
         foreach (var hitEnemy in hitEnemies)
         {
@@ -54,9 +57,33 @@ public class PlayerAttackController : MonoBehaviour
             }
         }
     }
+
+    IEnumerator ShowMeleeAttack(float time)
+    {
+        _sword = (GameObject)Resources.Load("Sword");
+        _sword = Instantiate(_sword, _attackSource.transform.position, Quaternion.Euler(_attackSource.transform.eulerAngles), gameObject.transform);
+        Vector3 startingPos = transform.rotation.eulerAngles;
+        startingPos.y = startingPos.y - (_weapon.AttackArc / 2) * _meleeDirection;
+
+        Vector3 finalPos = transform.rotation.eulerAngles;
+        finalPos.y = finalPos.y + (_weapon.AttackArc / 2) * _meleeDirection;
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < time)
+        {
+            _sword.transform.rotation = Quaternion.Euler(Vector3.Lerp(startingPos, finalPos, (elapsedTime / time)));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(_sword);
+        _meleeDirection *= -1;
+    }
+
     void AttackRanged(Vector3 source)
     {
-        var projectile = (GameObject)Instantiate(((IRanged)_weapon).Projectile, _attackPoint.transform.position, _attackPoint.transform.rotation);
+        var projectile = (GameObject)Instantiate(((IRanged)_weapon).Projectile, _attackSource.transform.position, _attackSource.transform.rotation);
         var movScript = projectile.GetComponent<ProjectileMovement>();
 
         movScript.Setup(
@@ -72,7 +99,7 @@ public class PlayerAttackController : MonoBehaviour
         if (_weapon == null)
             return;
         if (_weapon is not IRanged)
-            Gizmos.DrawWireSphere(_attackPoint.transform.position, _weapon.AttackRange);
+            Gizmos.DrawWireSphere(_attackSource.transform.position, _weapon.AttackRange);
     }
     public static float ConvertAngleToValue(float degrees)
     {
@@ -90,4 +117,5 @@ public class PlayerAttackController : MonoBehaviour
 
         return value;
     }
+
 }

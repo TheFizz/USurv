@@ -35,7 +35,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     }
     public void Damage(float damageAmount)
     {
-        Vector3 cameraAngle = new Vector3(45, 150, 0);
+        Vector3 cameraAngle = Camera.main.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
         damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount));

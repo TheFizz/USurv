@@ -13,6 +13,8 @@ public class PlayerMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if (_mainCam == null)
+            _mainCam = Camera.main;
         _input = GetComponent<InputHandler>();
         _RB = GetComponent<Rigidbody>();
     }
@@ -39,6 +41,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _RB.velocity = Vector3.zero;
         var targetMove = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
+
         //Modify the vector to account for camera angle
         targetMove = Quaternion.Euler(0, _mainCam.gameObject.transform.eulerAngles.y, 0) * targetMove;
         var speed = _moveSpeed * Time.deltaTime;
