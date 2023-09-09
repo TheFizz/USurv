@@ -7,6 +7,8 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private Camera _mainCam;
     [SerializeField] private LayerMask _mouseRayReceiver;
+    [SerializeField] private bool _rotatable = true;
+    [SerializeField] private bool _moveable = true;
     private InputHandler _input;
     private Rigidbody _RB;
 
@@ -21,8 +23,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveToTarget();
-        RotateToTarget();
+        if (_moveable)
+            MoveToTarget();
+        if (_rotatable)
+            RotateToTarget();
     }
 
     private void RotateToTarget()

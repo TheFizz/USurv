@@ -2,14 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponBow : IWeapon, IRanged
+public class WeaponBow : MonoBehaviour, IWeapon
 {
+    public BaseRangedWeaponSO WeaponData;
+    private Transform _source;
+    public void Attack()
+    {
+        var projectile = (GameObject)Instantiate(WeaponData.projectile, _source.position, _source.rotation);
+        var movScript = projectile.GetComponent<ProjectileBehaviour>();
 
-    public float AttackSpeed { get; set; } = 1f;
-    public float AttackDamage { get; set; } = 1f;
-    public float AttackArc { get; set; } = 15f;
-    public float AttackRange { get; set; } = 25f;
-    public int PierceCount { get; set; } = 3;
-    public float ProjectileSpeed { get; set; } = 25f;
-    public Object Projectile { get; set; } = Resources.Load("Prefabs/Projectiles/Arrow");
+        movScript.Setup(
+            WeaponData.projectileSpeed,
+            WeaponData.pierceCount,
+            WeaponData.attackRange,
+            WeaponData.attackDamage,
+            _source.position
+            );
+    }
+
+    public void StartAttack(Transform source)
+    {
+        _source = source;
+        InvokeRepeating("Attack", 1, WeaponData.attackSpeed);
+    }
+
+    public void StopAttack(Transform source)
+    {
+        CancelInvoke();
+    }
 }

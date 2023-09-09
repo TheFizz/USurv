@@ -9,6 +9,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     public Rigidbody _RB { get; set; }
     public abstract float MoveSpeed { get; set; }
     public abstract Vector2 HealthRange { get; set; }
+    public bool damageable = true;
 
     private Renderer _renderer;
     private Color _baseColor;
@@ -40,7 +41,8 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
         damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount));
 
-        CurrentHealth -= damageAmount;
+        if (damageable)
+            CurrentHealth -= damageAmount;
         if (CurrentHealth <= 0f)
         {
             Die();

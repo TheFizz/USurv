@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileMovement : MonoBehaviour
+public class ProjectileBehaviour : MonoBehaviour
 {
     private float _projectileSpeed;
     private float _maxDistance;
@@ -28,7 +28,7 @@ public class ProjectileMovement : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag != "Enemy")
             return;
 
         var enemy = other.GetComponent<EnemyBase>();
