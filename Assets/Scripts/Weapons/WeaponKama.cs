@@ -6,14 +6,23 @@ public class WeaponKama : MonoBehaviour, IWeapon
 {
     public BaseWeaponSO WeaponData;
     private Transform _source;
+    public GameObject DamageArc;
+    private InputHandler _input;
+    void Awake()
+    {
+        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
+        if (ps != null)
+            _input = ps.GetComponent<InputHandler>();
+    }
     public void Attack()
     {
-        var forward = transform.forward;
+
+        var forward = _source.forward;
         var arcValue = (ConvertAngleToValue(WeaponData.attackArc / 2) * -1);
         var sourceFloored = new Vector3(_source.position.x, 0, _source.position.z);
         var error = 0.0001f;
 
-        //StartCoroutine(ShowMeleeAttack(.2f));
+        StartCoroutine(ShowMeleeAttack(.2f));
 
         Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponData.attackRange, WeaponData.enemyLayer);
         foreach (var hitEnemy in hitEnemies)
@@ -32,15 +41,32 @@ public class WeaponKama : MonoBehaviour, IWeapon
         }
     }
 
+    private IEnumerator ShowMeleeAttack(float time)
+    {
+        var go = Instantiate(DamageArc, _source.position, Quaternion.Euler(new Vector3(_source.rotation.eulerAngles.x + 90f, _source.rotation.eulerAngles.y-(WeaponData.attackArc/2), _source.rotation.eulerAngles.z)),_source);
+        yield return new WaitForSeconds(time);
+        Destroy(go);
+    }
+
     public void StartAttack(Transform source)
     {
         _source = source;
         InvokeRepeating("Attack", 1, WeaponData.attackSpeed);
     }
 
-    public void StopAttack(Transform source)
+    public void StopAttack()
     {
         CancelInvoke();
+    }
+    public void NormalizeAttackVector()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.enemyLayer, maxDistance: 300f))
+        {
+            var targetLook = hitinfo.collider.transform.position;
+            targetLook.y = _source.position.y;
+            _source.LookAt(targetLook);
+        }
     }
     private static float ConvertAngleToValue(float degrees)
     {

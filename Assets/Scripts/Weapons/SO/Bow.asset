@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  attackSpeed: 1
+  attackSpeed: 0.1
   attackDamage: 1
   attackArc: 15
   attackRange: 25

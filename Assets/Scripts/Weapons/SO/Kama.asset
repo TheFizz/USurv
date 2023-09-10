@@ -17,5 +17,5 @@ MonoBehaviour:
     m_Bits: 128
   attackSpeed: 1
   attackDamage: 1
-  attackArc: 180
-  attackRange: 2.5
+  attackArc: 30
+  attackRange: 3

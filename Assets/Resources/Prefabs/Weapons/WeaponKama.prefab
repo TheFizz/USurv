@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponData: {fileID: 11400000, guid: 916beefef53a9974fbcfccbaa8237fe0, type: 2}
+  DamageArc: {fileID: 7269715864908357423, guid: 2c5a5c2e122d5a949bf3a1e27fdb57dc, type: 3}

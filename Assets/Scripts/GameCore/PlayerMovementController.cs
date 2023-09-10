@@ -17,7 +17,10 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (_mainCam == null)
             _mainCam = Camera.main;
-        _input = GetComponent<InputHandler>();
+
+        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
+        if (ps != null)
+            _input = ps.GetComponent<InputHandler>();
         _RB = GetComponent<Rigidbody>();
     }
 
@@ -55,4 +58,5 @@ public class PlayerMovementController : MonoBehaviour
         //rb.MovePosition(targetPosition);
         //transform.position = targetPosition;
     }
+
 }
