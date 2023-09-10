@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2501186044737476394}
   - component: {fileID: 1070317197647967199}
   - component: {fileID: 544763676105957617}
+  - component: {fileID: 7576796201145995103}
   m_Layer: 0
-  m_Name: DamageArc
+  m_Name: DamageArcKama
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,6 +100,19 @@ MonoBehaviour:
   _circleData:
     _radius: 3
     _completion: 30
-    _angle: 0
+    _angle: 345
     _polygonQuantity: 36
     _keepPolygonQuantityConsistent: 1
+--- !u!114 &7576796201145995103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7269715864908357423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9701100789c732b469a5ed23828d6be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ttl: 0.2

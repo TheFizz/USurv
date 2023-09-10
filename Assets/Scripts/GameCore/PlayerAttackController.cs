@@ -19,11 +19,10 @@ public class PlayerAttackController : MonoBehaviour
         var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
         if (ps != null)
             _input = ps.GetComponent<InputHandler>();
-        //_weaponQueue.Enqueue((GameObject)Resources.Load("Prefabs/Weapons/WeaponBow"));
-        //_weaponQueue.Enqueue((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"));
 
         _weaponQueue.Enqueue((GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponBow"), transform.position, transform.rotation, transform));
         _weaponQueue.Enqueue((GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform));
+        _weaponQueue.Enqueue((GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform));
         foreach (var wpn in _weaponQueue)
         {
             wpn.SetActive(false);

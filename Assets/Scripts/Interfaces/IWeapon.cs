@@ -6,8 +6,4 @@ public interface IWeapon
     public abstract void Attack();
     public abstract void StartAttack(Transform source);
     public abstract void StopAttack();
-    public virtual void NormalizeAttackVector()
-    {
-
-    }
 }

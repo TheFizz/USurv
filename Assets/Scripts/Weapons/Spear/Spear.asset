@@ -9,16 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66a61742a4d42b645ab10b9821413db6, type: 3}
-  m_Name: Bow
+  m_Script: {fileID: 11500000, guid: aedd10d03566589408b59720ad426616, type: 3}
+  m_Name: Spear
   m_EditorClassIdentifier: 
+  aimAssist: 1
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  attackSpeed: 0.1
-  attackDamage: 1
-  attackArc: 15
-  attackRange: 25
-  pierceCount: 3
-  projectileSpeed: 25
-  projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}
+  attacksPerSecond: 1
+  attackDamage: 2
+  attackArc: 5
+  attackRange: 6

@@ -13,6 +13,13 @@ public class WeaponBow : MonoBehaviour, IWeapon
         if (ps != null)
             _input = ps.GetComponent<InputHandler>();
     }
+
+    void Update()
+    {
+        if (WeaponData.aimAssist)
+            AlignAttackVector();
+    }
+
     public void Attack()
     {
         if (gameObject.activeSelf == false)
@@ -21,9 +28,7 @@ public class WeaponBow : MonoBehaviour, IWeapon
             return;
         }
 
-        var tmpRotation = _source.rotation;
 
-        NormalizeAttackVector();
 
         var projectile = (GameObject)Instantiate(WeaponData.projectile, _source.position, _source.rotation);
         var movScript = projectile.GetComponent<ProjectileBehaviour>();
@@ -36,7 +41,6 @@ public class WeaponBow : MonoBehaviour, IWeapon
             _source.position
             );
 
-        _source.rotation = tmpRotation;
     }
 
     public void StartAttack(Transform source)
@@ -47,7 +51,7 @@ public class WeaponBow : MonoBehaviour, IWeapon
             return;
         }
         _source = source;
-        InvokeRepeating("Attack", 1, WeaponData.attackSpeed);
+        InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
 
     }
 
@@ -60,7 +64,7 @@ public class WeaponBow : MonoBehaviour, IWeapon
         }
         CancelInvoke();
     }
-    public void NormalizeAttackVector()
+    public void AlignAttackVector()
     {
         Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.enemyLayer, maxDistance: 300f))
@@ -68,6 +72,12 @@ public class WeaponBow : MonoBehaviour, IWeapon
             var targetLook = hitinfo.collider.transform.position;
             targetLook.y = _source.position.y;
             _source.LookAt(targetLook);
+            Debug.DrawLine(_source.position, _source.forward * 100, Color.blue);
+        }
+
+        else
+        {
+            _source.rotation = _source.parent.rotation;
         }
     }
 }
