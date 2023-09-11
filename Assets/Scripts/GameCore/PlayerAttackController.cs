@@ -8,10 +8,10 @@ public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _activeWeaponGo;
-    private IWeapon _activeWeapon;
+    private WeaponBase _activeWeapon;
     public GameObject _attackSource;
     private InputHandler _input;
-    [SerializeField] Queue<GameObject> _weaponQueue = new Queue<GameObject>(2);
+    [SerializeField] Queue<GameObject> _weaponQueue = new Queue<GameObject>(3);
 
     // Start is called before the first frame update
     private void Awake()
@@ -37,7 +37,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         _activeWeaponGo = _weaponQueue.Peek();
         _activeWeaponGo.SetActive(true);
-        _activeWeapon = _activeWeaponGo.GetComponent<IWeapon>();
+        _activeWeapon = _activeWeaponGo.GetComponent<WeaponBase>();
         _activeWeapon.StartAttack(_attackSource.transform);
     }
 

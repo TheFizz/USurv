@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New Ranged", menuName = "Weapons/Ranged")]
-public class BaseRangedWeaponSO : BaseWeaponSO
+public class WeaponBaseRangedSO : WeaponBaseSO
 {
     [Header("Ranged Fields")]
     public int pierceCount;

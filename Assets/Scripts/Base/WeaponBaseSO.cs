@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Melee", menuName = "Weapons/Melee")]
-public class BaseWeaponSO : ScriptableObject
+public class WeaponBaseSO : ScriptableObject
 {
     [Header("Weapon Fields")]
     public bool aimAssist = false;

@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aedd10d03566589408b59720ad426616, type: 3}
-  m_Name: Spear
+  m_Script: {fileID: 11500000, guid: bc62d25188f77b4418fbb62714d0d6ba, type: 3}
+  m_Name: KamaData
   m_EditorClassIdentifier: 
   aimAssist: 1
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  attacksPerSecond: 1
-  attackDamage: 2
-  attackArc: 5
-  attackRange: 6
+  attacksPerSecond: 1.5
+  attackDamage: 1
+  attackArc: 30
+  attackRange: 3
