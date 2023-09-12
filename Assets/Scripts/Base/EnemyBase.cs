@@ -54,7 +54,6 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     }
     protected void Attack()
     {
-        //Debug.Log("Attack");
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, _attackRange, LayerMask.GetMask("Player"));
         foreach (var hitEnemy in hitEnemies)
         {
@@ -65,13 +64,11 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     public virtual void StartAttack()
     {
         _isAttacking = true;
-        //Debug.Log("StartAttack");
         InvokeRepeating("Attack", 1, _attackSpeed);
     }
     public virtual void StopAttack()
     {
         _isAttacking = false;
-        //Debug.Log("StopAttack");
         CancelInvoke();
     }
     public void Damage(float damageAmount, bool overrideITime = false)
