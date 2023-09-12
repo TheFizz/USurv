@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc62d25188f77b4418fbb62714d0d6ba, type: 3}
   m_Name: KamaData
   m_EditorClassIdentifier: 
+  weaponSprite: {fileID: 21300000, guid: 6a203fa0b1bf7b64f860e70bd0531b51, type: 3}
   aimAssist: 1
   enemyLayer:
     serializedVersion: 2
