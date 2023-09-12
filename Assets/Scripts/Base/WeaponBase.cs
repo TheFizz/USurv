@@ -6,65 +6,50 @@ public abstract class WeaponBase : MonoBehaviour
 {
     protected InputHandler _input;
     protected Transform _source;
+    public abstract List<StatModifier> Modifiers { get; }
 
     [SerializeField] protected WeaponBaseSO _weaponData;
     [SerializeField] protected GameObject _damageArc;
-
+    [SerializeField] protected WeaponBaseSO _weaponDataModified;
+    private StatModifierTracker _statModifierTracker;
     protected virtual void Awake()
     {
         var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
         if (ps != null)
+        {
             _input = ps.GetComponent<InputHandler>();
+            _statModifierTracker = ps.GetComponent<StatModifierTracker>();
+        }
     }
     protected virtual void Update()
     {
-        if (_weaponData.aimAssist)
-            AlignAttackVector();
+        if (_weaponDataModified != null)
+            if (_weaponDataModified.aimAssist)
+                AlignAttackVector();
     }
-    protected virtual void Attack()
+    public virtual void UseAbility(Transform source)
     {
-        var go = Instantiate(_damageArc, _source.position, _source.rotation, _source);
-        go.transform.Rotate(90f, 0, 0);
-        var forward = _source.forward;
-        var arcValue = Mathf.Cos((_weaponData.attackArc / 2) * Mathf.Deg2Rad);
-        var sourceFloored = new Vector3(_source.position.x, 0, _source.position.z);
-
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, _weaponData.attackRange, _weaponData.enemyLayer);
-        foreach (var hitEnemy in hitEnemies)
-        {
-            Vector3 enemyPos = hitEnemy.transform.position;
-            Vector3 enemyPosFloored = new Vector3(enemyPos.x, 0, enemyPos.z);
-            Vector3 vectorToCollider = (enemyPosFloored - sourceFloored).normalized;
-            var a = enemyPos.x;
-            var dot = Vector3.Dot(vectorToCollider, forward); //1 = right in front, -1 = right behind
-            if (hitEnemy.name == "tpoint")
-            {
-                Debug.Log("Cur: " + arcValue);
-
-                Debug.Log("Target:" + dot);
-            }
-            if (dot >= arcValue)
-            {
-                var enemy = hitEnemy.GetComponent<EnemyBase>();
-                enemy.Damage(_weaponData.attackDamage);
-            }
-        }
+        if (_source == null)
+            _source = source;
     }
-
+    protected abstract void Attack();
     public virtual void StartAttack(Transform source)
     {
-        _source = source;
-        InvokeRepeating("Attack", 1, _weaponData.AttackSpeed);
+        _weaponDataModified = Instantiate(_weaponData);
+        if (_source == null)
+            _source = source;
+        ApplyModifiers();
+        InvokeRepeating("Attack", 1, _weaponDataModified.AttackSpeed);
     }
-
     public virtual void StopAttack()
     {
         CancelInvoke();
+        Destroy(_weaponDataModified);
     }
     protected virtual void AlignAttackVector()
     {
         Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _weaponData.enemyLayer, maxDistance: 300f))
+        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _weaponDataModified.enemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;
             targetLook.y = _source.position.y;
@@ -75,5 +60,48 @@ public abstract class WeaponBase : MonoBehaviour
         {
             _source.rotation = _source.parent.rotation;
         }
+    }
+    protected void ApplyModifiers()
+    {
+        foreach (var mod in _statModifierTracker.Modifiers)
+        {
+            switch (mod.Parameter)
+            {
+                case StatModParameter.AttackSpeed:
+                    _weaponDataModified.attacksPerSecond = CalculateModifier(_weaponDataModified.attacksPerSecond, mod);
+                    break;
+                case StatModParameter.AttackDamage:
+                    _weaponDataModified.attackDamage = CalculateModifier(_weaponDataModified.attackDamage, mod);
+                    break;
+                case StatModParameter.AttackArc:
+                    _weaponDataModified.attackArc = CalculateModifier(_weaponDataModified.attackArc, mod);
+                    break;
+                case StatModParameter.AttackRange:
+                    _weaponDataModified.attackRange = CalculateModifier(_weaponDataModified.attackRange, mod);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+    }
+    float CalculateModifier(float baseVal, StatModifier mod)
+    {
+        switch (mod.Type)
+        {
+            case StatModType.Flat:
+                return baseVal += mod.Value;
+            case StatModType.Percent:
+                return baseVal *= 1f + (mod.Value / 100f);
+            default:
+                Debug.LogError(mod.Type + "is not recognized!");
+                return -1;
+        }
+    }
+
+    public Sprite GetWeaponImage()
+    {
+        return _weaponData.weaponSprite;
     }
 }

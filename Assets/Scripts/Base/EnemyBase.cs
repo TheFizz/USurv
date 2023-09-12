@@ -14,8 +14,10 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     private Renderer _renderer;
     private Color _baseColor;
     private Transform _playerTransform;
+    private Vector3 _moveTarget;
     private GameObject _damageText;
     private Transform _damageTextAnchor;
+    bool feared = false;
     void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy");
@@ -31,8 +33,10 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     }
     void Update()
     {
-        if (Vector3.Distance(transform.position, _playerTransform.position) > 1.5)
-            MoveEnemy(_playerTransform.position);
+        if (!feared)
+            _moveTarget = _playerTransform.position;
+        if (Vector3.Distance(transform.position, _moveTarget) > 1.5)
+            MoveEnemy(_moveTarget);
     }
     public void Damage(float damageAmount)
     {
@@ -64,13 +68,30 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
         var targetLook = target;
         targetLook.y = transform.position.y;
         transform.LookAt(targetLook);
+    }
 
+    public void ReceiveTempFearEffect(float time)
+    {
+        StartCoroutine(Fear(time));
     }
 
     IEnumerator ShowDamage()
     {
+        var tmpColor = _renderer.material.color;
         _renderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
+        _renderer.material.color = tmpColor;
+    }
+
+    IEnumerator Fear(float time)
+    {
+        feared = true;
+
+        _moveTarget = (transform.forward * -1) * 100;
+
+        _renderer.material.color = Color.blue;
+        yield return new WaitForSeconds(time);
         _renderer.material.color = _baseColor;
+        feared = false;
     }
 }

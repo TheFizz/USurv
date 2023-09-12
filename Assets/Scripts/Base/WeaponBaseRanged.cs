@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponBaseRanged : WeaponBase
+public abstract class WeaponBaseRanged : WeaponBase
 {
     protected override void Attack()
     {
@@ -12,13 +12,13 @@ public class WeaponBaseRanged : WeaponBase
             return;
         }
 
-        if (_weaponData is not WeaponBaseRangedSO)
+        if (_weaponDataModified is not WeaponBaseRangedSO)
         {
-            Debug.LogError(name + " Weapon Data tpe mismatch");
+            Debug.LogError(name + " Weapon Data type mismatch");
             return;
         }
 
-        WeaponBaseRangedSO wd = (WeaponBaseRangedSO)_weaponData;
+        WeaponBaseRangedSO wd = (WeaponBaseRangedSO)_weaponDataModified;
         var projectile = (GameObject)Instantiate(wd.projectile, _source.position, _source.rotation);
         var movScript = projectile.GetComponent<ProjectileBehaviour>();
 

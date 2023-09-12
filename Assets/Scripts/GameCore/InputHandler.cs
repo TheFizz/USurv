@@ -8,6 +8,7 @@ public class InputHandler : MonoBehaviour
     public Vector2 InputVector { get; set; }
     public Vector3 MousePosition { get; set; }
     public bool SwapWeapon = false;
+    public bool UseAbility = false;
 
     // Update is called once per frame
     void Update()
@@ -17,9 +18,16 @@ public class InputHandler : MonoBehaviour
         InputVector = new Vector2(h, v);
         InputVector = Vector2.ClampMagnitude(InputVector, 1f);
         MousePosition = Input.mousePosition;
+
         if (Input.GetKeyDown("q"))
             SwapWeapon = true;
         else
             SwapWeapon = false;
+
+        if (Input.GetKeyDown("space"))
+            UseAbility = true;
+        else
+            UseAbility = false;
     }
+
 }
