@@ -5,19 +5,18 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract List<StatModifier> WeaponModifiers { get; }
+    [SerializeField] private WeaponBaseSO _weaponData;
+    [SerializeField] private AbilityBase _weaponAbility;
 
-    [SerializeField] protected WeaponBaseSO _weaponData;
-    [SerializeField] protected AbilityBase _weaponAbility;
-    protected WeaponBaseSO _weaponDataModified;
+    protected HeatSystem Heat;
+    protected Transform Source;
+    protected WeaponBaseSO WeaponDataModified;
 
-    protected InputHandler _input;
-    protected HeatSystem _heat;
-    protected Transform _source;
-    protected PlayerStats _stats;
-    private StatModifierTracker _statModifierTracker;
-
-    private AbilityState _abilityState = AbilityState.Ready;
+    private PlayerStats _stats;
+    private InputHandler _input;
     private float _abilityCooldown;
+    private AbilityState _abilityState;
+    private StatModifierTracker _statModifierTracker;
 
     protected virtual void Awake()
     {
@@ -25,7 +24,7 @@ public abstract class WeaponBase : MonoBehaviour
         if (ps != null)
         {
             _input = ps.GetComponent<InputHandler>();
-            _heat = ps.GetComponent<HeatSystem>();
+            Heat = ps.GetComponent<HeatSystem>();
             _statModifierTracker = ps.GetComponent<StatModifierTracker>();
         }
 
@@ -34,7 +33,9 @@ public abstract class WeaponBase : MonoBehaviour
         {
             _stats = player.GetComponent<PlayerStats>();
         }
+        _abilityState = AbilityState.Ready;
     }
+
     protected virtual void Update()
     {
         HandleAbilityCooldown();
@@ -47,47 +48,47 @@ public abstract class WeaponBase : MonoBehaviour
             Debug.Log("Ability not ready (" + _abilityCooldown + ")");
             return;
         }
-        _weaponAbility.Use(_source);
+        _weaponAbility.Use(Source);
         _abilityState = AbilityState.Cooldown;
         _abilityCooldown = _weaponAbility.AbilityCooldown;
     }
     protected virtual void Attack()
     {
-        if (_heat.GetHeatStatus() == HeatStatus.Overheated)
+        if (Heat.GetHeatStatus() == HeatStatus.Overheated)
         {
-            _stats.Damage(_weaponDataModified.AttackDamage, true);
+            _stats.Damage(WeaponDataModified.AttackDamage, true);
         }
     }
     public virtual void StartAttack()
     {
-        _weaponDataModified = Instantiate(_weaponData);
+        WeaponDataModified = Instantiate(_weaponData);
         ApplyModifiers();
-        InvokeRepeating("Attack", 1, _weaponDataModified.AttackSpeed);
+        InvokeRepeating("Attack", 1, WeaponDataModified.AttackSpeed);
     }
     public virtual void StopAttack()
     {
         CancelInvoke();
-        Destroy(_weaponDataModified);
+        Destroy(WeaponDataModified);
     }
 
     #region Private methods 
     private void AlignAttackVector()
     {
-        if (_weaponDataModified == null)
+        if (WeaponDataModified == null)
             return;
-        if (!_weaponDataModified.AimAssist)
+        if (!WeaponDataModified.AimAssist)
             return;
         Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _weaponDataModified.EnemyLayer, maxDistance: 300f))
+        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponDataModified.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;
-            targetLook.y = _source.position.y;
-            _source.LookAt(targetLook);
-            Debug.DrawLine(_source.position, _source.forward * 100, Color.blue);
+            targetLook.y = Source.position.y;
+            Source.LookAt(targetLook);
+            Debug.DrawLine(Source.position, Source.forward * 100, Color.blue);
         }
         else
         {
-            _source.rotation = _source.parent.rotation;
+            Source.rotation = Source.parent.rotation;
         }
     }
     private void ApplyModifiers()
@@ -97,16 +98,16 @@ public abstract class WeaponBase : MonoBehaviour
             switch (mod.Parameter)
             {
                 case StatModParameter.AttackSpeed:
-                    _weaponDataModified.AttacksPerSecond = CalculateModifier(_weaponDataModified.AttacksPerSecond, mod);
+                    WeaponDataModified.AttacksPerSecond = CalculateModifier(WeaponDataModified.AttacksPerSecond, mod);
                     break;
                 case StatModParameter.AttackDamage:
-                    _weaponDataModified.AttackDamage = CalculateModifier(_weaponDataModified.AttackDamage, mod);
+                    WeaponDataModified.AttackDamage = CalculateModifier(WeaponDataModified.AttackDamage, mod);
                     break;
                 case StatModParameter.AttackArc:
-                    _weaponDataModified.AttackArc = CalculateModifier(_weaponDataModified.AttackArc, mod);
+                    WeaponDataModified.AttackArc = CalculateModifier(WeaponDataModified.AttackArc, mod);
                     break;
                 case StatModParameter.AttackRange:
-                    _weaponDataModified.AttackRange = CalculateModifier(_weaponDataModified.AttackRange, mod);
+                    WeaponDataModified.AttackRange = CalculateModifier(WeaponDataModified.AttackRange, mod);
                     break;
                 default:
                     break;
@@ -147,7 +148,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
     public void SetSource(Transform source)
     {
-        _source = source;
+        Source = source;
     }
     #endregion
 }

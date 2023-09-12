@@ -14,14 +14,14 @@ public abstract class WeaponBaseRanged : WeaponBase
             return;
         }
 
-        if (_weaponDataModified is not WeaponRangedSO)
+        if (WeaponDataModified is not WeaponRangedSO)
         {
             Debug.LogError(name + " Weapon Data type mismatch");
             return;
         }
 
-        WeaponRangedSO wd = (WeaponRangedSO)_weaponDataModified;
-        var projectile = (GameObject)Instantiate(wd.projectile, _source.position, _source.rotation);
+        WeaponRangedSO wd = (WeaponRangedSO)WeaponDataModified;
+        var projectile = (GameObject)Instantiate(wd.projectile, Source.position, Source.rotation);
         var movScript = projectile.GetComponent<ProjectileBehaviour>();
 
         movScript.Setup(
@@ -29,9 +29,9 @@ public abstract class WeaponBaseRanged : WeaponBase
             wd.pierceCount,
             wd.AttackRange,
             wd.AttackDamage,
-            _source.position
+            Source.position
             );
 
-        _heat.AddHeat(wd.pierceCount);
+        Heat.AddHeat(wd.pierceCount);
     }
 }

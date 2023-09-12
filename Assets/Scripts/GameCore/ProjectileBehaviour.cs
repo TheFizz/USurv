@@ -31,7 +31,7 @@ public class ProjectileBehaviour : MonoBehaviour
         if (other.gameObject.tag != "Enemy")
             return;
 
-        var enemy = other.GetComponent<EnemyBase>();
+        var enemy = other.GetComponent<NewEnemyBase>();
         enemy.Damage(_attackDamage);
         if (_pierceCount <= 0)
             Destroy(gameObject);

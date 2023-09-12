@@ -19,8 +19,8 @@ public class AbiltyFear : AbilityBase
         Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, AbilityRange, TargetLayer);
         foreach (var hitEnemy in hitEnemies)
         {
-            var enemy = hitEnemy.GetComponent<EnemyBase>();
-            enemy.ReceiveTempFearEffect(3);
+            var enemy = hitEnemy.GetComponent<NewEnemyBase>();
+            enemy.ReceiveAilment("fear", 3);
         }
     }
 }

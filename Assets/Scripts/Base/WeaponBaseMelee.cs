@@ -5,17 +5,17 @@ using UnityEngine;
 public abstract class WeaponBaseMelee : WeaponBase
 {
 
-    [SerializeField] protected GameObject _damageArc;
+    [SerializeField] private GameObject _damageArc;
     protected override void Attack()
     {
-        var go = Instantiate(_damageArc, _source.position, _source.rotation, _source);
+        var go = Instantiate(_damageArc, Source.position, Source.rotation, Source);
         go.transform.Rotate(90f, 0, 0);
 
-        var forward = _source.forward;
-        var arcValue = Mathf.Cos((_weaponDataModified.AttackArc / 2) * Mathf.Deg2Rad);
-        var sourceFloored = new Vector3(_source.position.x, 0, _source.position.z);
+        var forward = Source.forward;
+        var arcValue = Mathf.Cos((WeaponDataModified.AttackArc / 2) * Mathf.Deg2Rad);
+        var sourceFloored = new Vector3(Source.position.x, 0, Source.position.z);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, _weaponDataModified.AttackRange, _weaponDataModified.EnemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponDataModified.AttackRange, WeaponDataModified.EnemyLayer);
         foreach (var hitEnemy in hitEnemies)
         {
             base.Attack();
@@ -33,12 +33,12 @@ public abstract class WeaponBaseMelee : WeaponBase
             }
             if (dot >= arcValue)
             {
-                var enemy = hitEnemy.GetComponent<EnemyBase>();
-                enemy.Damage(_weaponDataModified.AttackDamage);
+                var enemy = hitEnemy.GetComponent<NewEnemyBase>();
+                enemy.Damage(WeaponDataModified.AttackDamage);
             }
         }
         if (hitEnemies.Length > 0)
-            _heat.AddHeat(hitEnemies.Length);
+            Heat.AddHeat(hitEnemies.Length);
     }
 
     private void OnDrawGizmos()
