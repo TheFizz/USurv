@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - PeristentSystems
   - UI
+  - AttackSource
   layers:
   - Default
   - TransparentFX

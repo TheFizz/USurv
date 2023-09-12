@@ -4,14 +4,19 @@ using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
-    protected InputHandler _input;
-    protected Transform _source;
-    public abstract List<StatModifier> Modifiers { get; }
+    public abstract List<StatModifier> WeaponModifiers { get; }
 
     [SerializeField] protected WeaponBaseSO _weaponData;
-    [SerializeField] protected GameObject _damageArc;
-    [SerializeField] protected WeaponBaseSO _weaponDataModified;
+    [SerializeField] protected AbilityBase _weaponAbility;
+    protected WeaponBaseSO _weaponDataModified;
+
+    protected InputHandler _input;
+    protected Transform _source;
     private StatModifierTracker _statModifierTracker;
+
+    private AbilityState _abilityState = AbilityState.Ready;
+    private float _abilityCooldown;
+
     protected virtual void Awake()
     {
         var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
@@ -23,21 +28,24 @@ public abstract class WeaponBase : MonoBehaviour
     }
     protected virtual void Update()
     {
-        if (_weaponDataModified != null)
-            if (_weaponDataModified.aimAssist)
-                AlignAttackVector();
+        HandleAbilityCooldown();
+        AlignAttackVector();
     }
-    public virtual void UseAbility(Transform source)
+    public virtual void UseAbility()
     {
-        if (_source == null)
-            _source = source;
+        if (_abilityState != AbilityState.Ready)
+        {
+            Debug.Log("Ability not ready (" + _abilityCooldown + ")");
+            return;
+        }
+        _weaponAbility.Use(_source);
+        _abilityState = AbilityState.Cooldown;
+        _abilityCooldown = _weaponAbility.AbilityCooldown;
     }
     protected abstract void Attack();
-    public virtual void StartAttack(Transform source)
+    public virtual void StartAttack()
     {
         _weaponDataModified = Instantiate(_weaponData);
-        if (_source == null)
-            _source = source;
         ApplyModifiers();
         InvokeRepeating("Attack", 1, _weaponDataModified.AttackSpeed);
     }
@@ -46,10 +54,16 @@ public abstract class WeaponBase : MonoBehaviour
         CancelInvoke();
         Destroy(_weaponDataModified);
     }
-    protected virtual void AlignAttackVector()
+
+    #region Private methods 
+    private void AlignAttackVector()
     {
+        if (_weaponDataModified == null)
+            return;
+        if (!_weaponDataModified.AimAssist)
+            return;
         Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _weaponDataModified.enemyLayer, maxDistance: 300f))
+        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _weaponDataModified.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;
             targetLook.y = _source.position.y;
@@ -61,23 +75,23 @@ public abstract class WeaponBase : MonoBehaviour
             _source.rotation = _source.parent.rotation;
         }
     }
-    protected void ApplyModifiers()
+    private void ApplyModifiers()
     {
         foreach (var mod in _statModifierTracker.Modifiers)
         {
             switch (mod.Parameter)
             {
                 case StatModParameter.AttackSpeed:
-                    _weaponDataModified.attacksPerSecond = CalculateModifier(_weaponDataModified.attacksPerSecond, mod);
+                    _weaponDataModified.AttacksPerSecond = CalculateModifier(_weaponDataModified.AttacksPerSecond, mod);
                     break;
                 case StatModParameter.AttackDamage:
-                    _weaponDataModified.attackDamage = CalculateModifier(_weaponDataModified.attackDamage, mod);
+                    _weaponDataModified.AttackDamage = CalculateModifier(_weaponDataModified.AttackDamage, mod);
                     break;
                 case StatModParameter.AttackArc:
-                    _weaponDataModified.attackArc = CalculateModifier(_weaponDataModified.attackArc, mod);
+                    _weaponDataModified.AttackArc = CalculateModifier(_weaponDataModified.AttackArc, mod);
                     break;
                 case StatModParameter.AttackRange:
-                    _weaponDataModified.attackRange = CalculateModifier(_weaponDataModified.attackRange, mod);
+                    _weaponDataModified.AttackRange = CalculateModifier(_weaponDataModified.AttackRange, mod);
                     break;
                 default:
                     break;
@@ -86,7 +100,7 @@ public abstract class WeaponBase : MonoBehaviour
         }
 
     }
-    float CalculateModifier(float baseVal, StatModifier mod)
+    private float CalculateModifier(float baseVal, StatModifier mod)
     {
         switch (mod.Type)
         {
@@ -99,9 +113,27 @@ public abstract class WeaponBase : MonoBehaviour
                 return -1;
         }
     }
+    private void HandleAbilityCooldown()
+    {
 
+        if (_abilityState == AbilityState.Cooldown)
+        {
+            if (_abilityCooldown > 0)
+                _abilityCooldown -= Time.deltaTime;
+            else
+                _abilityState = AbilityState.Ready;
+        }
+    }
+    #endregion
+
+    #region Public methods
     public Sprite GetWeaponImage()
     {
-        return _weaponData.weaponSprite;
+        return _weaponData.WeaponSprite;
     }
+    public void SetSource(Transform source)
+    {
+        _source = source;
+    }
+    #endregion
 }

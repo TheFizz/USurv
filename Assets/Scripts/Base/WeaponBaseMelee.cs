@@ -4,16 +4,18 @@ using UnityEngine;
 
 public abstract class WeaponBaseMelee : WeaponBase
 {
+
+    [SerializeField] protected GameObject _damageArc;
     protected override void Attack()
     {
         var go = Instantiate(_damageArc, _source.position, _source.rotation, _source);
         go.transform.Rotate(90f, 0, 0);
 
         var forward = _source.forward;
-        var arcValue = Mathf.Cos((_weaponDataModified.attackArc / 2) * Mathf.Deg2Rad);
+        var arcValue = Mathf.Cos((_weaponDataModified.AttackArc / 2) * Mathf.Deg2Rad);
         var sourceFloored = new Vector3(_source.position.x, 0, _source.position.z);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, _weaponDataModified.attackRange, _weaponDataModified.enemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, _weaponDataModified.AttackRange, _weaponDataModified.EnemyLayer);
         foreach (var hitEnemy in hitEnemies)
         {
             Vector3 enemyPos = hitEnemy.transform.position;
@@ -30,7 +32,7 @@ public abstract class WeaponBaseMelee : WeaponBase
             if (dot >= arcValue)
             {
                 var enemy = hitEnemy.GetComponent<EnemyBase>();
-                enemy.Damage(_weaponDataModified.attackDamage);
+                enemy.Damage(_weaponDataModified.AttackDamage);
             }
         }
     }

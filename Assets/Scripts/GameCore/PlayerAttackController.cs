@@ -34,31 +34,28 @@ public class PlayerAttackController : MonoBehaviour
         _weaponQueue[0] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponBow"), transform.position, transform.rotation, transform);
         _weaponQueue[1] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform);
         _weaponQueue[2] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform);
-
-        //foreach (var wpn in _weaponQueue)
-        //{
-        //    wpn.SetActive(false);
-        //}
-
-    }
-    void Start()
-    {
         ActivateTopWeapon();
+        SetWeaponsSource();
+    }
+
+    private void SetWeaponsSource()
+    {
+        _activeWeapon.SetSource(_attackSource.transform);
+        _passiveWeapon.SetSource(_attackSource.transform);
+        _abilityWeapon.SetSource(_attackSource.transform);
     }
 
     void ActivateTopWeapon()
     {
         _uiManager.SetWeaponImages(_weaponQueue);
 
+        _activeWeapon = _weaponQueue[0].GetComponent<WeaponBase>();
         _passiveWeapon = _weaponQueue[1].GetComponent<WeaponBase>();
         _abilityWeapon = _weaponQueue[2].GetComponent<WeaponBase>();
-        _statModifierTracker.Modifiers = _passiveWeapon.Modifiers;
 
-        _activeWeaponGo = _weaponQueue[0];
-       // _activeWeaponGo.SetActive(true);
+        _statModifierTracker.Modifiers = _passiveWeapon.WeaponModifiers;
 
-        _activeWeapon = _activeWeaponGo.GetComponent<WeaponBase>();
-        _activeWeapon.StartAttack(_attackSource.transform);
+        _activeWeapon.StartAttack();
     }
 
     private void Update()
@@ -67,13 +64,12 @@ public class PlayerAttackController : MonoBehaviour
             SwapWeapon();
 
         if (_input.UseAbility)
-            _abilityWeapon.UseAbility(_attackSource.transform);
+            _abilityWeapon.UseAbility();
     }
 
     private void SwapWeapon()
     {
         _activeWeapon.StopAttack();
-        //_activeWeaponGo.SetActive(false);
 
         var first = _weaponQueue[0];
         for (int i = 0; i < _weaponQueue.Length - 1; i++)

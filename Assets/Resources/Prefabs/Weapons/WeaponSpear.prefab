@@ -44,8 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3197843dd2cd8d43a1e9e6ff0d9383a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: 1993d26591868ab4cb6ab61c22119226, type: 2}
+  _weaponData: {fileID: 11400000, guid: a707a39f936a5f54faf182c83e8ca5c6, type: 2}
+  _weaponAbility: {fileID: 11400000, guid: 234db6df17523104fa0e1c6d9424f7e5, type: 2}
   _damageArc: {fileID: 3614722396770674634, guid: 5e6d8cb7fcdc9c04d80aad4a5f9d08d9, type: 3}
-  _abilityGraphics: {fileID: 4007529585633319570, guid: bf7fb6fe2b7eb2342a9e57a3d0905fb4, type: 3}
-  _abilityDamage: 15
-  _abilityRange: 7
