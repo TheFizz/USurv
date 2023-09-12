@@ -15,8 +15,8 @@ public class AbiltyTeleport : AbilityBase
         {
             input = ps.GetComponent<InputHandler>();
         }
+
         Ray ray = Camera.main.ScreenPointToRay(input.MousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.magenta, 5f);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: TargetLayer, maxDistance: 300f))
         {
             var player = GameObject.FindWithTag("Player");

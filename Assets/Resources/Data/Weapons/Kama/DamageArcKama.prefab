@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _circleData:
     _radius: 3
-    _completion: 30
-    _angle: 345
+    _completion: 75
+    _angle: 322.5
     _polygonQuantity: 36
     _keepPolygonQuantityConsistent: 1
 --- !u!114 &7576796201145995103

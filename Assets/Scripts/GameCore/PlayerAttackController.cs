@@ -15,6 +15,7 @@ public class PlayerAttackController : MonoBehaviour
     private WeaponBase _activeWeapon;
 
     private InputHandler _input;
+    private HeatSystem _heat;
     private StatModifierTracker _statModifierTracker;
     private UIManager _uiManager;
 
@@ -27,6 +28,7 @@ public class PlayerAttackController : MonoBehaviour
         if (ps != null)
         {
             _input = ps.GetComponent<InputHandler>();
+            _heat = ps.GetComponent<HeatSystem>();
             _statModifierTracker = ps.GetComponent<StatModifierTracker>();
             _uiManager = ps.GetComponent<UIManager>();
         }
@@ -37,14 +39,20 @@ public class PlayerAttackController : MonoBehaviour
         ActivateTopWeapon();
         SetWeaponsSource();
     }
+    private void Update()
+    {
+        if (_input.SwapWeapon && _heat.CanSwap())
+            SwapWeapon();
 
+        if (_input.UseAbility)
+            _abilityWeapon.UseAbility();
+    }
     private void SetWeaponsSource()
     {
         _activeWeapon.SetSource(_attackSource.transform);
         _passiveWeapon.SetSource(_attackSource.transform);
         _abilityWeapon.SetSource(_attackSource.transform);
     }
-
     void ActivateTopWeapon()
     {
         _uiManager.SetWeaponImages(_weaponQueue);
@@ -57,18 +65,10 @@ public class PlayerAttackController : MonoBehaviour
 
         _activeWeapon.StartAttack();
     }
-
-    private void Update()
-    {
-        if (_input.SwapWeapon)
-            SwapWeapon();
-
-        if (_input.UseAbility)
-            _abilityWeapon.UseAbility();
-    }
-
     private void SwapWeapon()
     {
+        _heat.StartCooldown();
+
         _activeWeapon.StopAttack();
 
         var first = _weaponQueue[0];

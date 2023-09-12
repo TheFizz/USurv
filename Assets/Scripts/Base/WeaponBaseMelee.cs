@@ -18,6 +18,8 @@ public abstract class WeaponBaseMelee : WeaponBase
         Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, _weaponDataModified.AttackRange, _weaponDataModified.EnemyLayer);
         foreach (var hitEnemy in hitEnemies)
         {
+            base.Attack();
+
             Vector3 enemyPos = hitEnemy.transform.position;
             Vector3 enemyPosFloored = new Vector3(enemyPos.x, 0, enemyPos.z);
             Vector3 vectorToCollider = (enemyPosFloored - sourceFloored).normalized;
@@ -35,6 +37,8 @@ public abstract class WeaponBaseMelee : WeaponBase
                 enemy.Damage(_weaponDataModified.AttackDamage);
             }
         }
+        if (hitEnemies.Length > 0)
+            _heat.AddHeat(hitEnemies.Length);
     }
 
     private void OnDrawGizmos()

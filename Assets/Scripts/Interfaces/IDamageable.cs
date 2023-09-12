@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IDamageable
 {
     // Start is called before the first frame update
-    void Damage(float damageAmount);
+    abstract void Damage(float damageAmount, bool overrideITime = false);
     void Die();
     public abstract float MaxHealth { get; set; }
     public abstract float CurrentHealth { get; set; }

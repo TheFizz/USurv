@@ -11,7 +11,9 @@ public abstract class WeaponBase : MonoBehaviour
     protected WeaponBaseSO _weaponDataModified;
 
     protected InputHandler _input;
+    protected HeatSystem _heat;
     protected Transform _source;
+    protected PlayerStats _stats;
     private StatModifierTracker _statModifierTracker;
 
     private AbilityState _abilityState = AbilityState.Ready;
@@ -23,7 +25,14 @@ public abstract class WeaponBase : MonoBehaviour
         if (ps != null)
         {
             _input = ps.GetComponent<InputHandler>();
+            _heat = ps.GetComponent<HeatSystem>();
             _statModifierTracker = ps.GetComponent<StatModifierTracker>();
+        }
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            _stats = player.GetComponent<PlayerStats>();
         }
     }
     protected virtual void Update()
@@ -42,7 +51,13 @@ public abstract class WeaponBase : MonoBehaviour
         _abilityState = AbilityState.Cooldown;
         _abilityCooldown = _weaponAbility.AbilityCooldown;
     }
-    protected abstract void Attack();
+    protected virtual void Attack()
+    {
+        if (_heat.GetHeatStatus() == HeatStatus.Overheated)
+        {
+            _stats.Damage(_weaponDataModified.AttackDamage, true);
+        }
+    }
     public virtual void StartAttack()
     {
         _weaponDataModified = Instantiate(_weaponData);
@@ -115,7 +130,6 @@ public abstract class WeaponBase : MonoBehaviour
     }
     private void HandleAbilityCooldown()
     {
-
         if (_abilityState == AbilityState.Cooldown)
         {
             if (_abilityCooldown > 0)

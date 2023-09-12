@@ -20,5 +20,5 @@ MonoBehaviour:
   WeaponName: Kama
   AttacksPerSecond: 1.5
   AttackDamage: 1
-  AttackArc: 30
+  AttackArc: 75
   AttackRange: 3

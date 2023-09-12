@@ -16,4 +16,4 @@ MonoBehaviour:
   AbilityCooldown: 30
   TargetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512

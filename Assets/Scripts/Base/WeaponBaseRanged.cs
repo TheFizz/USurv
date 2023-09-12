@@ -6,6 +6,8 @@ public abstract class WeaponBaseRanged : WeaponBase
 {
     protected override void Attack()
     {
+        base.Attack();
+
         if (gameObject.activeSelf == false)
         {
             Debug.LogWarning(name + " is not active! (Attack)");
@@ -30,5 +32,6 @@ public abstract class WeaponBaseRanged : WeaponBase
             _source.position
             );
 
+        _heat.AddHeat(wd.pierceCount);
     }
 }

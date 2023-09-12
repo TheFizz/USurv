@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
 {
+    private float _attackDamage = 2;
+    private float _attackRange = 2;
+    private float _attackSpeed = 1;
+    private bool _isAttacking = false;
     public abstract float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public Rigidbody _RB { get; set; }
@@ -33,12 +37,44 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
     }
     void Update()
     {
+        var distanceToPlayer = Vector3.Distance(transform.position, _moveTarget);
         if (!feared)
             _moveTarget = _playerTransform.position;
-        if (Vector3.Distance(transform.position, _moveTarget) > 1.5)
+        if (distanceToPlayer > 1.5)
             MoveEnemy(_moveTarget);
+
+        if (distanceToPlayer < 5)
+        {
+            if (!_isAttacking)
+                StartAttack();
+        }
+        else if (_isAttacking)
+            StopAttack();
+
     }
-    public void Damage(float damageAmount)
+    protected void Attack()
+    {
+        //Debug.Log("Attack");
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, _attackRange, LayerMask.GetMask("Player"));
+        foreach (var hitEnemy in hitEnemies)
+        {
+            var enemy = hitEnemy.GetComponent<IDamageable>();
+            enemy.Damage(_attackDamage);
+        }
+    }
+    public virtual void StartAttack()
+    {
+        _isAttacking = true;
+        //Debug.Log("StartAttack");
+        InvokeRepeating("Attack", 1, _attackSpeed);
+    }
+    public virtual void StopAttack()
+    {
+        _isAttacking = false;
+        //Debug.Log("StopAttack");
+        CancelInvoke();
+    }
+    public void Damage(float damageAmount, bool overrideITime = false)
     {
         Vector3 cameraAngle = Camera.main.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
@@ -93,5 +129,13 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
         yield return new WaitForSeconds(time);
         _renderer.material.color = _baseColor;
         feared = false;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (_isAttacking)
+        {
+            Gizmos.DrawWireSphere(transform.position, _attackRange);
+        }
     }
 }
