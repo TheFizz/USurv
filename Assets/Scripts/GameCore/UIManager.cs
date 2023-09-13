@@ -10,9 +10,7 @@ public class UIManager : MonoBehaviour
     public HeatSystem heat;
     public PlayerStats stats;
 
-    public Image activeImage;
-    public Image passiveImage;
-    public Image abilityImage;
+    public GameObject weaponIcons;
 
     public TextMeshProUGUI _hpText;
 
@@ -60,10 +58,10 @@ public class UIManager : MonoBehaviour
     public void SetWeaponImages(GameObject[] weapons)
     {
 
-        activeImage.sprite = weapons[0].GetComponent<WeaponBase>().GetWeaponImage();
-        passiveImage.sprite = weapons[1].GetComponent<WeaponBase>().GetWeaponImage();
-        abilityImage.sprite = weapons[2].GetComponent<WeaponBase>().GetWeaponImage();
-
-        //heatSlider.image.color;
+        foreach (Transform child in weaponIcons.transform)
+        {
+            child.GetComponent<Animator>().SetTrigger("Rotate");
+        }
+        weaponIcons.transform.GetChild(0).SetAsLastSibling();
     }
 }
