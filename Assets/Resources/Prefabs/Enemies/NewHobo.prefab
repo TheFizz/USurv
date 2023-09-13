@@ -138,10 +138,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
+  m_Radius: 0.8
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.000000059604645, y: 0.15, z: -0.00000008940697}
 --- !u!54 &7415594283909552987
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
   _damageTextAnchor: {fileID: 4543491228358258377}
   _invulnerable: 0
+  _canMove: 1
 --- !u!1 &8502289350515125433
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public class AbiltyAreaDamage : AbilityBase
         Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, AbilityRange, TargetLayer);
         foreach (var hitEnemy in hitEnemies)
         {
-            var enemy = hitEnemy.GetComponent<EnemyBase>();
+            var enemy = hitEnemy.GetComponent<NewEnemyBase>();
             enemy.Damage(AbilityDamage);
         }
     }

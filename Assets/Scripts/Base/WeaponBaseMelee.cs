@@ -9,7 +9,6 @@ public abstract class WeaponBaseMelee : WeaponBase
     protected override void Attack()
     {
         var go = Instantiate(_damageArc, Source.position, Source.rotation, Source);
-        go.transform.Rotate(90f, 0, 0);
 
         var forward = Source.forward;
         var arcValue = Mathf.Cos((WeaponDataModified.AttackArc / 2) * Mathf.Deg2Rad);
@@ -43,11 +42,6 @@ public abstract class WeaponBaseMelee : WeaponBase
 
     private void OnDrawGizmos()
     {
-        /*
-        var sourceFloored = _source.position;
-        sourceFloored.y = 0;
-        Gizmos.DrawWireSphere(sourceFloored, _weaponDataModified.attackRange);
-        Gizmos.DrawWireSphere(sourceFloored, 7f);
-        */
+        Gizmos.DrawLine(Source.position, Source.forward * 100);
     }
 }

@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: 64b4e46519fc16541aff0e668afb7b06, type: 2}
   _weaponAbility: {fileID: 11400000, guid: 6f1d316435d0c0c4e8429e3426e7bb84, type: 2}
-  _damageArc: {fileID: 7269715864908357423, guid: 2c5a5c2e122d5a949bf3a1e27fdb57dc, type: 3}
+  _damageArc: {fileID: 4914937731850679169, guid: 3bbdda60efd76024a903d454f5aad361, type: 3}

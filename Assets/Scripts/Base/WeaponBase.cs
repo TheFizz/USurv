@@ -35,12 +35,12 @@ public abstract class WeaponBase : MonoBehaviour
         }
         _abilityState = AbilityState.Ready;
     }
-
     protected virtual void Update()
     {
         HandleAbilityCooldown();
         AlignAttackVector();
     }
+
     public virtual void UseAbility()
     {
         if (_abilityState != AbilityState.Ready)
@@ -84,7 +84,6 @@ public abstract class WeaponBase : MonoBehaviour
             var targetLook = hitinfo.collider.transform.position;
             targetLook.y = Source.position.y;
             Source.LookAt(targetLook);
-            Debug.DrawLine(Source.position, Source.forward * 100, Color.blue);
         }
         else
         {

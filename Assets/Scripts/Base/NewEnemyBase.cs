@@ -21,6 +21,7 @@ public class NewEnemyBase : MonoBehaviour
     [SerializeField]
     private Transform _damageTextAnchor;
     [SerializeField] private bool _invulnerable = false;
+    [SerializeField] private bool _canMove = true;
 
     void Awake()
     {
@@ -47,7 +48,8 @@ public class NewEnemyBase : MonoBehaviour
             _target = _playerTransform.position;
         }
         if (distanceToPlayer > 1.5)
-            MoveTo(_target);
+            if (_canMove)
+                MoveTo(_target);
 
         if (distanceToPlayer < 5)
         {
