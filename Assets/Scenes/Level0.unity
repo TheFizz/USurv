@@ -375,8 +375,9 @@ GameObject:
   - component: {fileID: 129337677}
   - component: {fileID: 129337676}
   - component: {fileID: 129337678}
+  - component: {fileID: 129337679}
   m_Layer: 5
-  m_Name: ActiveWeaponIcon
+  m_Name: Slot0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,11 +395,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1827803518}
+  m_Father: {fileID: 1194641982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -183, y: 102.99997}
+  m_AnchoredPosition: {x: -109.99984, y: 0.0023269653}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &129337676
@@ -449,7 +450,7 @@ Animator:
   m_GameObject: {fileID: 129337674}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b8005ec4e850f584a853702c3c2e7031, type: 2}
+  m_Controller: {fileID: 9100000, guid: e369a070bf981bd40b81cde198a4a539, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -460,6 +461,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &129337679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129337674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d558356792dad06468d68ab737294e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &225127351
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1242,9 +1255,10 @@ GameObject:
   - component: {fileID: 681317909}
   - component: {fileID: 681317911}
   - component: {fileID: 681317910}
-  - component: {fileID: 681317912}
+  - component: {fileID: 681317913}
+  - component: {fileID: 681317914}
   m_Layer: 5
-  m_Name: PassiveWeaponIcon
+  m_Name: Slot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1262,11 +1276,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1827803518}
+  m_Father: {fileID: 1194641982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -133, y: 213}
+  m_AnchoredPosition: {x: -59.99984, y: 110.00236}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &681317910
@@ -1307,7 +1321,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681317908}
   m_CullTransparentMesh: 1
---- !u!95 &681317912
+--- !u!114 &681317913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681317908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d558356792dad06468d68ab737294e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &681317914
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -1317,7 +1343,7 @@ Animator:
   m_GameObject: {fileID: 681317908}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8211da1186af783499b3e5e55e138551, type: 2}
+  m_Controller: {fileID: 9100000, guid: 366cee7dbc0656f4e826bae7b3d34b34, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1460,7 +1486,7 @@ MonoBehaviour:
     m_Bits: 128
   _activeWeaponGo: {fileID: 0}
   _attackSource: {fileID: 35940486}
-  _weaponQueue:
+  WeaponQueue:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -2177,6 +2203,66 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3147dec5201865848b886962007a504e, type: 3}
   m_PrefabInstance: {fileID: 225127351}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1194641981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194641982}
+  - component: {fileID: 1194641983}
+  m_Layer: 5
+  m_Name: Weapons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1194641982
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194641981}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 681317909}
+  - {fileID: 1844724216}
+  - {fileID: 129337675}
+  m_Father: {fileID: 1827803518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 277, y: -61.968}
+  m_SizeDelta: {x: 260, y: 210}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &1194641983
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194641981}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 783d49642957e8d49b815acab3486ace, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1209359261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,9 +2374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heat: {fileID: 1369950106}
   stats: {fileID: 776415905}
-  activeIcon: {fileID: 129337674}
-  passiveIcon: {fileID: 681317908}
-  abilityIcon: {fileID: 1844724215}
+  weaponIcons: {fileID: 1194641981}
   _hpText: {fileID: 22677828}
   heatBar: {fileID: 831516731}
   hpBar: {fileID: 923934739}
@@ -2775,9 +2859,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1844724216}
-  - {fileID: 681317909}
-  - {fileID: 129337675}
+  - {fileID: 1194641982}
   m_Father: {fileID: 1606167261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2824,9 +2906,10 @@ GameObject:
   - component: {fileID: 1844724216}
   - component: {fileID: 1844724218}
   - component: {fileID: 1844724217}
-  - component: {fileID: 1844724219}
+  - component: {fileID: 1844724220}
+  - component: {fileID: 1844724221}
   m_Layer: 5
-  m_Name: AbilityWeaponIcon
+  m_Name: Slot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2844,11 +2927,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1827803518}
+  m_Father: {fileID: 1194641982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -73, y: 102.99997}
+  m_AnchoredPosition: {x: 0.00015258789, y: 0.0023269653}
   m_SizeDelta: {x: 110, y: 110}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1844724217
@@ -2889,7 +2972,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844724215}
   m_CullTransparentMesh: 1
---- !u!95 &1844724219
+--- !u!114 &1844724220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844724215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d558356792dad06468d68ab737294e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1844724221
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -2899,7 +2994,7 @@ Animator:
   m_GameObject: {fileID: 1844724215}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8f1c15f4fe948c14fa25c74631d5e476, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4f6eeac4a903e444295d25f9c0af0714, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
