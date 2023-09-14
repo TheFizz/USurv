@@ -18,7 +18,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Spear
-  AttacksPerSecond: 1
-  AttackDamage: 3
-  AttackArc: 5
-  AttackRange: 6
+  AttacksPerSecond:
+    BaseValue: 1
+  AttackDamage:
+    BaseValue: 2
+  AttackArc:
+    BaseValue: 5
+  AttackRange:
+    BaseValue: 6

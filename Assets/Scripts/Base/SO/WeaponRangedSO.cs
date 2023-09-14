@@ -1,3 +1,4 @@
+using Kryz.CharacterStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ using UnityEngine;
 public class WeaponRangedSO : WeaponBaseSO
 {
     [Header("Ranged Fields")]
-    public int pierceCount;
-    public float projectileSpeed;
-    public GameObject projectile;
+
+    public Stat PierceCount;
+    public Stat ProjectileSpeed;
+    public GameObject Projectile;
 }

@@ -11,10 +11,10 @@ public abstract class WeaponBaseMelee : WeaponBase
         var go = Instantiate(_damageArc, Source.position, Source.rotation, Source);
 
         var forward = Source.forward;
-        var arcValue = Mathf.Cos((WeaponDataModified.AttackArc / 2) * Mathf.Deg2Rad);
+        var arcValue = Mathf.Cos((WeaponData.AttackArc.Value / 2) * Mathf.Deg2Rad);
         var sourceFloored = new Vector3(Source.position.x, 0, Source.position.z);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponDataModified.AttackRange, WeaponDataModified.EnemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponData.AttackRange.Value, WeaponData.EnemyLayer);
         foreach (var hitEnemy in hitEnemies)
         {
             base.Attack();
@@ -33,7 +33,7 @@ public abstract class WeaponBaseMelee : WeaponBase
             if (dot >= arcValue)
             {
                 var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-                enemy.Damage(WeaponDataModified.AttackDamage);
+                enemy.Damage(WeaponData.AttackDamage.Value);
             }
         }
         if (hitEnemies.Length > 0)
@@ -43,5 +43,6 @@ public abstract class WeaponBaseMelee : WeaponBase
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(Source.position, Source.forward * 100);
+        Gizmos.DrawLine(Globals.PlayerTransform.position, Globals.PlayerTransform.forward * 100);
     }
 }

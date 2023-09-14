@@ -52,20 +52,18 @@ public class PlayerActionController : MonoBehaviour
     }
     void ActivateTopWeapon()
     {
-
         _activeWeapon = WeaponQueue[0].GetComponent<WeaponBase>();
         _passiveWeapon = WeaponQueue[1].GetComponent<WeaponBase>();
         _abilityWeapon = WeaponQueue[2].GetComponent<WeaponBase>();
 
-        _statModifierTracker.Modifiers = _passiveWeapon.WeaponModifiers;
-
+        _activeWeapon.ApplyModifiers(_passiveWeapon.WeaponModifiers);
         _activeWeapon.StartAttack();
     }
     private void SwapWeapon()
     {
         _heat.StartCooldown();
-
         _activeWeapon.StopAttack();
+        _activeWeapon.ClearModifiers();
 
         var first = WeaponQueue[0];
         for (int i = 0; i < WeaponQueue.Length - 1; i++)

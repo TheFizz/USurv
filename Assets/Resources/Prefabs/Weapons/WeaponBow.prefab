@@ -44,7 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cfe7298b5e107419965241a330a407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: 3e804e5ae4e5bee448055ebdcc663852, type: 2}
+  WeaponData: {fileID: 11400000, guid: 3e804e5ae4e5bee448055ebdcc663852, type: 2}
   _weaponAbility: {fileID: 11400000, guid: 06cc07543ab9d9646a19aa9d7136fdec, type: 2}
-  _damageArc: {fileID: 0}
-  _weaponDataModified: {fileID: 0}

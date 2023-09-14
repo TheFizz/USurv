@@ -127,12 +127,4 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
         _renderer.material.color = _baseColor;
         feared = false;
     }
-
-    void OnDrawGizmos()
-    {
-        if (_isAttacking)
-        {
-            Gizmos.DrawWireSphere(transform.position, _attackRange);
-        }
-    }
 }

@@ -18,10 +18,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Bow
-  AttacksPerSecond: 1
-  AttackDamage: 1
-  AttackArc: 15
-  AttackRange: 30
-  pierceCount: 2
-  projectileSpeed: 25
-  projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}
+  AttacksPerSecond:
+    BaseValue: 1
+  AttackDamage:
+    BaseValue: 1
+  AttackArc:
+    BaseValue: 15
+  AttackRange:
+    BaseValue: 30
+  PierceCount:
+    BaseValue: 2
+  ProjectileSpeed:
+    BaseValue: 25
+  Projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}

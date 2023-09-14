@@ -6,12 +6,12 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract List<StatModifier> WeaponModifiers { get; }
-    [SerializeField] private WeaponBaseSO _weaponData;
+    [SerializeField] protected WeaponBaseSO WeaponData;
     [SerializeField] private AbilityBase _weaponAbility;
 
     protected HeatSystem Heat;
     protected Transform Source;
-    protected WeaponBaseSO WeaponDataModified;
+    //protected WeaponBaseSO WeaponDataModified;
 
     private PlayerStats _stats;
     private InputHandler _input;
@@ -48,30 +48,27 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (Heat.GetHeatStatus() == HeatStatus.Overheated)
         {
-            _stats.Damage(WeaponDataModified.AttackDamage, true);
+            _stats.Damage(WeaponData.AttackDamage.Value, true);
         }
     }
     public virtual void StartAttack()
     {
-        WeaponDataModified = Instantiate(_weaponData);
-        ApplyModifiers();
-        InvokeRepeating("Attack", 1, WeaponDataModified.AttackSpeed);
+        ApplyModifiers(_statModifierTracker.LocalModifiers);
+        InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
     public virtual void StopAttack()
     {
+        ClearModifiers();
         CancelInvoke();
-        Destroy(WeaponDataModified);
     }
 
     #region Private methods 
     private void AlignAttackVector()
     {
-        if (WeaponDataModified == null)
-            return;
-        if (!WeaponDataModified.AimAssist)
+        if (!WeaponData.AimAssist)
             return;
         Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponDataModified.EnemyLayer, maxDistance: 300f))
+        if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;
             targetLook.y = Source.position.y;
@@ -82,23 +79,23 @@ public abstract class WeaponBase : MonoBehaviour
             Source.rotation = Source.parent.rotation;
         }
     }
-    private void ApplyModifiers()
+    public virtual void ApplyModifiers(List<StatModifier> mods)
     {
-        foreach (var mod in _statModifierTracker.Modifiers)
+        foreach (var mod in mods)
         {
-            switch (mod.Parameter)
+            switch (mod.Param)
             {
-                case StatModParameter.AttackSpeed:
-                    WeaponDataModified.AttacksPerSecond = CalculateModifier(WeaponDataModified.AttacksPerSecond, mod);
+                case StatModParam.AttackSpeed:
+                    WeaponData.AttacksPerSecond.AddModifier(mod);
                     break;
-                case StatModParameter.AttackDamage:
-                    WeaponDataModified.AttackDamage = CalculateModifier(WeaponDataModified.AttackDamage, mod);
+                case StatModParam.AttackDamage:
+                    WeaponData.AttackDamage.AddModifier(mod);
                     break;
-                case StatModParameter.AttackArc:
-                    WeaponDataModified.AttackArc = CalculateModifier(WeaponDataModified.AttackArc, mod);
+                case StatModParam.AttackArc:
+                    WeaponData.AttackArc.AddModifier(mod);
                     break;
-                case StatModParameter.AttackRange:
-                    WeaponDataModified.AttackRange = CalculateModifier(WeaponDataModified.AttackRange, mod);
+                case StatModParam.AttackRange:
+                    WeaponData.AttackRange.AddModifier(mod);
                     break;
                 default:
                     break;
@@ -107,18 +104,12 @@ public abstract class WeaponBase : MonoBehaviour
         }
 
     }
-    private float CalculateModifier(float baseVal, StatModifier mod)
+    public virtual void ClearModifiers()
     {
-        switch (mod.Type)
-        {
-            case StatModType.Flat:
-                return baseVal += mod.Value;
-            case StatModType.Percent:
-                return baseVal *= 1f + (mod.Value / 100f);
-            default:
-                Debug.LogError(mod.Type + "is not recognized!");
-                return -1;
-        }
+        WeaponData.AttackArc.RemoveAllModifiers();
+        WeaponData.AttackDamage.RemoveAllModifiers();
+        WeaponData.AttackRange.RemoveAllModifiers();
+        WeaponData.AttacksPerSecond.RemoveAllModifiers();
     }
     private void HandleAbilityCooldown()
     {
@@ -135,7 +126,7 @@ public abstract class WeaponBase : MonoBehaviour
     #region Public methods
     public Sprite GetWeaponImage()
     {
-        return _weaponData.WeaponSprite;
+        return WeaponData.WeaponSprite;
     }
     public void SetSource(Transform source)
     {

@@ -102,7 +102,7 @@ namespace Kryz.CharacterStats
                 }
                 else if (mod.Type == StatModType.PercentAdd)
                 {
-                    sumPercentAdd += mod.Value;
+                    sumPercentAdd += mod.Value/100;
 
                     if (i + 1 >= statModifiers.Count || statModifiers[i + 1].Type != StatModType.PercentAdd)
                     {
@@ -112,7 +112,7 @@ namespace Kryz.CharacterStats
                 }
                 else if (mod.Type == StatModType.PercentMult)
                 {
-                    finalValue *= 1 + mod.Value;
+                    finalValue *= 1 + mod.Value/100;
                 }
             }
 

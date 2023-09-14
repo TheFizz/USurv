@@ -18,7 +18,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Kama
-  AttacksPerSecond: 1.5
-  AttackDamage: 1
-  AttackArc: 75
-  AttackRange: 3
+  AttacksPerSecond:
+    BaseValue: 1
+  AttackDamage:
+    BaseValue: 1
+  AttackArc:
+    BaseValue: 45
+  AttackRange:
+    BaseValue: 3
