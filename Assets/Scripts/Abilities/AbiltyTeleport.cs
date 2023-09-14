@@ -10,11 +10,7 @@ public class AbiltyTeleport : AbilityBase
     public override void Use(Transform source)
     {
         InputHandler input = null;
-        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
-        if (ps != null)
-        {
-            input = ps.GetComponent<InputHandler>();
-        }
+        input = Globals.Input;
 
         Ray ray = Camera.main.ScreenPointToRay(input.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: TargetLayer, maxDistance: 300f))

@@ -32,11 +32,7 @@ public class NewEnemyBase : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            _playerTransform = player.transform;
-        }
+        _playerTransform = Globals.PlayerTransform;
     }
     void Update()
     {

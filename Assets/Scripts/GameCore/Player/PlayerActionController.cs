@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackController : MonoBehaviour
+public class PlayerActionController : MonoBehaviour
 {
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _activeWeaponGo;
@@ -24,18 +24,15 @@ public class PlayerAttackController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
-        if (ps != null)
-        {
-            _input = ps.GetComponent<InputHandler>();
-            _heat = ps.GetComponent<HeatSystem>();
-            _statModifierTracker = ps.GetComponent<StatModifierTracker>();
-            _uiManager = ps.GetComponent<UIManager>();
-        }
+        _input = Globals.Input;
+        _heat = Globals.Heat;
+        _statModifierTracker = Globals.StatModTracker;
+        _uiManager = Globals.UIManager;
 
         WeaponQueue[0] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponBow"), transform.position, transform.rotation, transform);
         WeaponQueue[1] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform);
         WeaponQueue[2] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform);
+
         ActivateTopWeapon();
         SetWeaponsSource();
     }

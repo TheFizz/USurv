@@ -31,7 +31,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IEnemyMoveable
         _RB = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
-        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        _playerTransform = Globals.PlayerTransform;
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _damageTextAnchor = transform.Find("DamageTextAnchor");
     }

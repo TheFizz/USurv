@@ -7,8 +7,8 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public HeatSystem heat;
-    public PlayerStats stats;
+    HeatSystem heat;
+    PlayerStats stats;
 
     public GameObject weaponIcons;
 
@@ -27,12 +27,14 @@ public class UIManager : MonoBehaviour
     private Color _heatColorOverheated = new Color32(219, 31, 31, 255);
     private void Awake()
     {
+        heat = Globals.Heat;
+        stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+
         _heatSlider = heatBar.GetComponent<Slider>();
         _heatFill = heatBar.GetComponentInChildren<Image>();
-
         _hpSlider = hpBar.GetComponent<Slider>();
-        _hpSlider.maxValue = stats.MaxHealth;
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
+        _hpSlider.maxValue = stats.MaxHealth;
     }
     private void Update()
     {
@@ -63,5 +65,6 @@ public class UIManager : MonoBehaviour
             child.GetComponent<Animator>().SetTrigger("Rotate");
         }
         weaponIcons.transform.GetChild(0).SetAsLastSibling();
+
     }
 }

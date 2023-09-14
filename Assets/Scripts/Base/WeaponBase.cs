@@ -1,3 +1,4 @@
+using Kryz.CharacterStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,20 +21,11 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
-        if (ps != null)
-        {
-            _input = ps.GetComponent<InputHandler>();
-            Heat = ps.GetComponent<HeatSystem>();
-            _statModifierTracker = ps.GetComponent<StatModifierTracker>();
-        }
-
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            _stats = player.GetComponent<PlayerStats>();
-        }
+        Heat = Globals.Heat;
+        _input = Globals.Input;
         _abilityState = AbilityState.Ready;
+        _statModifierTracker = Globals.StatModTracker;
+        _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
     }
     protected virtual void Update()
     {

@@ -10,16 +10,14 @@ public class PlayerMovementController : MonoBehaviour
     public float movementSpeed = 5;
     void Awake()
     {
-        var ps = GameObject.FindGameObjectWithTag("PeristentSystems");
-        if (ps != null)
-            _input = ps.GetComponent<InputHandler>();
-
+        _input = Globals.Input;
         _RB = GetComponent<Rigidbody>();
     }
     public void Update()
     {
         HandleMovement();
         HandleRotation();
+
     }
     private void HandleRotation()
     {
