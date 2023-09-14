@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SwapMode
+{
+    Rotate,
+    TwoKey
+}
+
 public class InputHandler : MonoBehaviour
 {
+    public SwapMode swapMode = SwapMode.Rotate;
     public Vector3 MousePosition { get; set; }
 
     // Start is called before the first frame update
@@ -40,24 +47,49 @@ public class InputHandler : MonoBehaviour
         MoveInput(delta);
         MousePosition = Input.mousePosition;
 
-
-        if (Input.GetKeyDown("q"))
-            SwapWeapon = true;
-        else
-            SwapWeapon = false;
-
         if (Input.GetKeyDown("space"))
             UseAbility = true;
         else
             UseAbility = false;
 
+        if (Input.GetKeyDown("r"))
+            switch (swapMode)
+            {
+                case SwapMode.Rotate:
+                    swapMode = SwapMode.TwoKey;
+                    break;
+                case SwapMode.TwoKey:
+                    swapMode = SwapMode.Rotate;
+                    break;
+                default:
+                    break;
+            }
+
         if (Input.GetMouseButtonDown(0))
-            Swap01 = true;
+            switch (swapMode)
+            {
+                case SwapMode.Rotate:
+                    SwapWeapon = true;
+                    break;
+                case SwapMode.TwoKey:
+                    Swap01 = true;
+                    break;
+                default:
+                    break;
+            }
         else
+        {
+            SwapWeapon = false;
             Swap01 = false;
+        }
 
         if (Input.GetMouseButtonDown(1))
-            Swap12 = true;
+        {
+            if (swapMode == SwapMode.TwoKey)
+            {
+                Swap12 = true;
+            }
+        }
         else
             Swap12 = false;
     }

@@ -32,12 +32,11 @@ public abstract class WeaponBaseMelee : WeaponBase
             }
             if (dot >= arcValue)
             {
+                Heat.AddHeat(1);
                 var enemy = hitEnemy.GetComponent<NewEnemyBase>();
                 enemy.Damage(WeaponData.AttackDamage.Value);
             }
         }
-        if (hitEnemies.Length > 0)
-            Heat.AddHeat(hitEnemies.Length);
     }
 
     private void OnDrawGizmos()

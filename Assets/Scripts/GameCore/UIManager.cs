@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject weaponIcons;
 
     public TextMeshProUGUI _hpText;
+    public TextMeshProUGUI _controlType;
 
     public GameObject heatBar;
     public GameObject hpBar;
@@ -56,6 +57,7 @@ public class UIManager : MonoBehaviour
         _heatSlider.value = heat.GetHeat();
         _hpSlider.value = stats.CurrentHealth;
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
+        _controlType.text = Globals.Input.swapMode.ToString();
     }
     public void AnimateSwapAll(GameObject[] WeaponQueue)
     {
