@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 129337676}
   - component: {fileID: 129337678}
   m_Layer: 5
-  m_Name: Slot0
+  m_Name: Weapon0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1244,7 +1244,7 @@ GameObject:
   - component: {fileID: 681317910}
   - component: {fileID: 681317914}
   m_Layer: 5
-  m_Name: Slot1
+  m_Name: Weapon1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2409,6 +2409,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SwapWeapon: 0
   UseAbility: 0
+  Swap01: 0
+  Swap12: 0
   Horizontal: 0
   Vertical: 0
 --- !u!114 &1535774020
@@ -2895,7 +2897,7 @@ GameObject:
   - component: {fileID: 1844724217}
   - component: {fileID: 1844724221}
   m_Layer: 5
-  m_Name: Slot2
+  m_Name: Weapon2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

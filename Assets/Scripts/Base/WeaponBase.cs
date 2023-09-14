@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract List<StatModifier> WeaponModifiers { get; }
+    public Transform UIIcon;
     [SerializeField] protected WeaponBaseSO WeaponData;
     [SerializeField] private AbilityBase _weaponAbility;
 

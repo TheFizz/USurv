@@ -33,13 +33,23 @@ public class PlayerActionController : MonoBehaviour
         WeaponQueue[1] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform);
         WeaponQueue[2] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform);
 
+        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon0");
+        WeaponQueue[1].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon1");
+        WeaponQueue[2].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon2");
+
         ActivateTopWeapon();
         SetWeaponsSource();
     }
     private void Update()
     {
         if (_input.SwapWeapon && _heat.CanSwap())
-            SwapWeapon();
+            SwapRotate();
+
+        if (_input.Swap01 && _heat.CanSwap())
+            SwapSlots(0, 1);
+
+        if (_input.Swap12 && _heat.CanSwap())
+            SwapSlots(1, 2);
 
         if (_input.UseAbility)
             _abilityWeapon.UseAbility();
@@ -50,16 +60,19 @@ public class PlayerActionController : MonoBehaviour
         _passiveWeapon.SetSource(_attackSource.transform);
         _abilityWeapon.SetSource(_attackSource.transform);
     }
-    void ActivateTopWeapon()
+    void ActivateTopWeapon(bool modAndStart = true)
     {
         _activeWeapon = WeaponQueue[0].GetComponent<WeaponBase>();
         _passiveWeapon = WeaponQueue[1].GetComponent<WeaponBase>();
         _abilityWeapon = WeaponQueue[2].GetComponent<WeaponBase>();
 
-        _activeWeapon.ApplyModifiers(_passiveWeapon.WeaponModifiers);
-        _activeWeapon.StartAttack();
+        if (modAndStart)
+        {
+            _activeWeapon.ApplyModifiers(_passiveWeapon.WeaponModifiers);
+            _activeWeapon.StartAttack();
+        }
     }
-    private void SwapWeapon()
+    private void SwapRotate()
     {
         _heat.StartCooldown();
         _activeWeapon.StopAttack();
@@ -72,7 +85,25 @@ public class PlayerActionController : MonoBehaviour
         }
         WeaponQueue[WeaponQueue.Length - 1] = first;
 
-        _uiManager.SetWeaponImages(WeaponQueue);
+        _uiManager.AnimateSwapAll(WeaponQueue);
         ActivateTopWeapon();
+    }
+    private void SwapSlots(int idxOld, int idxNew)
+    {
+        _heat.StartCooldown();
+        if (idxOld == 0 || idxNew == 0)
+        {
+            _activeWeapon.StopAttack();
+        }
+        _activeWeapon.ClearModifiers();
+
+        var tmp = WeaponQueue[idxOld];
+        WeaponQueue[idxOld] = WeaponQueue[idxNew];
+        WeaponQueue[idxNew] = tmp;
+
+
+        _uiManager.AnimateSwap2(WeaponQueue[idxNew], WeaponQueue[idxOld]);
+
+        ActivateTopWeapon((idxOld == 0 || idxNew == 0));
     }
 }

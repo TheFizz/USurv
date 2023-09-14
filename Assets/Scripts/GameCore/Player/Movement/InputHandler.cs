@@ -10,6 +10,10 @@ public class InputHandler : MonoBehaviour
     public bool SwapWeapon = false;
     public bool UseAbility = false;
 
+
+    public bool Swap01 = false;
+    public bool Swap12 = false;
+
     public float Horizontal;
     public float Vertical;
     private float _moveAmount;
@@ -46,6 +50,16 @@ public class InputHandler : MonoBehaviour
             UseAbility = true;
         else
             UseAbility = false;
+
+        if (Input.GetMouseButtonDown(0))
+            Swap01 = true;
+        else
+            Swap01 = false;
+
+        if (Input.GetMouseButtonDown(1))
+            Swap12 = true;
+        else
+            Swap12 = false;
     }
     private void MoveInput(float delta)
     {

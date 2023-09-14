@@ -57,14 +57,18 @@ public class UIManager : MonoBehaviour
         _hpSlider.value = stats.CurrentHealth;
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
     }
-    public void SetWeaponImages(GameObject[] weapons)
+    public void AnimateSwapAll(GameObject[] WeaponQueue)
     {
-
-        foreach (Transform child in weaponIcons.transform)
+        foreach (GameObject wpnGo in WeaponQueue)
         {
-            child.GetComponent<Animator>().SetTrigger("Rotate");
+            wpnGo.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("Rotate");
         }
-        weaponIcons.transform.GetChild(0).SetAsLastSibling();
-
+        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon.transform.SetAsLastSibling();
+    }
+    public void AnimateSwap2(GameObject tOut, GameObject tIn)
+    {
+        tOut.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("RevRotate");
+        tIn.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("Rotate");
+        tOut.GetComponent<WeaponBase>().UIIcon.SetAsFirstSibling();
     }
 }

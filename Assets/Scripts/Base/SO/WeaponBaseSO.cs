@@ -11,11 +11,6 @@ public abstract class WeaponBaseSO : ScriptableObject
     public LayerMask EnemyLayer;
     public string WeaponName;
 
-    //public float AttacksPerSecond;
-    //public float AttackDamage;
-    //public float AttackArc;
-    //public float AttackRange;
-
     public Stat AttacksPerSecond;
     public Stat AttackDamage;
     public Stat AttackArc;
