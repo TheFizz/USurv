@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     HeatSystem heat;
     PlayerStats stats;
 
-    public GameObject weaponIcons;
+    public GameObject weaponIconsObj;
 
     public TextMeshProUGUI _hpText;
     public TextMeshProUGUI _controlType;
@@ -26,6 +26,12 @@ public class UIManager : MonoBehaviour
     private Color _heatColorDefault = new Color32(252, 140, 3, 255);
     private Color _heatColorCooling = new Color32(47, 128, 204, 255);
     private Color _heatColorOverheated = new Color32(219, 31, 31, 255);
+
+
+    public Slider[] WeaponSliders = new Slider[3];
+    public WeaponBase[] WeaponQueue = new WeaponBase[3];
+    public AbilityBase[] WeaponAbilities = new AbilityBase[3];
+
     private void Awake()
     {
         heat = Globals.Heat;
@@ -36,6 +42,7 @@ public class UIManager : MonoBehaviour
         _hpSlider = hpBar.GetComponent<Slider>();
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
         _hpSlider.maxValue = stats.MaxHealth;
+
     }
     private void Update()
     {
@@ -58,6 +65,12 @@ public class UIManager : MonoBehaviour
         _hpSlider.value = stats.CurrentHealth;
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
         _controlType.text = Globals.Input.swapMode.ToString();
+
+        for (int i = 0; i < WeaponQueue.Length; i++)
+        {
+            if (WeaponQueue[i].AbilityState == AbilityState.Cooldown)
+                WeaponSliders[i].value = WeaponQueue[i].AbilityCooldown / WeaponQueue[i].WeaponAbility.AbilityCooldown;
+        }
     }
     public void AnimateSwapAll(GameObject[] WeaponQueue)
     {

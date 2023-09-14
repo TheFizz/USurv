@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpearData
   m_EditorClassIdentifier: 
   WeaponSprite: {fileID: 21300000, guid: cc41b6dcb99b3e2409abe7418172d9d8, type: 3}
-  AimAssist: 1
+  AimAssist: 0
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128

@@ -11,7 +11,7 @@ public class NewEnemyBase : MonoBehaviour
     private float _maxHealth;
     private float _currentHealth;
     private Rigidbody _RB;
-    private Renderer _renderer;
+    //private Renderer _renderer;
     private Color _baseColor;
     private Transform _playerTransform;
     private Vector3 _target;
@@ -29,8 +29,8 @@ public class NewEnemyBase : MonoBehaviour
         _maxHealth = Random.Range(_enemyData.HealthMin, _enemyData.HealthMax);
         _currentHealth = _maxHealth;
         _RB = GetComponent<Rigidbody>();
-        _renderer = GetComponent<Renderer>();
-        _baseColor = _renderer.material.color;
+        //_renderer = GetComponent<Renderer>();
+        //_baseColor = _renderer.material.color;
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _playerTransform = Globals.PlayerTransform;
     }
@@ -69,7 +69,7 @@ public class NewEnemyBase : MonoBehaviour
 
                 if (name == "fear")
                 {
-                    _renderer.material.color = _baseColor;
+                    //_renderer.material.color = _baseColor;
                 }
             }
             else
@@ -118,7 +118,7 @@ public class NewEnemyBase : MonoBehaviour
         {
             Die();
         }
-        StartCoroutine(ShowDamage());
+        //StartCoroutine(ShowDamage());
     }
     public void Die()
     {
@@ -135,16 +135,16 @@ public class NewEnemyBase : MonoBehaviour
 
         if (name == "fear")
         {
-            _renderer.material.color = Color.blue;
+            //_renderer.material.color = Color.blue;
             _target = (transform.forward * -1) * 100;
         }
     }
 
     IEnumerator ShowDamage()
     {
-        var tmpColor = _renderer.material.color;
-        _renderer.material.color = Color.red;
+        // var tmpColor = _renderer.material.color;
+        // _renderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        _renderer.material.color = tmpColor;
+        // _renderer.material.color = tmpColor;
     }
 }

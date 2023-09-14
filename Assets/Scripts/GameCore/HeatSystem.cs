@@ -12,7 +12,7 @@ public enum HeatStatus
 public class HeatSystem : MonoBehaviour
 {
     [SerializeField] private float _cooldownMultiplier = 1;
-    [SerializeField] private float _cdMultiplierNormal = 4;
+    [SerializeField] private float _cdMultiplierNormal = 1;
     [SerializeField] private float _cdMultiplierCooling = 4;
     [SerializeField] private float _heatMultiplier = 3;
 

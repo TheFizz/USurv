@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerActionController : MonoBehaviour
 {
@@ -33,9 +34,22 @@ public class PlayerActionController : MonoBehaviour
         WeaponQueue[1] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform);
         WeaponQueue[2] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform);
 
-        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon0");
-        WeaponQueue[1].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon1");
-        WeaponQueue[2].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIcons.transform.Find("Weapon2");
+
+        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon0");
+        WeaponQueue[1].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon1");
+        WeaponQueue[2].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon2");
+
+        _uiManager.WeaponSliders[0] = WeaponQueue[0].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
+        _uiManager.WeaponSliders[1] = WeaponQueue[1].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
+        _uiManager.WeaponSliders[2] = WeaponQueue[2].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
+
+        _uiManager.WeaponQueue[0] = WeaponQueue[0].GetComponent<WeaponBase>();
+        _uiManager.WeaponQueue[1] = WeaponQueue[1].GetComponent<WeaponBase>();
+        _uiManager.WeaponQueue[2] = WeaponQueue[2].GetComponent<WeaponBase>();
+
+        _uiManager.WeaponAbilities[0] = WeaponQueue[0].GetComponent<WeaponBase>().WeaponAbility;
+        _uiManager.WeaponAbilities[1] = WeaponQueue[1].GetComponent<WeaponBase>().WeaponAbility;
+        _uiManager.WeaponAbilities[2] = WeaponQueue[2].GetComponent<WeaponBase>().WeaponAbility;
 
         ActivateTopWeapon();
         SetWeaponsSource();
@@ -53,6 +67,7 @@ public class PlayerActionController : MonoBehaviour
 
         if (_input.UseAbility)
             _abilityWeapon.UseAbility();
+
     }
     private void SetWeaponsSource()
     {

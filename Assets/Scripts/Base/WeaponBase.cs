@@ -8,7 +8,7 @@ public abstract class WeaponBase : MonoBehaviour
     public abstract List<StatModifier> WeaponModifiers { get; }
     public Transform UIIcon;
     [SerializeField] protected WeaponBaseSO WeaponData;
-    [SerializeField] private AbilityBase _weaponAbility;
+    [SerializeField] public AbilityBase WeaponAbility;
 
     protected HeatSystem Heat;
     protected Transform Source;
@@ -16,15 +16,15 @@ public abstract class WeaponBase : MonoBehaviour
 
     private PlayerStats _stats;
     private InputHandler _input;
-    private float _abilityCooldown;
-    private AbilityState _abilityState;
+    public float AbilityCooldown;
+    public AbilityState AbilityState;
     private StatModifierTracker _statModifierTracker;
 
     protected virtual void Awake()
     {
         Heat = Globals.Heat;
         _input = Globals.Input;
-        _abilityState = AbilityState.Ready;
+        AbilityState = AbilityState.Ready;
         _statModifierTracker = Globals.StatModTracker;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
     }
@@ -36,14 +36,14 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void UseAbility()
     {
-        if (_abilityState != AbilityState.Ready)
+        if (AbilityState != AbilityState.Ready)
         {
-            Debug.Log("Ability not ready (" + _abilityCooldown + ")");
+            Debug.Log("Ability not ready (" + AbilityCooldown + ")");
             return;
         }
-        _weaponAbility.Use(Source);
-        _abilityState = AbilityState.Cooldown;
-        _abilityCooldown = _weaponAbility.AbilityCooldown;
+        WeaponAbility.Use(Source);
+        AbilityState = AbilityState.Cooldown;
+        AbilityCooldown = WeaponAbility.AbilityCooldown;
     }
     protected virtual void Attack()
     {
@@ -114,12 +114,12 @@ public abstract class WeaponBase : MonoBehaviour
     }
     private void HandleAbilityCooldown()
     {
-        if (_abilityState == AbilityState.Cooldown)
+        if (AbilityState == AbilityState.Cooldown)
         {
-            if (_abilityCooldown > 0)
-                _abilityCooldown -= Time.deltaTime;
+            if (AbilityCooldown > 0)
+                AbilityCooldown -= Time.deltaTime;
             else
-                _abilityState = AbilityState.Ready;
+                AbilityState = AbilityState.Ready;
         }
     }
     #endregion
