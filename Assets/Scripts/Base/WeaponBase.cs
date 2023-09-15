@@ -6,9 +6,9 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract List<StatModifier> WeaponModifiers { get; }
-    public Transform UIIcon;
-    [SerializeField] protected WeaponBaseSO WeaponData;
-    [SerializeField] public AbilityBase WeaponAbility;
+    [HideInInspector] public GameObject UIIcon;
+    public WeaponBaseSO WeaponData;
+    public AbilityBase WeaponAbility;
 
     protected HeatSystem Heat;
     protected Transform Source;
@@ -27,7 +27,6 @@ public abstract class WeaponBase : MonoBehaviour
         AbilityState = AbilityState.Ready;
         _statModifierTracker = Globals.StatModTracker;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
-        Debug.Log(gameObject.name + " " + !(_stats == null));
     }
     protected virtual void Update()
     {

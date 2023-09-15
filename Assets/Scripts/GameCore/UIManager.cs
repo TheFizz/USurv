@@ -3,50 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
-    HeatSystem heat;
-    PlayerStats stats;
 
-    public GameObject weaponIconsObj;
+    public GameObject HpBar;
+    public GameObject HeatBar;
+    public TextMeshProUGUI HpText;
+    public TextMeshProUGUI SwapMode;
+    public Canvas MainCanvas;
 
-    public TextMeshProUGUI _hpText;
-    public TextMeshProUGUI _controlType;
+    private HeatSystem _heat;
+    private PlayerStats _stats;
 
-    public GameObject heatBar;
-    public GameObject hpBar;
-
-    private Slider _heatSlider;
     private Image _heatFill;
-
     private Slider _hpSlider;
+    private Slider _heatSlider;
 
     private Color _heatColorDefault = new Color32(252, 140, 3, 255);
     private Color _heatColorCooling = new Color32(47, 128, 204, 255);
     private Color _heatColorOverheated = new Color32(219, 31, 31, 255);
 
+    private List<Vector2> SlotPositions = new List<Vector2>()
+    {
+        new Vector2(-185,100),//150,150 Size
+        new Vector2(-135,200), //100,100 Size
+        new Vector2(-85,100) //100,100 Size
+    };
+    private List<Vector2> SlotSizes = new List<Vector2>()
+    {
+        new Vector2(150,150),//150,150 Size
+        new Vector2(100,100), //100,100 Size
+        new Vector2(100,100) //100,100 Size
+    };
+    private List<Color> SlotColors = new List<Color>()
+    {
+        Color.white,
+        new Color32(128,128,128,255),
+        new Color32(134,255,145,255),
+    };
 
-    public Slider[] WeaponSliders = new Slider[3];
-    public WeaponBase[] WeaponQueue = new WeaponBase[3];
-    public AbilityBase[] WeaponAbilities = new AbilityBase[3];
 
     private void Awake()
     {
-        heat = Globals.Heat;
-        stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+        _heat = Globals.Heat;
+        _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
 
-        _heatSlider = heatBar.GetComponent<Slider>();
-        _heatFill = heatBar.GetComponentInChildren<Image>();
-        _hpSlider = hpBar.GetComponent<Slider>();
-        _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
-        _hpSlider.maxValue = stats.MaxHealth;
+        _heatSlider = HeatBar.GetComponent<Slider>();
+        _heatFill = HeatBar.GetComponentInChildren<Image>();
+        _hpSlider = HpBar.GetComponent<Slider>();
+        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
+        _hpSlider.maxValue = _stats.MaxHealth;
 
     }
     private void Update()
     {
-        switch (heat.GetHeatStatus())
+        switch (_heat.GetHeatStatus())
         {
             case HeatStatus.Default:
                 _heatFill.color = _heatColorDefault;
@@ -61,24 +74,70 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        _heatSlider.value = heat.GetHeat();
-        _hpSlider.value = stats.CurrentHealth;
-        _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
-        _controlType.text = Globals.Input.swapMode.ToString();
+        _heatSlider.value = _heat.GetHeat();
+        _hpSlider.value = _stats.CurrentHealth;
+        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
+        SwapMode.text = Globals.Input.swapMode.ToString();
 
     }
-    public void AnimateSwapAll(GameObject[] WeaponQueue)
+
+    public void SetupWeaponIcons(GameObject[] weaponQueue)
     {
-        foreach (GameObject wpnGo in WeaponQueue)
+        for (int i = 0; i < weaponQueue.Length; i++)
         {
-            wpnGo.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("Rotate");
+            var weapon = weaponQueue[i].GetComponent<WeaponBase>();
+            weapon.UIIcon = Instantiate(weapon.WeaponData.UIWeaponIcon);
+            weapon.UIIcon.GetComponent<Image>().sprite = weapon.WeaponData.UIWeaponSprite;
+            weapon.UIIcon.GetComponent<Image>().color = SlotColors[i];
+            weapon.UIIcon.name = weapon.name + "Icon";
+            weapon.UIIcon.transform.SetParent(MainCanvas.transform, false);
+            weapon.UIIcon.transform.SetAsFirstSibling();
+
+            var rect = weapon.UIIcon.GetComponent<RectTransform>();
+            rect.anchoredPosition = SlotPositions[i];
+            rect.sizeDelta = SlotSizes[i];
         }
-        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon.transform.SetAsLastSibling();
     }
-    public void AnimateSwap2(GameObject tOut, GameObject tIn)
+    public void SwapAllAnim(GameObject[] weaponQueue)
     {
-        tOut.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("RevRotate");
-        tIn.GetComponent<WeaponBase>().UIIcon.GetComponent<Animator>().SetTrigger("Rotate");
-        tOut.GetComponent<WeaponBase>().UIIcon.SetAsFirstSibling();
+        float animTime = 0.3f;
+        for (int i = 0; i < weaponQueue.Length; i++)
+        {
+            var icon = weaponQueue[i].GetComponent<WeaponBase>().UIIcon;
+            var k = i - 1;
+            if (k < 0)
+                k = weaponQueue.Length - 1;
+            icon.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[k], animTime, true);
+            icon.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[k], animTime, true);
+            icon.GetComponent<Image>().DOColor(SlotColors[k], animTime);
+            icon.transform.SetAsFirstSibling();
+        }
+    }
+
+    public void Swap2Anim(int idxA, int idxB, GameObject[] weaponQueue)
+    {
+        float animTime = 0.3f;
+
+        var A = weaponQueue[idxA].GetComponent<WeaponBase>().UIIcon;
+        var B = weaponQueue[idxB].GetComponent<WeaponBase>().UIIcon;
+
+        A.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[idxA], animTime, true);
+        A.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[idxA], animTime, true);
+        A.GetComponent<Image>().DOColor(SlotColors[idxA], animTime);
+
+        B.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[idxB], animTime, true);
+        B.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[idxB], animTime, true);
+        B.GetComponent<Image>().DOColor(SlotColors[idxB], animTime);
+
+        if (idxA > idxB)
+        {
+            A.transform.SetAsFirstSibling();
+            B.transform.SetAsFirstSibling();
+        }
+        else
+        {
+            A.transform.SetAsFirstSibling();
+            B.transform.SetAsFirstSibling();
+        }
     }
 }
