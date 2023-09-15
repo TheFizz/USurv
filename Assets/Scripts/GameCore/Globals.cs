@@ -33,4 +33,11 @@ public class Globals : MonoBehaviour
 
         me = this;
     }
+
+    public static float GetLargestValue(Vector3 v3, bool omitY = false)
+    {
+        if (omitY)
+            v3.y = 0;
+        return Mathf.Max(Mathf.Max(v3.x, v3.y), v3.z);
+    }
 }

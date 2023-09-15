@@ -16,6 +16,8 @@ public class HeatSystem : MonoBehaviour
     [SerializeField] private float _cdMultiplierCooling = 4;
     [SerializeField] private float _heatMultiplier = 3;
 
+    public bool CanHeat = true;
+
     private float _maxHeat = 100f;
     private float _currentHeat;
     private bool _isCooling = false;
@@ -36,6 +38,8 @@ public class HeatSystem : MonoBehaviour
     }
     public void AddHeat(float value)
     {
+        if (!CanHeat)
+            return;
         value *= _heatMultiplier;
 
         if (_isCooling)

@@ -29,8 +29,6 @@ public class NewEnemyBase : MonoBehaviour
         _maxHealth = Random.Range(_enemyData.HealthMin, _enemyData.HealthMax);
         _currentHealth = _maxHealth;
         _RB = GetComponent<Rigidbody>();
-        //_renderer = GetComponent<Renderer>();
-        //_baseColor = _renderer.material.color;
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _playerTransform = Globals.PlayerTransform;
     }
@@ -146,5 +144,12 @@ public class NewEnemyBase : MonoBehaviour
         // _renderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         // _renderer.material.color = tmpColor;
+    }
+
+    private void OnDrawGizmos()
+    {
+        var capsule = GetComponent<CapsuleCollider>();
+        var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
+        Gizmos.DrawWireSphere(transform.position, capsule.radius * maxVectorValue);
     }
 }

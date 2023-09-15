@@ -8,6 +8,8 @@ public class PlayerMovementController : MonoBehaviour
     private InputHandler _input;
     private Rigidbody _RB;
     public float movementSpeed = 5;
+
+    public bool lockPosition = false, lockRotation = false;
     void Awake()
     {
         _input = Globals.Input;
@@ -15,8 +17,10 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Update()
     {
-        HandleMovement();
-        HandleRotation();
+        if (!lockPosition)
+            HandleMovement();
+        if (!lockRotation)
+            HandleRotation();
 
     }
     private void HandleRotation()

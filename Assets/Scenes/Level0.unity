@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647529259}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d5f14d9708407d40824140d00e3c55c, type: 3}
   m_Name: 
@@ -1538,6 +1538,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   movementSpeed: 5
+  lockPosition: 0
+  lockRotation: 0
 --- !u!54 &776415902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1617,71 +1619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490df7a29d19ff84a97d0208faf62b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &776564561
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1844692746778343439, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_Name
-      value: NewHobo
-      objectReference: {fileID: 0}
-    - target: {fileID: 3682616071877543791, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: _canMove
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3682616071877543791, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: _invulnerable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.80000025
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 9.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326998851590905367, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5bafc78de1bd41d4c81136d4af4fdc35, type: 3}
 --- !u!1 &831516731
 GameObject:
   m_ObjectHideFlags: 0
@@ -2690,6 +2627,7 @@ MonoBehaviour:
   _cdMultiplierNormal: 1
   _cdMultiplierCooling: 4
   _heatMultiplier: 3
+  CanHeat: 1
 --- !u!114 &1535774021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,9 +2674,9 @@ MonoBehaviour:
     m_Bits: 128
   _attackSource: {fileID: 35940486}
   WeaponQueue:
+  - {fileID: 2153163811958126480, guid: 579b1632778b7fb469f634601c8ae05e, type: 3}
   - {fileID: 6976108617930502473, guid: 9fef99c1df6dfab45a48ad27543bfe73, type: 3}
   - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
-  - {fileID: 2153163811958126480, guid: 579b1632778b7fb469f634601c8ae05e, type: 3}
 --- !u!1 &1569356502
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,4 +3867,3 @@ SceneRoots:
   - {fileID: 1209359262}
   - {fileID: 776415904}
   - {fileID: 1911591982}
-  - {fileID: 776564561}
