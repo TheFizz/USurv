@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerActionController : MonoBehaviour
+public class ActionController : MonoBehaviour
 {
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
@@ -33,7 +33,7 @@ public class PlayerActionController : MonoBehaviour
         {
             WeaponQueue[i] = Instantiate(WeaponQueue[i]);
         }
-
+        _uiManager.SetupWeaponIcons(WeaponQueue);
         ActualizePositions();
         SetWeaponsSource();
         ActivateTopWeapon();
@@ -79,6 +79,7 @@ public class PlayerActionController : MonoBehaviour
         _heat.StartCooldown();
         _activeWeapon.StopAttack();
         _activeWeapon.ClearModifiers();
+        _uiManager.SwapAllAnim(WeaponQueue);
 
         var first = WeaponQueue[0];
         for (int i = 0; i < WeaponQueue.Length - 1; i++)
@@ -87,26 +88,24 @@ public class PlayerActionController : MonoBehaviour
         }
         WeaponQueue[WeaponQueue.Length - 1] = first;
 
-        //_uiManager.AnimateSwapAll(WeaponQueue);
         ActualizePositions();
         ActivateTopWeapon();
     }
-    private void SwapSlots(int idxOld, int idxNew)
+    private void SwapSlots(int idxA, int idxB)
     {
-        _heat.StartCooldown();
-        if (idxOld == 0 || idxNew == 0)
+        if (idxA == 0 || idxB == 0)
         {
+            _heat.StartCooldown();
             _activeWeapon.StopAttack();
         }
         _activeWeapon.ClearModifiers();
 
-        var tmp = WeaponQueue[idxOld];
-        WeaponQueue[idxOld] = WeaponQueue[idxNew];
-        WeaponQueue[idxNew] = tmp;
+        var tmp = WeaponQueue[idxA];
+        WeaponQueue[idxA] = WeaponQueue[idxB];
+        WeaponQueue[idxB] = tmp;
 
-
-        //_uiManager.AnimateSwap2(WeaponQueue[idxNew], WeaponQueue[idxOld]);
+        _uiManager.Swap2Anim(idxA, idxB, WeaponQueue);
         ActualizePositions();
-        ActivateTopWeapon((idxOld == 0 || idxNew == 0));
+        ActivateTopWeapon((idxA == 0 || idxB == 0));
     }
 }
