@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32eea5e48b8be5a4c8e7824f06144e48, type: 3}
   m_Name: SpearData
   m_EditorClassIdentifier: 
-  WeaponSprite: {fileID: 21300000, guid: cc41b6dcb99b3e2409abe7418172d9d8, type: 3}
+  UIWeaponIcon: {fileID: 8861405806011201607, guid: 8dce434169b47a04996c736904073060, type: 3}
+  UIWeaponSprite: {fileID: 21300000, guid: cc41b6dcb99b3e2409abe7418172d9d8, type: 3}
   AimAssist: 0
   EnemyLayer:
     serializedVersion: 2

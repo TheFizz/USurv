@@ -66,11 +66,6 @@ public class UIManager : MonoBehaviour
         _hpText.text = Mathf.RoundToInt(stats.CurrentHealth).ToString();
         _controlType.text = Globals.Input.swapMode.ToString();
 
-        for (int i = 0; i < WeaponQueue.Length; i++)
-        {
-            if (WeaponQueue[i].AbilityState == AbilityState.Cooldown)
-                WeaponSliders[i].value = WeaponQueue[i].AbilityCooldown / WeaponQueue[i].WeaponAbility.AbilityCooldown;
-        }
     }
     public void AnimateSwapAll(GameObject[] WeaponQueue)
     {

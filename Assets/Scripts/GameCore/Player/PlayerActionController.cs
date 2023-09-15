@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class PlayerActionController : MonoBehaviour
 {
     [SerializeField] private LayerMask _enemyLayer;
-    [SerializeField] private GameObject _activeWeaponGo;
     [SerializeField] private GameObject _attackSource;
 
     private WeaponBase _passiveWeapon;
@@ -30,29 +29,14 @@ public class PlayerActionController : MonoBehaviour
         _statModifierTracker = Globals.StatModTracker;
         _uiManager = Globals.UIManager;
 
-        WeaponQueue[0] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponBow"), transform.position, transform.rotation, transform);
-        WeaponQueue[1] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponKama"), transform.position, transform.rotation, transform);
-        WeaponQueue[2] = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/Weapons/WeaponSpear"), transform.position, transform.rotation, transform);
+        for (int i = 0; i < WeaponQueue.Length; i++)
+        {
+            WeaponQueue[i] = Instantiate(WeaponQueue[i]);
+        }
 
-
-        WeaponQueue[0].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon0");
-        WeaponQueue[1].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon1");
-        WeaponQueue[2].GetComponent<WeaponBase>().UIIcon = _uiManager.weaponIconsObj.transform.Find("Weapon2");
-
-        _uiManager.WeaponSliders[0] = WeaponQueue[0].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
-        _uiManager.WeaponSliders[1] = WeaponQueue[1].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
-        _uiManager.WeaponSliders[2] = WeaponQueue[2].GetComponent<WeaponBase>().UIIcon.Find("CdSlider").GetComponent<Slider>();
-
-        _uiManager.WeaponQueue[0] = WeaponQueue[0].GetComponent<WeaponBase>();
-        _uiManager.WeaponQueue[1] = WeaponQueue[1].GetComponent<WeaponBase>();
-        _uiManager.WeaponQueue[2] = WeaponQueue[2].GetComponent<WeaponBase>();
-
-        _uiManager.WeaponAbilities[0] = WeaponQueue[0].GetComponent<WeaponBase>().WeaponAbility;
-        _uiManager.WeaponAbilities[1] = WeaponQueue[1].GetComponent<WeaponBase>().WeaponAbility;
-        _uiManager.WeaponAbilities[2] = WeaponQueue[2].GetComponent<WeaponBase>().WeaponAbility;
-
-        ActivateTopWeapon();
+        ActualizePositions();
         SetWeaponsSource();
+        ActivateTopWeapon();
     }
     private void Update()
     {
@@ -77,15 +61,18 @@ public class PlayerActionController : MonoBehaviour
     }
     void ActivateTopWeapon(bool modAndStart = true)
     {
-        _activeWeapon = WeaponQueue[0].GetComponent<WeaponBase>();
-        _passiveWeapon = WeaponQueue[1].GetComponent<WeaponBase>();
-        _abilityWeapon = WeaponQueue[2].GetComponent<WeaponBase>();
-
+        ActualizePositions();
         if (modAndStart)
         {
             _activeWeapon.ApplyModifiers(_passiveWeapon.WeaponModifiers);
             _activeWeapon.StartAttack();
         }
+    }
+    void ActualizePositions()
+    {
+        _activeWeapon = WeaponQueue[0].GetComponent<WeaponBase>();
+        _passiveWeapon = WeaponQueue[1].GetComponent<WeaponBase>();
+        _abilityWeapon = WeaponQueue[2].GetComponent<WeaponBase>();
     }
     private void SwapRotate()
     {
@@ -100,7 +87,8 @@ public class PlayerActionController : MonoBehaviour
         }
         WeaponQueue[WeaponQueue.Length - 1] = first;
 
-        _uiManager.AnimateSwapAll(WeaponQueue);
+        //_uiManager.AnimateSwapAll(WeaponQueue);
+        ActualizePositions();
         ActivateTopWeapon();
     }
     private void SwapSlots(int idxOld, int idxNew)
@@ -117,8 +105,8 @@ public class PlayerActionController : MonoBehaviour
         WeaponQueue[idxNew] = tmp;
 
 
-        _uiManager.AnimateSwap2(WeaponQueue[idxNew], WeaponQueue[idxOld]);
-
+        //_uiManager.AnimateSwap2(WeaponQueue[idxNew], WeaponQueue[idxOld]);
+        ActualizePositions();
         ActivateTopWeapon((idxOld == 0 || idxNew == 0));
     }
 }

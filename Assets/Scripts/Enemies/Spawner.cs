@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
         while (attempts > 0 && pointFound == false && _spawnedEnemies.Count < _spawnLimit)
         {
             var x = Random.Range(-45, 45);
-            var y = 0f; //Arbitrary;
+            var y = 0.8f; //Arbitrary;
             var z = Random.Range(-45, 45);
             spawnPoint = new Vector3(x, y, z);
 

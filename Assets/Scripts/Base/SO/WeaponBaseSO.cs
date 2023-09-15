@@ -6,7 +6,8 @@ using UnityEngine;
 public abstract class WeaponBaseSO : ScriptableObject
 {
     [Header("Base Fields")]
-    public Sprite WeaponSprite;
+    public GameObject UIWeaponIcon;
+    public Sprite UIWeaponSprite;
     public bool AimAssist = false;
     public LayerMask EnemyLayer;
     public string WeaponName;

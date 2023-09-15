@@ -18,7 +18,7 @@ public abstract class WeaponBase : MonoBehaviour
     private InputHandler _input;
     public float AbilityCooldown;
     public AbilityState AbilityState;
-    private StatModifierTracker _statModifierTracker;
+    protected StatModifierTracker _statModifierTracker;
 
     protected virtual void Awake()
     {
@@ -27,6 +27,7 @@ public abstract class WeaponBase : MonoBehaviour
         AbilityState = AbilityState.Ready;
         _statModifierTracker = Globals.StatModTracker;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+        Debug.Log(gameObject.name + " " + !(_stats == null));
     }
     protected virtual void Update()
     {
@@ -111,6 +112,7 @@ public abstract class WeaponBase : MonoBehaviour
         WeaponData.AttackDamage.RemoveAllModifiers();
         WeaponData.AttackRange.RemoveAllModifiers();
         WeaponData.AttacksPerSecond.RemoveAllModifiers();
+
     }
     private void HandleAbilityCooldown()
     {
@@ -127,7 +129,7 @@ public abstract class WeaponBase : MonoBehaviour
     #region Public methods
     public Sprite GetWeaponImage()
     {
-        return WeaponData.WeaponSprite;
+        return WeaponData.UIWeaponSprite;
     }
     public void SetSource(Transform source)
     {

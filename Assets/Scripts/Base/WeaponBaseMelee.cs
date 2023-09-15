@@ -41,7 +41,7 @@ public abstract class WeaponBaseMelee : WeaponBase
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(Source.position, Source.forward * 100);
-        Gizmos.DrawLine(Globals.PlayerTransform.position, Globals.PlayerTransform.forward * 100);
+        //Gizmos.DrawLine(Source.position, Source.forward * 100);
+        //Gizmos.DrawLine(Globals.PlayerTransform.position, Globals.PlayerTransform.forward * 100);
     }
 }
