@@ -11,7 +11,7 @@ namespace Kryz.CharacterStats
     {
         AttackSpeed,
         AttackDamage,
-        AttackArc,
+        AttackCone,
         AttackRange
     }
     public class StatModifier

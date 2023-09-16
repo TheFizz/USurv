@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIWeaponIcon: {fileID: 8861405806011201607, guid: 8dce434169b47a04996c736904073060, type: 3}
   UIWeaponSprite: {fileID: 21300000, guid: 5a54315aaa719b84da73a61ba4994c04, type: 3}
-  AimAssist: 0
+  AimAssist: 1
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -23,7 +23,7 @@ MonoBehaviour:
     BaseValue: 1
   AttackDamage:
     BaseValue: 1
-  AttackArc:
+  AttackCone:
     BaseValue: 15
   AttackRange:
     BaseValue: 30

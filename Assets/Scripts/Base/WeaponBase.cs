@@ -41,12 +41,10 @@ public abstract class WeaponBase : MonoBehaviour
         _statModifierTracker = Globals.StatModTracker;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
 
-
     }
     protected virtual void Update()
     {
         HandleAbilityCooldown();
-        AlignAttackVector();
     }
 
     public virtual void UseAbility()
@@ -66,6 +64,7 @@ public abstract class WeaponBase : MonoBehaviour
         {
             _stats.Damage(WeaponData.AttackDamage.Value, true);
         }
+        AlignAttackVector();
     }
     public virtual void StartAttack()
     {
@@ -107,8 +106,8 @@ public abstract class WeaponBase : MonoBehaviour
                 case StatModParam.AttackDamage:
                     WeaponData.AttackDamage.AddModifier(mod);
                     break;
-                case StatModParam.AttackArc:
-                    WeaponData.AttackArc.AddModifier(mod);
+                case StatModParam.AttackCone:
+                    WeaponData.AttackCone.AddModifier(mod);
                     break;
                 case StatModParam.AttackRange:
                     WeaponData.AttackRange.AddModifier(mod);
@@ -122,7 +121,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
     public virtual void ClearModifiers()
     {
-        WeaponData.AttackArc.RemoveAllModifiers();
+        WeaponData.AttackCone.RemoveAllModifiers();
         WeaponData.AttackDamage.RemoveAllModifiers();
         WeaponData.AttackRange.RemoveAllModifiers();
         WeaponData.AttacksPerSecond.RemoveAllModifiers();
