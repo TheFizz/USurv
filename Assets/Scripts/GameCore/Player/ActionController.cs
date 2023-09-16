@@ -10,16 +10,13 @@ public class ActionController : MonoBehaviour
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
 
-    private WeaponBase _passiveWeapon;
-    private WeaponBase _abilityWeapon;
-    private WeaponBase _activeWeapon;
-
     private InputHandler _input;
     private HeatSystem _heat;
     private StatModifierTracker _statModifierTracker;
     private UIManager _uiManager;
 
     public GameObject[] WeaponQueue = new GameObject[3];
+    private WeaponBase[] _weapons = new WeaponBase[3];
 
     // Start is called before the first frame update
     private void Awake()
@@ -31,10 +28,11 @@ public class ActionController : MonoBehaviour
 
         for (int i = 0; i < WeaponQueue.Length; i++)
         {
-            WeaponQueue[i] = Instantiate(WeaponQueue[i]);
+            var go = WeaponQueue[i] = Instantiate(WeaponQueue[i]);
+            _weapons[i] = go.GetComponent<WeaponBase>();
         }
-        _uiManager.SetupWeaponIcons(WeaponQueue);
-        ActualizePositions();
+        _uiManager.SetupWeaponIcons(_weapons);
+
         SetWeaponsSource();
         ActivateTopWeapon();
     }
@@ -50,45 +48,37 @@ public class ActionController : MonoBehaviour
             SwapSlots(1, 2);
 
         if (_input.UseAbility)
-            _abilityWeapon.UseAbility();
+            _weapons[0].UseAbility();
 
     }
     private void SetWeaponsSource()
     {
-        _activeWeapon.SetSource(_attackSource.transform);
-        _passiveWeapon.SetSource(_attackSource.transform);
-        _abilityWeapon.SetSource(_attackSource.transform);
+        foreach (var weapon in _weapons)
+        {
+            weapon.SetSource(_attackSource.transform);
+        }
     }
     void ActivateTopWeapon(bool modAndStart = true)
     {
-        ActualizePositions();
         if (modAndStart)
         {
-            _activeWeapon.ApplyModifiers(_passiveWeapon.WeaponModifiers);
-            _activeWeapon.StartAttack();
+            _weapons[0].ApplyModifiers(_weapons[1].WeaponModifiers);
+            _weapons[0].StartAttack();
         }
-    }
-    void ActualizePositions()
-    {
-        _activeWeapon = WeaponQueue[0].GetComponent<WeaponBase>();
-        _passiveWeapon = WeaponQueue[1].GetComponent<WeaponBase>();
-        _abilityWeapon = WeaponQueue[2].GetComponent<WeaponBase>();
     }
     private void SwapRotate()
     {
         _heat.StartCooldown();
-        _activeWeapon.StopAttack();
-        _activeWeapon.ClearModifiers();
-        _uiManager.SwapAllAnim(WeaponQueue);
+        _weapons[0].StopAttack();
+        _weapons[0].ClearModifiers();
+        _uiManager.SwapAllAnim(_weapons);
 
-        var first = WeaponQueue[0];
-        for (int i = 0; i < WeaponQueue.Length - 1; i++)
+        var first = _weapons[0];
+        for (int i = 0; i < _weapons.Length - 1; i++)
         {
-            WeaponQueue[i] = WeaponQueue[i + 1];
+            _weapons[i] = _weapons[i + 1];
         }
-        WeaponQueue[WeaponQueue.Length - 1] = first;
-
-        ActualizePositions();
+        _weapons[_weapons.Length - 1] = first;
         ActivateTopWeapon();
     }
     private void SwapSlots(int idxA, int idxB)
@@ -96,16 +86,16 @@ public class ActionController : MonoBehaviour
         if (idxA == 0 || idxB == 0)
         {
             _heat.StartCooldown();
-            _activeWeapon.StopAttack();
+            _weapons[0].StopAttack();
         }
-        _activeWeapon.ClearModifiers();
+        _weapons[0].ClearModifiers();
 
-        var tmp = WeaponQueue[idxA];
-        WeaponQueue[idxA] = WeaponQueue[idxB];
-        WeaponQueue[idxB] = tmp;
+        var tmp = _weapons[idxA];
+        _weapons[idxA] = _weapons[idxB];
+        _weapons[idxB] = tmp;
 
-        _uiManager.Swap2Anim(idxA, idxB, WeaponQueue);
-        ActualizePositions();
+        _uiManager.Swap2Anim(idxA, idxB, _weapons);
+
         ActivateTopWeapon((idxA == 0 || idxB == 0));
     }
 }

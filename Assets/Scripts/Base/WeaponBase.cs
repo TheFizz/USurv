@@ -2,11 +2,16 @@ using Kryz.CharacterStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract List<StatModifier> WeaponModifiers { get; }
-    [HideInInspector] public GameObject UIIcon;
+    [HideInInspector] public GameObject UIObject;
+    [HideInInspector] public Image UIImage;
+    [HideInInspector] public Slider UISlider;
+    [HideInInspector] public RectTransform UIRect;
+
     public WeaponBaseSO WeaponData;
     public AbilityBase WeaponAbility;
 
@@ -23,10 +28,20 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Awake()
     {
         Heat = Globals.Heat;
-        _input = Globals.Input;
         AbilityState = AbilityState.Ready;
+        UIObject = Instantiate(WeaponData.UIWeaponIcon);
+        UIObject.name = WeaponData.WeaponName + "Icon";
+        UIRect = UIObject.GetComponent<RectTransform>();
+
+        UIImage = UIObject.GetComponent<Image>();
+        UIImage.sprite = WeaponData.UIWeaponSprite;
+        UISlider = UIObject.GetComponentInChildren<Slider>();
+
+        _input = Globals.Input;
         _statModifierTracker = Globals.StatModTracker;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+
+
     }
     protected virtual void Update()
     {
