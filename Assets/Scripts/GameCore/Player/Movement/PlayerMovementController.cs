@@ -7,7 +7,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask _mouseHitMask;
     private InputHandler _input;
     private Rigidbody _RB;
-    public float movementSpeed = 5;
+    private float _moveSpeed;
 
     public bool lockPosition = false, lockRotation = false;
     void Awake()
@@ -25,7 +25,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     private void HandleRotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
+        Ray ray = Globals.MainCamera.ScreenPointToRay(_input.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _mouseHitMask, maxDistance: 300f))
         {
             var targetLook = hitinfo.point;
@@ -41,13 +41,17 @@ public class PlayerMovementController : MonoBehaviour
 
         moveDirection = Vector3.forward * _input.Vertical;
         moveDirection += Vector3.right * _input.Horizontal;
-        moveDirection = Quaternion.Euler(0, Camera.main.gameObject.transform.eulerAngles.y, 0) * moveDirection;
+        moveDirection = Quaternion.Euler(0, Globals.MainCamera.gameObject.transform.eulerAngles.y, 0) * moveDirection;
         moveDirection.Normalize();
 
-        float speed = movementSpeed;
+        float speed = _moveSpeed;
         moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);
         _RB.velocity = projectedVelocity;
+    }
+    public void SetMoveSpeed(float moveSpeed)
+    {
+        _moveSpeed = moveSpeed;
     }
 }

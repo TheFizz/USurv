@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Kryz.CharacterStats;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UIManager : MonoBehaviour
     public Canvas MainCanvas;
 
     private HeatSystem _heat;
-    private PlayerStats _stats;
+    private PlayerSystems _pSystems;
 
     private Image _heatFill;
     private Slider _hpSlider;
@@ -47,16 +48,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-
         _heat = Globals.Heat;
-        _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
-        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
+        _pSystems = Globals.PlayerSystems;
+        HpText.text = Mathf.RoundToInt(_pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value).ToString();
 
         _heatSlider = HeatBar.GetComponent<Slider>();
         _heatFill = HeatBar.GetComponentInChildren<Image>();
         _hpSlider = HpBar.GetComponent<Slider>();
-        _hpSlider.maxValue = _stats.MaxHealth;
-
+        _hpSlider.maxValue = _pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value;
     }
     private void Update()
     {
@@ -76,8 +75,9 @@ public class UIManager : MonoBehaviour
         }
 
         _heatSlider.value = _heat.GetHeat();
-        _hpSlider.value = _stats.CurrentHealth;
-        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
+        _hpSlider.value = _pSystems.DmgHandler.CurrentHealth;
+
+        HpText.text = Mathf.RoundToInt(_pSystems.DmgHandler.CurrentHealth).ToString();
         SwapMode.text = Globals.Input.swapMode.ToString();
 
     }
@@ -108,7 +108,6 @@ public class UIManager : MonoBehaviour
             weaponQueue[i].UIObject.transform.SetAsFirstSibling();
         }
     }
-
     public void Swap2Anim(int idxA, int idxB, WeaponBase[] weaponQueue)
     {
         float animTime = 0.3f;

@@ -12,24 +12,24 @@ public class Globals : MonoBehaviour
     public static InputHandler Input { get; private set; }
     public static UIManager UIManager { get; private set; }
     public static StatModifierTracker StatModTracker { get; private set; }
-    public static ActionController ActionController { get; private set; }
+    public static PlayerSystems PlayerSystems { get; private set; }
     [field: SerializeField] public static Transform PlayerTransform { get; private set; }
     [SerializeField] public static Camera MainCamera { get; private set; }
     void Awake()
     {
         if (me != null)
         {
-            Debug.LogError("There is more than one instance if Globals!");
+            Debug.LogError("There is more than one instance of Globals!");
             return;
         }
+        PlayerTransform = _playerTransform;
+        MainCamera = _mainCamera;
+
         Heat = GetComponent<HeatSystem>();
         Input = GetComponent<InputHandler>();
         UIManager = GetComponent<UIManager>();
+        PlayerSystems = GetComponent<PlayerSystems>();
         StatModTracker = GetComponent<StatModifierTracker>();
-        ActionController = GetComponent<ActionController>();
-
-        PlayerTransform = _playerTransform;
-        MainCamera = _mainCamera;
 
         me = this;
     }
