@@ -28,7 +28,7 @@ public class XPCollector : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & _targetLayer) == 0)
+        if (!Globals.IsInLayerMask(other.gameObject.layer, _targetLayer))
             return;
 
         other.enabled = false;

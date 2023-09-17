@@ -40,11 +40,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8326998851590905367}
+  - component: {fileID: -826865126374214084}
   - component: {fileID: 447560089237236558}
   - component: {fileID: 3363479795540971817}
   - component: {fileID: 44350425340355}
   - component: {fileID: 7415594283909552987}
-  - component: {fileID: -826865126374214084}
   m_Layer: 7
   m_Name: NewHobo
   m_TagString: Enemy
@@ -69,6 +69,23 @@ Transform:
   - {fileID: 4543491228358258377}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-826865126374214084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844692746778343439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d3b7787db96de498bc217f969439ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <EnemyData>k__BackingField: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
+  <DropOnDeath>k__BackingField: {fileID: 1286712164637996121, guid: 00c263d67b5c6e44e98ec3a7803eec91, type: 3}
+  _damageTextAnchor: {fileID: 4543491228358258377}
+  _invulnerable: 0
+  _canMove: 1
 --- !u!33 &447560089237236558
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -138,7 +155,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0.15, z: -0.00000008940697}
@@ -151,7 +168,7 @@ Rigidbody:
   m_GameObject: {fileID: 1844692746778343439}
   serializedVersion: 4
   m_Mass: 0.0005
-  m_Drag: 0
+  m_Drag: 0.5
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -169,23 +186,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &-826865126374214084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844692746778343439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98d3b7787db96de498bc217f969439ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <EnemyData>k__BackingField: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
-  <DropOnDeath>k__BackingField: {fileID: 1286712164637996121, guid: 00c263d67b5c6e44e98ec3a7803eec91, type: 3}
-  _damageTextAnchor: {fileID: 4543491228358258377}
-  _invulnerable: 0
-  _canMove: 1
 --- !u!1 &8502289350515125433
 GameObject:
   m_ObjectHideFlags: 0

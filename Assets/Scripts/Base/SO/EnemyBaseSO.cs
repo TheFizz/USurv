@@ -13,4 +13,6 @@ public abstract class EnemyBaseSO : ScriptableObject
     public float AttackSpeed;
     public float AttackRange;
     public float AttackDamage;
+
+    public LayerMask TargetLayer;
 }

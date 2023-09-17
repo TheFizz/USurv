@@ -14,7 +14,7 @@ public class HeatSystem : MonoBehaviour
     [SerializeField] private float _cooldownMultiplier = 1;
     [SerializeField] private float _cdMultiplierNormal = 1;
     [SerializeField] private float _cdMultiplierCooling = 4;
-    [SerializeField] private float _heatMultiplier = 3;
+    [SerializeField] private float _heatMultiplier = 5;
 
     public bool CanHeat = true;
 

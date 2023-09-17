@@ -1,3 +1,4 @@
+using RobinGoodfellow.CircleGenerator;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,9 +7,19 @@ using UnityEngine;
 public abstract class WeaponBaseMelee : WeaponBase
 {
     [SerializeField] private GameObject _damageCone;
+    FillCircleGenerator cg;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        cg = _damageCone.GetComponentInChildren<FillCircleGenerator>();
+    }
     protected override void Attack()
     {
         base.Attack();
+        cg.CircleData.Radius = WeaponData.AttackRange.Value;
+        cg.Generate();
 
         var forward = Source.forward;
         var coneCos = Mathf.Cos((WeaponData.AttackCone.Value / 2) * Mathf.Deg2Rad);
@@ -18,7 +29,6 @@ public abstract class WeaponBaseMelee : WeaponBase
 
         foreach (var hitEnemy in hitEnemies)
         {
-
             var capsule = ((CapsuleCollider)hitEnemy);
             var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
             var realColRadius = capsule.radius * maxVectorValue;
@@ -40,12 +50,12 @@ public abstract class WeaponBaseMelee : WeaponBase
 
             else if (d.Count > 0)
             {
-                Heat.AddHeat(1);
                 var enemy = hitEnemy.GetComponent<NewEnemyBase>();
                 enemy.Damage(WeaponData.AttackDamage.Value);
             }
         }
-
+        if (hitEnemies.Length > 0)
+            Heat.AddHeat(1);
         var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);
     }
 
@@ -110,5 +120,10 @@ public abstract class WeaponBaseMelee : WeaponBase
         if (Vector3.Distance(lineStart, intersection2) < distance)
             intersectionPoints.Add(intersection2);
         return intersectionPoints;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(Source.position, WeaponData.AttackRange.Value);
     }
 }

@@ -32,6 +32,6 @@ public abstract class WeaponBaseRanged : WeaponBase
             Source.position
             );
 
-        Heat.AddHeat(Mathf.RoundToInt(wd.PierceCount.Value));
+        Heat.AddHeat(1);
     }
 }

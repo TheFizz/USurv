@@ -9,7 +9,7 @@ public abstract class WeaponBase : MonoBehaviour
     public abstract List<StatModifier> WeaponModifiers { get; }
     [HideInInspector] public GameObject UIObject;
     [HideInInspector] public Image UIImage;
-    [HideInInspector] public Slider UISlider;
+    [HideInInspector] public Image UIOverlay;
     [HideInInspector] public RectTransform UIRect;
 
     public WeaponBaseSO WeaponData;
@@ -31,10 +31,11 @@ public abstract class WeaponBase : MonoBehaviour
         UIObject = Instantiate(WeaponData.UIWeaponIcon);
         UIObject.name = WeaponData.WeaponName + "Icon";
         UIRect = UIObject.GetComponent<RectTransform>();
-
         UIImage = UIObject.GetComponent<Image>();
         UIImage.sprite = WeaponData.UIWeaponSprite;
-        UISlider = UIObject.GetComponentInChildren<Slider>();
+
+        var overlayObj = UIObject.transform.GetChild(0);
+        UIOverlay = overlayObj.GetComponentInChildren<Image>();
 
         _input = Globals.Input;
         _statModifierTracker = Globals.StatModTracker;
@@ -61,14 +62,14 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (Heat.GetHeatStatus() == HeatStatus.Overheated)
         {
-            _pDamageHandler.Damage(WeaponData.AttackDamage.Value, true);
+            _pDamageHandler.Damage(WeaponData.AttackDamage.Value, WeaponData.WeaponName, true);
         }
         AlignAttackVector();
     }
     public virtual void StartAttack()
     {
         Source.rotation = Source.parent.rotation;
-        ApplyModifiers(_statModifierTracker.LocalModifiers); 
+        ApplyModifiers(_statModifierTracker.LocalModifiers);
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
     public virtual void StopAttack()
@@ -131,6 +132,8 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (AbilityState == AbilityState.Cooldown)
         {
+            UIOverlay.fillAmount = AbilityCooldown / WeaponAbility.AbilityCooldown;
+
             if (AbilityCooldown > 0)
                 AbilityCooldown -= Time.deltaTime;
             else

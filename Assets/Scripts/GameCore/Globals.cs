@@ -13,6 +13,7 @@ public class Globals : MonoBehaviour
     public static UIManager UIManager { get; private set; }
     public static StatModifierTracker StatModTracker { get; private set; }
     public static PlayerSystems PlayerSystems { get; private set; }
+    public static PlayerDamageHandler DmgHandler { get; private set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
     [field: SerializeField] public static Transform PlayerTransform { get; private set; }
     [SerializeField] public static Camera MainCamera { get; private set; }
@@ -30,6 +31,7 @@ public class Globals : MonoBehaviour
         Input = GetComponent<InputHandler>();
         UIManager = GetComponent<UIManager>();
         PlayerSystems = GetComponent<PlayerSystems>();
+        DmgHandler = PlayerTransform.GetComponent<PlayerDamageHandler>();
         StatModTracker = GetComponent<StatModifierTracker>();
 
         me = this;
@@ -48,4 +50,9 @@ public class Globals : MonoBehaviour
         int b = Random.Range(int.MinValue, int.MaxValue);
         return $"{a.ToString("x").ToUpperInvariant()}{b.ToString("x").ToUpperInvariant()}";
     }
+    public static bool CompareLayers(int layer, LayerMask layerMask)
+    {
+        return (((1 << layer) & layerMask) == 1);
+    }
+    public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
 }

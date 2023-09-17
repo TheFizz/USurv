@@ -23,6 +23,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     private Transform _damageTextAnchor;
     [SerializeField] private bool _invulnerable = false;
     [SerializeField] private bool _canMove = true;
+    private string _id;
+
+    private float colliderRadius;
 
 
     void Awake()
@@ -33,6 +36,12 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _RB = GetComponent<Rigidbody>();
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _playerTransform = Globals.PlayerTransform;
+
+        _id = Globals.GenerateId();
+
+        var capsule = GetComponent<CapsuleCollider>();
+        var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
+        colliderRadius = capsule.radius * maxVectorValue;
     }
     void Update()
     {
@@ -46,14 +55,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         if (distanceToPlayer > 1.5)
             if (_canMove)
                 MoveTo(_target);
-
-        if (distanceToPlayer < 5)
-        {
-            if (!_isAttacking)
-                StartAttack();
-        }
-        else if (_isAttacking)
-            StopAttack();
     }
 
     private void HandleAilments()
@@ -86,26 +87,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         targetLook.y = transform.position.y;
         transform.LookAt(targetLook);
     }
-    protected void Attack()
-    {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, EnemyData.AttackRange, LayerMask.GetMask("Player"));
-        foreach (var hitEnemy in hitEnemies)
-        {
-            var enemy = hitEnemy.GetComponent<IDamageable>();
-            enemy.Damage(EnemyData.AttackDamage);
-        }
-    }
-    public virtual void StartAttack()
-    {
-        _isAttacking = true;
-        InvokeRepeating("Attack", 1, EnemyData.AttackSpeed);
-    }
-    public virtual void StopAttack()
-    {
-        _isAttacking = false;
-        CancelInvoke();
-    }
-    public void Damage(float damageAmount, bool overrideITime = false)
+    public void Damage(float damageAmount)
     {
         Vector3 cameraAngle = Globals.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
@@ -155,5 +137,12 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var capsule = GetComponent<CapsuleCollider>();
         var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
         Gizmos.DrawWireSphere(transform.position, capsule.radius * maxVectorValue);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (!Globals.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
+            return;
+        Globals.DmgHandler.Damage(EnemyData.AttackDamage, _id);
     }
 }
