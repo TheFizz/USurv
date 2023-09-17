@@ -20,7 +20,7 @@ public class DamageText : MonoBehaviour
     void Awake()
     {
         _textMesh = GetComponentInChildren<TextMeshPro>();
-        _textMesh.fontSize = 7.5f;
+        _textMesh.fontSize = 9f;
         _ttlOriginal = _ttl;
     }
 
