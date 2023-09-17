@@ -123,6 +123,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public void Die()
     {
         var pos = gameObject.transform.position;
+        pos.y = 1f;
         Destroy(gameObject);
         Instantiate(DropOnDeath, pos, Quaternion.identity);
     }
