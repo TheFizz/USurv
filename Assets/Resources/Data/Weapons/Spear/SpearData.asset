@@ -23,7 +23,7 @@ MonoBehaviour:
     BaseValue: 1
   AttackDamage:
     BaseValue: 2
-  AttackArc:
+  AttackCone:
     BaseValue: 5
   AttackRange:
     BaseValue: 6

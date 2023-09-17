@@ -47,13 +47,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+
         _heat = Globals.Heat;
         _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
 
         _heatSlider = HeatBar.GetComponent<Slider>();
         _heatFill = HeatBar.GetComponentInChildren<Image>();
         _hpSlider = HpBar.GetComponent<Slider>();
-        HpText.text = Mathf.RoundToInt(_stats.CurrentHealth).ToString();
         _hpSlider.maxValue = _stats.MaxHealth;
 
     }
@@ -81,53 +82,47 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void SetupWeaponIcons(GameObject[] weaponQueue)
+    public void SetupWeaponIcons(WeaponBase[] weaponQueue)
     {
         for (int i = 0; i < weaponQueue.Length; i++)
         {
-            var weapon = weaponQueue[i].GetComponent<WeaponBase>();
-            weapon.UIIcon = Instantiate(weapon.WeaponData.UIWeaponIcon);
-            weapon.UIIcon.GetComponent<Image>().sprite = weapon.WeaponData.UIWeaponSprite;
-            weapon.UIIcon.GetComponent<Image>().color = SlotColors[i];
-            weapon.UIIcon.name = weapon.name + "Icon";
-            weapon.UIIcon.transform.SetParent(MainCanvas.transform, false);
-            weapon.UIIcon.transform.SetAsFirstSibling();
-
-            var rect = weapon.UIIcon.GetComponent<RectTransform>();
-            rect.anchoredPosition = SlotPositions[i];
-            rect.sizeDelta = SlotSizes[i];
+            weaponQueue[i].UIImage.color = SlotColors[i];
+            weaponQueue[i].UIImage.transform.SetParent(MainCanvas.transform, false);
+            weaponQueue[i].UIObject.transform.SetAsFirstSibling();
+            weaponQueue[i].UIRect.anchoredPosition = SlotPositions[i];
+            weaponQueue[i].UIRect.sizeDelta = SlotSizes[i];
         }
     }
-    public void SwapAllAnim(GameObject[] weaponQueue)
+    public void SwapAllAnim(WeaponBase[] weaponQueue)
     {
         float animTime = 0.3f;
         for (int i = 0; i < weaponQueue.Length; i++)
         {
-            var icon = weaponQueue[i].GetComponent<WeaponBase>().UIIcon;
             var k = i - 1;
             if (k < 0)
                 k = weaponQueue.Length - 1;
-            icon.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[k], animTime, true);
-            icon.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[k], animTime, true);
-            icon.GetComponent<Image>().DOColor(SlotColors[k], animTime);
-            icon.transform.SetAsFirstSibling();
+
+            weaponQueue[i].UIRect.DOAnchorPos(SlotPositions[k], animTime, true);
+            weaponQueue[i].UIRect.DOSizeDelta(SlotSizes[k], animTime, true);
+            weaponQueue[i].UIImage.DOColor(SlotColors[k], animTime);
+            weaponQueue[i].UIObject.transform.SetAsFirstSibling();
         }
     }
 
-    public void Swap2Anim(int idxA, int idxB, GameObject[] weaponQueue)
+    public void Swap2Anim(int idxA, int idxB, WeaponBase[] weaponQueue)
     {
         float animTime = 0.3f;
 
-        var A = weaponQueue[idxA].GetComponent<WeaponBase>().UIIcon;
-        var B = weaponQueue[idxB].GetComponent<WeaponBase>().UIIcon;
+        var A = weaponQueue[idxA].UIObject;
+        var B = weaponQueue[idxB].UIObject;
 
-        A.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[idxA], animTime, true);
-        A.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[idxA], animTime, true);
-        A.GetComponent<Image>().DOColor(SlotColors[idxA], animTime);
+        weaponQueue[idxA].UIRect.DOAnchorPos(SlotPositions[idxA], animTime, true);
+        weaponQueue[idxA].UIRect.DOSizeDelta(SlotSizes[idxA], animTime, true);
+        weaponQueue[idxA].UIImage.DOColor(SlotColors[idxA], animTime);
 
-        B.GetComponent<RectTransform>().DOAnchorPos(SlotPositions[idxB], animTime, true);
-        B.GetComponent<RectTransform>().DOSizeDelta(SlotSizes[idxB], animTime, true);
-        B.GetComponent<Image>().DOColor(SlotColors[idxB], animTime);
+        weaponQueue[idxB].UIRect.DOAnchorPos(SlotPositions[idxB], animTime, true);
+        weaponQueue[idxB].UIRect.DOSizeDelta(SlotSizes[idxB], animTime, true);
+        weaponQueue[idxB].UIImage.DOColor(SlotColors[idxB], animTime);
 
         if (idxA > idxB)
         {

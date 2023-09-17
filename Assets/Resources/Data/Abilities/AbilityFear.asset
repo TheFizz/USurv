@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityName: Fear
   AbilityCooldown: 10
-  AbilityGraphics: {fileID: 3267284291621483931, guid: caacbe338ed6bd84fa8b5afe4ad23079, type: 3}
+  AbilityGraphics: {fileID: 3267284291621483931, guid: 16c1f25cb8851c7458ff86687a1f178f, type: 3}
   AbilityRange: 7
   TargetLayer:
     serializedVersion: 2

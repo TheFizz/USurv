@@ -14,7 +14,7 @@ public abstract class WeaponBaseSO : ScriptableObject
 
     public Stat AttacksPerSecond;
     public Stat AttackDamage;
-    public Stat AttackArc;
+    public Stat AttackCone;
     public Stat AttackRange;
 
     public float AttackSpeed { get => 1 / AttacksPerSecond.Value; }
