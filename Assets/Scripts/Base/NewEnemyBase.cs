@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class NewEnemyBase : MonoBehaviour
+public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 {
+    [field: SerializeField]  public EnemyBaseSO EnemyData { get; set; }
+    public float CurrentHealth { get; set; }
+    public float MaxHealth { get; set; }
 
-    [SerializeField] protected EnemyBaseSO _enemyData;
-    private float _maxHealth;
-    private float _currentHealth;
     private Rigidbody _RB;
     //private Renderer _renderer;
     private Color _baseColor;
@@ -23,11 +23,12 @@ public class NewEnemyBase : MonoBehaviour
     [SerializeField] private bool _invulnerable = false;
     [SerializeField] private bool _canMove = true;
 
+
     void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy");
-        _maxHealth = Random.Range(_enemyData.HealthMin, _enemyData.HealthMax);
-        _currentHealth = _maxHealth;
+        MaxHealth = Random.Range(EnemyData.HealthMin, EnemyData.HealthMax);
+        CurrentHealth = MaxHealth;
         _RB = GetComponent<Rigidbody>();
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _playerTransform = Globals.PlayerTransform;
@@ -78,7 +79,7 @@ public class NewEnemyBase : MonoBehaviour
     public void MoveTo(Vector3 target)
     {
         var direction = (target - transform.position).normalized;
-        _RB.velocity = direction * _enemyData.MoveSpeed;
+        _RB.velocity = direction * EnemyData.MoveSpeed;
 
         var targetLook = target;
         targetLook.y = transform.position.y;
@@ -86,17 +87,17 @@ public class NewEnemyBase : MonoBehaviour
     }
     protected void Attack()
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, _enemyData.AttackRange, LayerMask.GetMask("Player"));
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, EnemyData.AttackRange, LayerMask.GetMask("Player"));
         foreach (var hitEnemy in hitEnemies)
         {
             var enemy = hitEnemy.GetComponent<IDamageable>();
-            enemy.Damage(_enemyData.AttackDamage);
+            enemy.Damage(EnemyData.AttackDamage);
         }
     }
     public virtual void StartAttack()
     {
         _isAttacking = true;
-        InvokeRepeating("Attack", 1, _enemyData.AttackSpeed);
+        InvokeRepeating("Attack", 1, EnemyData.AttackSpeed);
     }
     public virtual void StopAttack()
     {
@@ -105,14 +106,14 @@ public class NewEnemyBase : MonoBehaviour
     }
     public void Damage(float damageAmount, bool overrideITime = false)
     {
-        Vector3 cameraAngle = Camera.main.transform.eulerAngles;
+        Vector3 cameraAngle = Globals.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
         damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount));
 
         if (!_invulnerable)
-            _currentHealth -= damageAmount;
-        if (_currentHealth <= 0f)
+            CurrentHealth -= damageAmount;
+        if (CurrentHealth <= 0f)
         {
             Die();
         }

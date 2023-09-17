@@ -4,10 +4,21 @@ using System.Collections.ObjectModel;
 
 namespace Kryz.CharacterStats
 {
+    public enum StatParam
+    {
+        AttackSpeed,
+        AttackDamage,
+        AttackCone,
+        AttackRange,
+        PlayerMoveSpeed,
+        PlayerMaxHealth
+    }
+
     [Serializable]
     public class Stat
     {
         public float BaseValue;
+        public StatParam Parameter;
 
         protected bool isDirty = true;
         protected float lastBaseValue;
@@ -36,9 +47,10 @@ namespace Kryz.CharacterStats
             StatModifiers = statModifiers.AsReadOnly();
         }
 
-        public Stat(float baseValue) : this()
+        public Stat(float baseValue, StatParam parameter) : this()
         {
             BaseValue = baseValue;
+            Parameter = parameter;
         }
 
         public virtual void AddModifier(StatModifier mod)
@@ -102,7 +114,7 @@ namespace Kryz.CharacterStats
                 }
                 else if (mod.Type == StatModType.PercentAdd)
                 {
-                    sumPercentAdd += mod.Value/100;
+                    sumPercentAdd += mod.Value / 100;
 
                     if (i + 1 >= statModifiers.Count || statModifiers[i + 1].Type != StatModType.PercentAdd)
                     {
@@ -112,7 +124,7 @@ namespace Kryz.CharacterStats
                 }
                 else if (mod.Type == StatModType.PercentMult)
                 {
-                    finalValue *= 1 + mod.Value/100;
+                    finalValue *= 1 + mod.Value / 100;
                 }
             }
 

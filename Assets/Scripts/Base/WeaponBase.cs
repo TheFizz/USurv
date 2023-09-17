@@ -17,9 +17,8 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected HeatSystem Heat;
     protected Transform Source;
-    //protected WeaponBaseSO WeaponDataModified;
 
-    private PlayerStats _stats;
+    private PlayerDamageHandler _pDamageHandler;
     private InputHandler _input;
     public float AbilityCooldown;
     public AbilityState AbilityState;
@@ -39,7 +38,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         _input = Globals.Input;
         _statModifierTracker = Globals.StatModTracker;
-        _stats = Globals.PlayerTransform.GetComponent<PlayerStats>();
+        _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
 
     }
     protected virtual void Update()
@@ -62,13 +61,14 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (Heat.GetHeatStatus() == HeatStatus.Overheated)
         {
-            _stats.Damage(WeaponData.AttackDamage.Value, true);
+            _pDamageHandler.Damage(WeaponData.AttackDamage.Value, true);
         }
         AlignAttackVector();
     }
     public virtual void StartAttack()
     {
-        ApplyModifiers(_statModifierTracker.LocalModifiers);
+        Source.rotation = Source.parent.rotation;
+        ApplyModifiers(_statModifierTracker.LocalModifiers); 
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
     public virtual void StopAttack()
@@ -82,7 +82,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (!WeaponData.AimAssist)
             return;
-        Ray ray = Camera.main.ScreenPointToRay(_input.MousePosition);
+        Ray ray = Globals.MainCamera.ScreenPointToRay(_input.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;
@@ -100,16 +100,16 @@ public abstract class WeaponBase : MonoBehaviour
         {
             switch (mod.Param)
             {
-                case StatModParam.AttackSpeed:
+                case StatParam.AttackSpeed:
                     WeaponData.AttacksPerSecond.AddModifier(mod);
                     break;
-                case StatModParam.AttackDamage:
+                case StatParam.AttackDamage:
                     WeaponData.AttackDamage.AddModifier(mod);
                     break;
-                case StatModParam.AttackCone:
+                case StatParam.AttackCone:
                     WeaponData.AttackCone.AddModifier(mod);
                     break;
-                case StatModParam.AttackRange:
+                case StatParam.AttackRange:
                     WeaponData.AttackRange.AddModifier(mod);
                     break;
                 default:

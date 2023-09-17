@@ -6,23 +6,15 @@ namespace Kryz.CharacterStats
         PercentAdd = 200,
         PercentMult = 300,
     }
-
-    public enum StatModParam
-    {
-        AttackSpeed,
-        AttackDamage,
-        AttackCone,
-        AttackRange
-    }
     public class StatModifier
     {
         public readonly float Value;
         public readonly StatModType Type;
-        public readonly StatModParam Param;
+        public readonly StatParam Param;
         public readonly int Order;
         public readonly object Source;
 
-        public StatModifier(float value, StatModType type, StatModParam param, int order, object source)
+        public StatModifier(float value, StatModType type, StatParam param, int order, object source)
         {
             Value = value;
             Type = type;
@@ -31,10 +23,10 @@ namespace Kryz.CharacterStats
             Source = source;
         }
 
-        public StatModifier(float value, StatModType type, StatModParam param) : this(value, type, param, (int)type, null) { }
+        public StatModifier(float value, StatModType type, StatParam param) : this(value, type, param, (int)type, null) { }
 
-        public StatModifier(float value, StatModType type, StatModParam param, int order) : this(value, type, param, order, null) { }
+        public StatModifier(float value, StatModType type, StatParam param, int order) : this(value, type, param, order, null) { }
 
-        public StatModifier(float value, StatModType type, StatModParam param, object source) : this(value, type, param, (int)type, source) { }
+        public StatModifier(float value, StatModType type, StatParam param, object source) : this(value, type, param, (int)type, source) { }
     }
 }

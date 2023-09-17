@@ -1,3 +1,4 @@
+using Kryz.CharacterStats;
 using RobinGoodfellow.CircleGenerator;
 using System;
 using System.Collections;
@@ -5,15 +6,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionController : MonoBehaviour
+public class PlayerSystems : MonoBehaviour
 {
+    public PlayerStatsSO Stats;
+
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
+    [SerializeField] private StatModifierTracker _statModifierTracker;
+    [SerializeField] private List<StatModifier> _globalMods = new List<StatModifier>();
 
     private InputHandler _input;
     private HeatSystem _heat;
-    private StatModifierTracker _statModifierTracker;
     private UIManager _uiManager;
+    public PlayerDamageHandler DmgHandler;
+    private PlayerMovementController _movementController;
+
+    private float _currentHealth;
+    private float _moveSpeed;
 
     public GameObject[] WeaponQueue = new GameObject[3];
     private WeaponBase[] _weapons = new WeaponBase[3];
@@ -21,10 +30,19 @@ public class ActionController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        _input = Globals.Input;
+        _currentHealth = Stats.GetStat(StatParam.PlayerMaxHealth).Value;
+        _moveSpeed = Stats.GetStat(StatParam.PlayerMoveSpeed).Value;
+
         _heat = Globals.Heat;
-        _statModifierTracker = Globals.StatModTracker;
+        _input = Globals.Input;
         _uiManager = Globals.UIManager;
+        _statModifierTracker = Globals.StatModTracker;
+
+        _movementController = Globals.PlayerTransform.GetComponent<PlayerMovementController>();
+        _movementController.SetMoveSpeed(_moveSpeed);
+
+        DmgHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
+        DmgHandler.SetMaxHealth(_currentHealth);
 
         for (int i = 0; i < WeaponQueue.Length; i++)
         {
@@ -38,6 +56,8 @@ public class ActionController : MonoBehaviour
     }
     private void Update()
     {
+        Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
+
         if (_input.SwapWeapon && _heat.CanSwap())
             SwapRotate();
 
@@ -48,9 +68,16 @@ public class ActionController : MonoBehaviour
             SwapSlots(1, 2);
 
         if (_input.UseAbility)
-            _weapons[0].UseAbility();
+            _weapons[2].UseAbility();
 
     }
+
+    public void PlayerDeath()
+    {
+
+    }
+
+    #region Weapons
     private void SetWeaponsSource()
     {
         foreach (var weapon in _weapons)
@@ -60,6 +87,7 @@ public class ActionController : MonoBehaviour
     }
     void ActivateTopWeapon(bool modAndStart = true)
     {
+        _attackSource = 
         if (modAndStart)
         {
             _weapons[0].ApplyModifiers(_weapons[1].WeaponModifiers);
@@ -98,4 +126,5 @@ public class ActionController : MonoBehaviour
 
         ActivateTopWeapon((idxA == 0 || idxB == 0));
     }
+    #endregion
 }

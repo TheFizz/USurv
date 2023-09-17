@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour, IDamageable
+public class PlayerDamageHandler : MonoBehaviour, IDamageable
 {
-    public float MaxHealth { get; set; } = 20;
+    private PlayerSystems _pSystems;
+    public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public Vector2 HealthRange { get; set; }
 
     private float _iTime = 1.5f;
     private bool _damageable = true;
-
-    private void Awake()
+    public void SetMaxHealth(float health)
     {
-        CurrentHealth = MaxHealth;
+        MaxHealth = health;
+        CurrentHealth = health;
     }
+
     public void Damage(float damageAmount, bool overrideITime = false)
     {
         if (!_damageable && !overrideITime)
@@ -28,7 +30,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        Destroy(gameObject);
+        _pSystems.PlayerDeath();
     }
 
     IEnumerator Invulnerability(float time)
