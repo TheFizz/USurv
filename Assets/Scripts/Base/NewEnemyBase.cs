@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 {
-    [field: SerializeField]  public EnemyBaseSO EnemyData { get; set; }
+    [field: SerializeField] public EnemyBaseSO EnemyData { get; set; }
+    [field: SerializeField] public GameObject DropOnDeath { get; set; }
     public float CurrentHealth { get; set; }
     public float MaxHealth { get; set; }
 
@@ -121,7 +122,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     public void Die()
     {
+        var pos = gameObject.transform.position;
         Destroy(gameObject);
+        Instantiate(DropOnDeath, pos, Quaternion.identity);
     }
     public void ReceiveAilment(string name, float time)
     {
@@ -138,7 +141,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             _target = (transform.forward * -1) * 100;
         }
     }
-
     IEnumerator ShowDamage()
     {
         // var tmpColor = _renderer.material.color;

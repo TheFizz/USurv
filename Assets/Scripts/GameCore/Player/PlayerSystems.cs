@@ -87,7 +87,6 @@ public class PlayerSystems : MonoBehaviour
     }
     void ActivateTopWeapon(bool modAndStart = true)
     {
-        _attackSource = 
         if (modAndStart)
         {
             _weapons[0].ApplyModifiers(_weapons[1].WeaponModifiers);

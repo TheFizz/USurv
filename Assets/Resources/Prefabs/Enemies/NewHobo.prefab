@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <EnemyData>k__BackingField: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
+  <DropOnDeath>k__BackingField: {fileID: 5176137056679947154, guid: da27fb88bc8319841b5a3eb563cc2194, type: 3}
   _damageTextAnchor: {fileID: 4543491228358258377}
   _invulnerable: 0
   _canMove: 1
