@@ -13,6 +13,7 @@ public class Globals : MonoBehaviour
     public static UIManager UIManager { get; private set; }
     public static StatModifierTracker StatModTracker { get; private set; }
     public static PlayerSystems PlayerSystems { get; private set; }
+    public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
     [field: SerializeField] public static Transform PlayerTransform { get; private set; }
     [SerializeField] public static Camera MainCamera { get; private set; }
     void Awake()
@@ -39,5 +40,12 @@ public class Globals : MonoBehaviour
         if (omitY)
             v3.y = 0;
         return Mathf.Max(Mathf.Max(v3.x, v3.y), v3.z);
+    }
+
+    public static string GenerateId()
+    {
+        int a = Random.Range(int.MinValue, int.MaxValue);
+        int b = Random.Range(int.MinValue, int.MaxValue);
+        return $"{a.ToString("x").ToUpperInvariant()}{b.ToString("x").ToUpperInvariant()}";
     }
 }

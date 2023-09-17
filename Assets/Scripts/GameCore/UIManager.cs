@@ -10,9 +10,16 @@ public class UIManager : MonoBehaviour
 {
 
     public GameObject HpBar;
+    public GameObject XpBar;
     public GameObject HeatBar;
+
     public TextMeshProUGUI HpText;
+    public TextMeshProUGUI LevelText;
     public TextMeshProUGUI SwapMode;
+
+    public TextMeshProUGUI CurXpText;
+    public TextMeshProUGUI MaxXpText;
+
     public Canvas MainCanvas;
 
     private HeatSystem _heat;
@@ -21,6 +28,7 @@ public class UIManager : MonoBehaviour
     private Image _heatFill;
     private Slider _hpSlider;
     private Slider _heatSlider;
+    private Slider _xpSlider;
 
     private Color _heatColorDefault = new Color32(252, 140, 3, 255);
     private Color _heatColorCooling = new Color32(47, 128, 204, 255);
@@ -51,11 +59,18 @@ public class UIManager : MonoBehaviour
         _heat = Globals.Heat;
         _pSystems = Globals.PlayerSystems;
         HpText.text = Mathf.RoundToInt(_pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value).ToString();
+        LevelText.text = "1";
 
         _heatSlider = HeatBar.GetComponent<Slider>();
         _heatFill = HeatBar.GetComponentInChildren<Image>();
+
         _hpSlider = HpBar.GetComponent<Slider>();
         _hpSlider.maxValue = _pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value;
+
+        _xpSlider = XpBar.GetComponent<Slider>();
+        _xpSlider.maxValue = _pSystems.Stats.XPThresholdBase;
+        MaxXpText.text = _pSystems.Stats.XPThresholdBase.ToString("0.00");
+
     }
     private void Update()
     {
@@ -80,6 +95,8 @@ public class UIManager : MonoBehaviour
         HpText.text = Mathf.RoundToInt(_pSystems.DmgHandler.CurrentHealth).ToString();
         SwapMode.text = Globals.Input.swapMode.ToString();
 
+        _xpSlider.value = _pSystems.CurrentXP;
+        CurXpText.text = _pSystems.CurrentXP.ToString("0.00");
     }
 
     public void SetupWeaponIcons(WeaponBase[] weaponQueue)
@@ -93,6 +110,14 @@ public class UIManager : MonoBehaviour
             weaponQueue[i].UIRect.sizeDelta = SlotSizes[i];
         }
     }
+
+    public void LevelUp(int level, float threshold)
+    {
+        LevelText.text = level.ToString();
+        _xpSlider.maxValue = threshold;
+        MaxXpText.text = threshold.ToString("0.00");
+    }
+
     public void SwapAllAnim(WeaponBase[] weaponQueue)
     {
         float animTime = 0.3f;

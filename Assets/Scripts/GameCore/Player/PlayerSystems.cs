@@ -27,11 +27,19 @@ public class PlayerSystems : MonoBehaviour
     public GameObject[] WeaponQueue = new GameObject[3];
     private WeaponBase[] _weapons = new WeaponBase[3];
 
+    private float _xpThreshold;
+    public float CurrentXP = 0;
+    private float _xpThresholdMultipltier;
+
+    public int _currentLevel = 1;
+
     // Start is called before the first frame update
     private void Awake()
     {
         _currentHealth = Stats.GetStat(StatParam.PlayerMaxHealth).Value;
         _moveSpeed = Stats.GetStat(StatParam.PlayerMoveSpeed).Value;
+        _xpThreshold = Stats.XPThresholdBase;
+        _xpThresholdMultipltier = Stats.XPThresholdMultiplier;
 
         _heat = Globals.Heat;
         _input = Globals.Input;
@@ -72,6 +80,18 @@ public class PlayerSystems : MonoBehaviour
 
     }
 
+    public void AddXP(float xpValue)
+    {
+        if (CurrentXP + xpValue < _xpThreshold)
+            CurrentXP += xpValue;
+        else
+        {
+            CurrentXP = xpValue - (_xpThreshold - CurrentXP);
+            _xpThreshold *= _xpThresholdMultipltier;
+            _currentLevel++;
+            _uiManager.LevelUp(_currentLevel, _xpThreshold);
+        }
+    }
     public void PlayerDeath()
     {
 

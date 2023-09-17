@@ -16,6 +16,8 @@ public class PlayerStatsSO : ScriptableObject
         new Stat(100,StatParam.PlayerMaxHealth),
         new Stat(7,StatParam.PlayerMoveSpeed)
     };
+    public float XPThresholdBase = 12;
+    public float XPThresholdMultiplier = 1.2f;
     public Stat GetStat(StatParam param)
     {
         return PlayerStats.FirstOrDefault<Stat>(x => x.Parameter == param);
