@@ -21,7 +21,9 @@ MonoBehaviour:
     Parameter: 1
   - BaseValue: 1
     Parameter: 2
-  - BaseValue: 100
+  - BaseValue: 60
     Parameter: 5
   - BaseValue: 7
     Parameter: 4
+  XPThresholdBase: 12
+  XPThresholdMultiplier: 1.2

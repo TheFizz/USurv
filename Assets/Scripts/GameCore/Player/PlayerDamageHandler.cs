@@ -23,23 +23,23 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
 
     public void Damage(float damageAmount, string attackerID, bool overrideITime = false)
     {
-        if (_recentAttackers.Contains(attackerID))
-            return;
-
-        if (_invulnerable && !overrideITime)
-            return;
-
-        CurrentHealth -= damageAmount;
-        if (CurrentHealth <= 0)
-            Die();
-
-        _recentAttackers.Add(attackerID);
-
         if (!overrideITime)
+        {
+            if (_recentAttackers.Contains(attackerID))
+                return;
+
+            if (_invulnerable)
+                return;
+            _recentAttackers.Add(attackerID);
             if (!_preInv)
             {
                 StartCoroutine(PreInv(_preInvDelay));
             }
+        }
+
+        CurrentHealth -= damageAmount;
+        if (CurrentHealth <= 0)
+            Die();
     }
 
     public void Die()

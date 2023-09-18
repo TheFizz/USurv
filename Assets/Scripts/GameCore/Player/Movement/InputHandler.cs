@@ -12,6 +12,7 @@ public class InputHandler : MonoBehaviour
 {
     public SwapMode swapMode = SwapMode.Rotate;
     public Vector3 MousePosition { get; set; }
+    private bool _inputEnabled = true;
 
     // Start is called before the first frame update
     public bool SwapWeapon = false;
@@ -44,6 +45,9 @@ public class InputHandler : MonoBehaviour
     }
     public void TickInput(float delta)
     {
+        if (!_inputEnabled)
+            return;
+
         MoveInput(delta);
         MousePosition = Input.mousePosition;
 
@@ -98,5 +102,9 @@ public class InputHandler : MonoBehaviour
         Horizontal = _movementInput.x;
         Vertical = _movementInput.y;
         _moveAmount = Mathf.Clamp01(Mathf.Abs(Horizontal) + Mathf.Abs(Vertical));
+    }
+    public void SetInputEnabled(bool enabled)
+    {
+        _inputEnabled = enabled;
     }
 }

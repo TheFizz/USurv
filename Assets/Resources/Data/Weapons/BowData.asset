@@ -19,16 +19,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Bow
-  AttacksPerSecond:
-    BaseValue: 1
-  AttackDamage:
-    BaseValue: 1
-  AttackCone:
-    BaseValue: 15
-  AttackRange:
-    BaseValue: 30
-  PierceCount:
-    BaseValue: 2
-  ProjectileSpeed:
-    BaseValue: 25
+  Stats:
+  - BaseValue: 1
+    Parameter: 0
+  - BaseValue: 1
+    Parameter: 1
+  - BaseValue: 15
+    Parameter: 2
+  - BaseValue: 30
+    Parameter: 3
+  - BaseValue: 2
+    Parameter: 6
+  - BaseValue: 25
+    Parameter: 7
   Projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}

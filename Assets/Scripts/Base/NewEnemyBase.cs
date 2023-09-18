@@ -19,6 +19,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     private Dictionary<string, float> _ailments = new Dictionary<string, float>();
     private bool _isAttacking;
     private GameObject _damageText;
+    private Renderer _renderer;
     [SerializeField]
     private Transform _damageTextAnchor;
     [SerializeField] private bool _invulnerable = false;
@@ -36,7 +37,8 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _RB = GetComponent<Rigidbody>();
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         _playerTransform = Globals.PlayerTransform;
-
+        _renderer = GetComponent<Renderer>();
+        _baseColor = _renderer.material.color;
         _id = Globals.GenerateId();
 
         var capsule = GetComponent<CapsuleCollider>();
@@ -70,7 +72,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
                 if (name == "fear")
                 {
-                    //_renderer.material.color = _baseColor;
+                    _renderer.material.color = _baseColor;
                 }
             }
             else
@@ -100,7 +102,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         {
             Die();
         }
-        //StartCoroutine(ShowDamage());
+        StartCoroutine(ShowDamage());
     }
     public void Die()
     {
@@ -120,16 +122,16 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
         if (name == "fear")
         {
-            //_renderer.material.color = Color.blue;
+            _renderer.material.color = Color.blue;
             _target = (transform.forward * -1) * 100;
         }
     }
     IEnumerator ShowDamage()
     {
-        // var tmpColor = _renderer.material.color;
-        // _renderer.material.color = Color.red;
+        var tmpColor = _renderer.material.color;
+        _renderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        // _renderer.material.color = tmpColor;
+        _renderer.material.color = tmpColor;
     }
 
     private void OnDrawGizmos()

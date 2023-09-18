@@ -1,14 +1,16 @@
-using Kryz.CharacterStats;
+
 using RobinGoodfellow.CircleGenerator;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
     public PlayerStatsSO Stats;
+    private int _perksPerLevel = 3;
 
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
@@ -89,8 +91,31 @@ public class PlayerSystems : MonoBehaviour
             CurrentXP = xpValue - (_xpThreshold - CurrentXP);
             _xpThreshold *= _xpThresholdMultipltier;
             _currentLevel++;
-            _uiManager.LevelUp(_currentLevel, _xpThreshold);
+            LevelUp();
         }
+    }
+    private void LevelUp()
+    {
+        List<StatModifier> perks = new List<StatModifier>();
+        for (int i = 0; i < _perksPerLevel; i++)
+        {
+            var idx = Random.Range(0, Globals.AvailablePerks.Count - 1);
+            var perk = Globals.AvailablePerks[idx];
+            perks.Add(perk);
+            Globals.AvailablePerks.RemoveAt(idx);
+        }
+        _uiManager.LevelUp(_currentLevel, _xpThreshold, perks);
+    }
+    public void AddGlobalMod(StatModifier mod)
+    {
+        _globalMods.Add(mod);
+        _uiManager.EndLevelup();
+
+        foreach (var wpn in _weapons)
+        {
+            wpn.ApplyModifiers(new List<StatModifier>() { mod });
+        }
+        _weapons[0].RestartAttack();
     }
     public void PlayerDeath()
     {
@@ -117,7 +142,7 @@ public class PlayerSystems : MonoBehaviour
     {
         _heat.StartCooldown();
         _weapons[0].StopAttack();
-        _weapons[0].ClearModifiers();
+        _weapons[0].ClearLocalModifiers();
         _uiManager.SwapAllAnim(_weapons);
 
         var first = _weapons[0];
@@ -135,7 +160,7 @@ public class PlayerSystems : MonoBehaviour
             _heat.StartCooldown();
             _weapons[0].StopAttack();
         }
-        _weapons[0].ClearModifiers();
+        _weapons[0].ClearLocalModifiers();
 
         var tmp = _weapons[idxA];
         _weapons[idxA] = _weapons[idxB];

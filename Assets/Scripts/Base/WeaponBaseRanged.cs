@@ -25,10 +25,10 @@ public abstract class WeaponBaseRanged : WeaponBase
         var movScript = projectile.GetComponent<ProjectileBehaviour>();
 
         movScript.Setup(
-            wd.ProjectileSpeed.Value,
-            Mathf.RoundToInt(wd.PierceCount.Value),
-            wd.AttackRange.Value,
-            wd.AttackDamage.Value,
+            wd.GetStat(StatParam.ProjectileSpeed).Value,
+            Mathf.RoundToInt(wd.GetStat(StatParam.PierceCount).Value),
+            wd.GetStat(StatParam.AttackRange).Value,
+            wd.GetStat(StatParam.AttackDamage).Value,
             Source.position
             );
 

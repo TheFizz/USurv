@@ -7,25 +7,23 @@ using UnityEngine;
 public abstract class WeaponBaseMelee : WeaponBase
 {
     [SerializeField] private GameObject _damageCone;
-    FillCircleGenerator cg;
 
 
     protected override void Awake()
     {
         base.Awake();
-        cg = _damageCone.GetComponentInChildren<FillCircleGenerator>();
     }
     protected override void Attack()
     {
         base.Attack();
-        cg.CircleData.Radius = WeaponData.AttackRange.Value;
-        cg.Generate();
+
+        bool hasHit = false;
 
         var forward = Source.forward;
-        var coneCos = Mathf.Cos((WeaponData.AttackCone.Value / 2) * Mathf.Deg2Rad);
+        var coneCos = Mathf.Cos((WeaponData.GetStat(StatParam.AttackCone).Value / 2) * Mathf.Deg2Rad);
         var sourceFloored = new Vector3(Source.position.x, 0, Source.position.z);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponData.AttackRange.Value, WeaponData.EnemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.EnemyLayer);
 
         foreach (var hitEnemy in hitEnemies)
         {
@@ -39,22 +37,23 @@ public abstract class WeaponBaseMelee : WeaponBase
             Vector3 dirSrcToEnemy = (enemyPosFloored - sourceFloored).normalized;
 
             var dot = Vector3.Dot(dirSrcToEnemy, forward);
-            var d = GetSectorCirclePoints(enemyPosFloored, realColRadius, sourceFloored, forward, WeaponData.AttackCone.Value, WeaponData.AttackRange.Value);
+            var d = GetSectorCirclePoints(enemyPosFloored, realColRadius, sourceFloored, forward, WeaponData.GetStat(StatParam.AttackCone).Value, WeaponData.GetStat(StatParam.AttackRange).Value);
 
             if (dot >= coneCos)
             {
-                Heat.AddHeat(1);
                 var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-                enemy.Damage(WeaponData.AttackDamage.Value);
+                enemy.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value);
+                hasHit = true;
             }
 
             else if (d.Count > 0)
             {
                 var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-                enemy.Damage(WeaponData.AttackDamage.Value);
+                enemy.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value);
+                hasHit = true;
             }
         }
-        if (hitEnemies.Length > 0)
+        if(hasHit)
             Heat.AddHeat(1);
         var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);
     }
@@ -124,6 +123,6 @@ public abstract class WeaponBaseMelee : WeaponBase
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(Source.position, WeaponData.AttackRange.Value);
+        Gizmos.DrawWireSphere(Source.position, WeaponData.GetStat(StatParam.AttackRange).Value);
     }
 }

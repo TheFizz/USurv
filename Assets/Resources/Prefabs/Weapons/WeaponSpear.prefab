@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIObject: {fileID: 0}
   UIImage: {fileID: 0}
-  UISlider: {fileID: 0}
+  UIOverlay: {fileID: 0}
   UIRect: {fileID: 0}
-  WeaponData: {fileID: 11400000, guid: a707a39f936a5f54faf182c83e8ca5c6, type: 2}
+  WeaponData: {fileID: 11400000, guid: 32602a865bc22394abad92cfd3957b63, type: 2}
   WeaponAbility: {fileID: 11400000, guid: 234db6df17523104fa0e1c6d9424f7e5, type: 2}
   AbilityCooldown: 0
   AbilityState: 0

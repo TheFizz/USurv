@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6436678607870192986}
   - component: {fileID: 6825787679465370556}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PerkText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: '+50%
 
-    Attack speed'
+    Attack Damage
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 5a61ba44c9ff077499df4959b36f1cef, type: 2}
@@ -223,8 +225,9 @@ GameObject:
   - component: {fileID: 5177520175296576606}
   - component: {fileID: 6782987158139478426}
   - component: {fileID: 8846741208373754315}
+  - component: {fileID: 2963223942159107923}
   m_Layer: 5
-  m_Name: SkillPanel
+  m_Name: PerkPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,10 +250,10 @@ RectTransform:
   - {fileID: 8715608101197044565}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 380}
+  m_SizeDelta: {x: 286.50012, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5177520175296576606
 CanvasRenderer:
@@ -316,6 +319,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2963223942159107923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953757533404286912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73751c7af8691f44a96ec39776f5af3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 4896147733297391011}
+  _perkText: {fileID: 6825787679465370556}
+  _buttonText: {fileID: 3657665540236779698}
+  _image: {fileID: 7893220540723639387}
 --- !u!1 &2178131327584167878
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,7 +468,7 @@ GameObject:
   - component: {fileID: 5927595783164262942}
   - component: {fileID: 3657665540236779698}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,4 +1,5 @@
-using Kryz.CharacterStats;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,9 @@ public abstract class WeaponBase : MonoBehaviour
     public float AbilityCooldown;
     public AbilityState AbilityState;
     protected StatModifierTracker _statModifierTracker;
+    private UIManager _ui;
+
+    private bool _isActive = false;
 
     protected virtual void Awake()
     {
@@ -40,11 +44,29 @@ public abstract class WeaponBase : MonoBehaviour
         _input = Globals.Input;
         _statModifierTracker = Globals.StatModTracker;
         _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
+        _ui = Globals.UIManager;
 
     }
     protected virtual void Update()
     {
         HandleAbilityCooldown();
+        if (_isActive)
+            ShowDebugText();
+    }
+
+    private void ShowDebugText()
+    {
+        string text = "";
+        foreach (var stat in WeaponData.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+
+                text += $"# {mod}\n";
+            }
+        }
+        _ui.WriteDebug(text);
     }
 
     public virtual void UseAbility()
@@ -62,19 +84,26 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (Heat.GetHeatStatus() == HeatStatus.Overheated)
         {
-            _pDamageHandler.Damage(WeaponData.AttackDamage.Value, WeaponData.WeaponName, true);
+            _pDamageHandler.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value, WeaponData.WeaponName, true);
         }
         AlignAttackVector();
     }
     public virtual void StartAttack()
     {
         Source.rotation = Source.parent.rotation;
-        ApplyModifiers(_statModifierTracker.LocalModifiers);
+        _isActive = true;
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
+
+    public virtual void RestartAttack()
+    {
+        CancelInvoke();
+        InvokeRepeating("Attack", 0, WeaponData.AttackSpeed);
+    }
+
     public virtual void StopAttack()
     {
-        ClearModifiers();
+        _isActive = false;
         CancelInvoke();
     }
 
@@ -99,34 +128,17 @@ public abstract class WeaponBase : MonoBehaviour
     {
         foreach (var mod in mods)
         {
-            switch (mod.Param)
-            {
-                case StatParam.AttackSpeed:
-                    WeaponData.AttacksPerSecond.AddModifier(mod);
-                    break;
-                case StatParam.AttackDamage:
-                    WeaponData.AttackDamage.AddModifier(mod);
-                    break;
-                case StatParam.AttackCone:
-                    WeaponData.AttackCone.AddModifier(mod);
-                    break;
-                case StatParam.AttackRange:
-                    WeaponData.AttackRange.AddModifier(mod);
-                    break;
-                default:
-                    break;
-            }
-
+            WeaponData.GetStat(mod.Param)?.AddModifier(mod);
+            Debug.Log($"Applied {mod} to {WeaponData.WeaponName}");
         }
-
     }
-    public virtual void ClearModifiers()
+    public virtual void ClearLocalModifiers()
     {
-        WeaponData.AttackCone.RemoveAllModifiers();
-        WeaponData.AttackDamage.RemoveAllModifiers();
-        WeaponData.AttackRange.RemoveAllModifiers();
-        WeaponData.AttacksPerSecond.RemoveAllModifiers();
-
+        foreach (var stat in WeaponData.Stats)
+        {
+            stat.RemoveAllModifiersFromSource("LOCAL");
+        }
+        Debug.Log($"Removed local mods from {WeaponData.WeaponName}");
     }
     private void HandleAbilityCooldown()
     {
@@ -152,4 +164,11 @@ public abstract class WeaponBase : MonoBehaviour
         Source = source;
     }
     #endregion
+    private void OnDestroy()
+    {
+        foreach (var stat in WeaponData.Stats)
+        {
+            stat.RemoveAllModifiers();
+        }
+    }
 }

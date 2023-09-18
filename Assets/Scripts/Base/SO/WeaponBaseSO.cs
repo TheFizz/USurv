@@ -1,4 +1,4 @@
-using Kryz.CharacterStats;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +12,11 @@ public abstract class WeaponBaseSO : ScriptableObject
     public LayerMask EnemyLayer;
     public string WeaponName;
 
-    public Stat AttacksPerSecond;
-    public Stat AttackDamage;
-    public Stat AttackCone;
-    public Stat AttackRange;
+    public List<Stat> Stats = new List<Stat>();
+    public float AttackSpeed { get => 1 / GetStat(StatParam.AttackSpeed).Value; }
 
-    public float AttackSpeed { get => 1 / AttacksPerSecond.Value; }
+    public Stat GetStat(StatParam param)
+    {
+        return Stats.Find(x => x.Parameter == param);
+    }
 }

@@ -4,15 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Kryz.CharacterStats;
+
 
 public class UIManager : MonoBehaviour
 {
+    private GameObject _levelupWindowInstance;
+    public GameObject LevelUpWindow;
 
     public GameObject HpBar;
     public GameObject XpBar;
     public GameObject HeatBar;
 
+    public TextMeshProUGUI DebugText;
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI LevelText;
     public TextMeshProUGUI SwapMode;
@@ -111,13 +114,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void LevelUp(int level, float threshold)
+    public void LevelUp(int level, float threshold, List<StatModifier> perks)
     {
+        Time.timeScale = 0;
+        Globals.Input.SetInputEnabled(false);
+
         LevelText.text = level.ToString();
         _xpSlider.maxValue = threshold;
         MaxXpText.text = threshold.ToString("0.00");
-    }
 
+        _levelupWindowInstance = Instantiate(LevelUpWindow, MainCanvas.transform);
+        var rect = _levelupWindowInstance.GetComponent<RectTransform>();
+        rect.anchoredPosition = new Vector2(0, Screen.height / 4);
+        var window = _levelupWindowInstance.GetComponent<LevelupModal>();
+        window.Show(perks);
+    }
+    public void EndLevelup()
+    {
+        Time.timeScale = 1;
+        Globals.Input.SetInputEnabled(true);
+
+        Destroy(_levelupWindowInstance);
+    }
     public void SwapAllAnim(WeaponBase[] weaponQueue)
     {
         float animTime = 0.3f;
@@ -158,5 +176,9 @@ public class UIManager : MonoBehaviour
             A.transform.SetAsFirstSibling();
             B.transform.SetAsFirstSibling();
         }
+    }
+    public void WriteDebug(string text)
+    {
+        DebugText.text = text;
     }
 }

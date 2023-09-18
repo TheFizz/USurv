@@ -8,15 +8,22 @@ public class Globals : MonoBehaviour
 
     [SerializeReference] private Transform _playerTransform;
     [SerializeReference] private Camera _mainCamera;
+    [SerializeReference] private UIManager _uiManager;
+    [SerializeReference] public List<Sprite> StatModIcons = new List<Sprite>();
+
+    public static List<Sprite> StatModIconsSt = new List<Sprite>();
     public static HeatSystem Heat { get; private set; }
     public static InputHandler Input { get; private set; }
-    public static UIManager UIManager { get; private set; }
     public static StatModifierTracker StatModTracker { get; private set; }
     public static PlayerSystems PlayerSystems { get; private set; }
     public static PlayerDamageHandler DmgHandler { get; private set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
-    [field: SerializeField] public static Transform PlayerTransform { get; private set; }
-    [SerializeField] public static Camera MainCamera { get; private set; }
+    public static UIManager UIManager { get; private set; }
+    public static Transform PlayerTransform { get; private set; }
+    public static Camera MainCamera { get; private set; }
+
+    public static List<StatModifier> AvailablePerks = new List<StatModifier>();
+
     void Awake()
     {
         if (me != null)
@@ -26,13 +33,16 @@ public class Globals : MonoBehaviour
         }
         PlayerTransform = _playerTransform;
         MainCamera = _mainCamera;
+        UIManager = _uiManager;
+        StatModIconsSt = StatModIcons;
 
         Heat = GetComponent<HeatSystem>();
         Input = GetComponent<InputHandler>();
-        UIManager = GetComponent<UIManager>();
         PlayerSystems = GetComponent<PlayerSystems>();
         DmgHandler = PlayerTransform.GetComponent<PlayerDamageHandler>();
         StatModTracker = GetComponent<StatModifierTracker>();
+
+        GeneratePerks();
 
         me = this;
     }
@@ -53,6 +63,20 @@ public class Globals : MonoBehaviour
     public static bool CompareLayers(int layer, LayerMask layerMask)
     {
         return (((1 << layer) & layerMask) == 1);
+    }
+    private void GeneratePerks()
+    {
+        foreach (StatModType modType in StatModType.GetValues(typeof(StatModType)))
+        {
+            if (modType == StatModType.Flat) continue;
+            foreach (StatParam param in StatParam.GetValues(typeof(StatParam)))
+            {
+                for (int i = 5; i < 30; i += 5)
+                {
+                    AvailablePerks.Add(new StatModifier(i, modType, param));
+                }
+            }
+        }
     }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
 }
