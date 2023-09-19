@@ -1381,7 +1381,7 @@ Transform:
   m_GameObject: {fileID: 776415898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1433,7 +1433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &831516732
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1963,7 +1963,7 @@ RectTransform:
   m_Father: {fileID: 831516732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2587,8 +2587,8 @@ GameObject:
   - component: {fileID: 1535774021}
   - component: {fileID: 1535774020}
   - component: {fileID: 1535774019}
-  - component: {fileID: 1535774017}
   - component: {fileID: 1535774023}
+  - component: {fileID: 1535774024}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -2596,18 +2596,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1535774017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535774016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c378f848cf882524e9d9e857d8d72d91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1535774019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2643,7 +2631,7 @@ MonoBehaviour:
   _cdMultiplierNormal: 1
   _cdMultiplierCooling: 4
   _heatMultiplier: 5
-  CanHeat: 1
+  CanHeat: 0
 --- !u!114 &1535774021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,7 +2686,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _attackSource: {fileID: 35940486}
-  _statModifierTracker: {fileID: 0}
   _globalMods: []
   DmgHandler: {fileID: 0}
   WeaponQueue:
@@ -2707,6 +2694,44 @@ MonoBehaviour:
   - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
   CurrentXP: 0
   _currentLevel: 1
+--- !u!114 &1535774024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535774016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17756bc5fe7abd64d96c0d92734878e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _swooshMat: {fileID: 2100000, guid: 4aef5991a9f46c4409b038cd3c2ecc73, type: 2}
+  _swooshTipMat: {fileID: 2100000, guid: 3d4e544de0a461642b3210a213763843, type: 2}
+  _swooshCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1569356502
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,6 @@ public abstract class WeaponBase : MonoBehaviour
     private InputHandler _input;
     public float AbilityCooldown;
     public AbilityState AbilityState;
-    protected StatModifierTracker _statModifierTracker;
     private UIManager _ui;
 
     private bool _isActive = false;
@@ -42,7 +41,6 @@ public abstract class WeaponBase : MonoBehaviour
         UIOverlay = overlayObj.GetComponentInChildren<Image>();
 
         _input = Globals.Input;
-        _statModifierTracker = Globals.StatModTracker;
         _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
         _ui = Globals.UIManager;
 

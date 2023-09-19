@@ -14,7 +14,6 @@ public class PlayerSystems : MonoBehaviour
 
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
-    [SerializeField] private StatModifierTracker _statModifierTracker;
     [SerializeField] private List<StatModifier> _globalMods = new List<StatModifier>();
 
     private InputHandler _input;
@@ -46,7 +45,6 @@ public class PlayerSystems : MonoBehaviour
         _heat = Globals.Heat;
         _input = Globals.Input;
         _uiManager = Globals.UIManager;
-        _statModifierTracker = Globals.StatModTracker;
 
         _movementController = Globals.PlayerTransform.GetComponent<PlayerMovementController>();
         _movementController.SetMoveSpeed(_moveSpeed);

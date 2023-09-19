@@ -8,42 +8,36 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 {
     [field: SerializeField] public EnemyBaseSO EnemyData { get; set; }
     [field: SerializeField] public GameObject DropOnDeath { get; set; }
-    public float CurrentHealth { get; set; }
-    public float MaxHealth { get; set; }
+    [HideInInspector] public float CurrentHealth { get; set; }
+    [HideInInspector] public float MaxHealth { get; set; }
 
-    private Rigidbody _RB;
-    //private Renderer _renderer;
-    private Color _baseColor;
-    private Transform _playerTransform;
-    private Vector3 _target;
-    private Dictionary<string, float> _ailments = new Dictionary<string, float>();
-    private bool _isAttacking;
-    private GameObject _damageText;
-    private Renderer _renderer;
-    [SerializeField]
-    private Transform _damageTextAnchor;
-    [SerializeField] private bool _invulnerable = false;
     [SerializeField] private bool _canMove = true;
-    private string _id;
+    [SerializeField] private bool _invulnerable = false;
+    [SerializeField] private Transform _damageTextAnchor;
 
-    private float colliderRadius;
+    private string _id;
+    private Rigidbody _RB;
+    private Vector3 _target;
+    private Color _baseColor;
+    private Renderer _renderer;
+    private GameObject _damageText;
+    private Transform _playerTransform;
+    private Dictionary<string, float> _ailments = new Dictionary<string, float>();
+
 
 
     void Awake()
     {
-        gameObject.layer = LayerMask.NameToLayer("Enemy");
+        gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
         MaxHealth = Random.Range(EnemyData.HealthMin, EnemyData.HealthMax);
         CurrentHealth = MaxHealth;
+
+        _id = Globals.GenerateId();
         _RB = GetComponent<Rigidbody>();
-        _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
-        _playerTransform = Globals.PlayerTransform;
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
-        _id = Globals.GenerateId();
-
-        var capsule = GetComponent<CapsuleCollider>();
-        var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
-        colliderRadius = capsule.radius * maxVectorValue;
+        _playerTransform = Globals.PlayerTransform;
+        _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
     }
     void Update()
     {
@@ -79,7 +73,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
                 _ailments[name] = t;
         }
     }
-
     public void MoveTo(Vector3 target)
     {
         var direction = (target - transform.position).normalized;
@@ -133,14 +126,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         yield return new WaitForSeconds(0.1f);
         _renderer.material.color = tmpColor;
     }
-
-    private void OnDrawGizmos()
-    {
-        var capsule = GetComponent<CapsuleCollider>();
-        var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
-        Gizmos.DrawWireSphere(transform.position, capsule.radius * maxVectorValue);
-    }
-
     private void OnCollisionStay(Collision collision)
     {
         if (!Globals.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))

@@ -8,7 +8,6 @@ using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
-    private GameObject _levelupWindowInstance;
     public GameObject LevelUpWindow;
 
     public GameObject HpBar;
@@ -30,8 +29,9 @@ public class UIManager : MonoBehaviour
 
     private Image _heatFill;
     private Slider _hpSlider;
-    private Slider _heatSlider;
     private Slider _xpSlider;
+    private Slider _heatSlider;
+    private GameObject _levelupWindowInstance;
 
     private Color _heatColorDefault = new Color32(252, 140, 3, 255);
     private Color _heatColorCooling = new Color32(47, 128, 204, 255);

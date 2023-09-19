@@ -14,14 +14,13 @@ public class Globals : MonoBehaviour
     public static List<Sprite> StatModIconsSt = new List<Sprite>();
     public static HeatSystem Heat { get; private set; }
     public static InputHandler Input { get; private set; }
-    public static StatModifierTracker StatModTracker { get; private set; }
     public static PlayerSystems PlayerSystems { get; private set; }
     public static PlayerDamageHandler DmgHandler { get; private set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
     public static UIManager UIManager { get; private set; }
     public static Transform PlayerTransform { get; private set; }
     public static Camera MainCamera { get; private set; }
-
+    public static Swoosher Swoosher { get; private set; }
     public static List<StatModifier> AvailablePerks = new List<StatModifier>();
 
     void Awake()
@@ -40,7 +39,7 @@ public class Globals : MonoBehaviour
         Input = GetComponent<InputHandler>();
         PlayerSystems = GetComponent<PlayerSystems>();
         DmgHandler = PlayerTransform.GetComponent<PlayerDamageHandler>();
-        StatModTracker = GetComponent<StatModifierTracker>();
+        Swoosher = GetComponent<Swoosher>();
 
         GeneratePerks();
 

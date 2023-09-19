@@ -1,3 +1,4 @@
+using DG.Tweening;
 using RobinGoodfellow.CircleGenerator;
 using System;
 using System.Collections;
@@ -7,7 +8,6 @@ using UnityEngine;
 public abstract class WeaponBaseMelee : WeaponBase
 {
     [SerializeField] private GameObject _damageCone;
-
 
     protected override void Awake()
     {
@@ -53,12 +53,23 @@ public abstract class WeaponBaseMelee : WeaponBase
                 hasHit = true;
             }
         }
-        if(hasHit)
+        if (hasHit)
             Heat.AddHeat(1);
-        var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);
+        ShowGraphics();
     }
 
-    List<Vector3> GetSectorCirclePoints(Vector3 enemyPos, float enemyRadius, Vector3 sourcePos, Vector3 forward, float angle, float distance)
+    private void ShowGraphics()
+    {
+        var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);
+        /*
+        var coneSize = WeaponData.GetStat(StatParam.AttackCone).Value;
+        var range = WeaponData.GetStat(StatParam.AttackRange).Value;
+        var swoosher = Globals.Swoosher.BuildSwoosher(Globals.PlayerTransform, Source, range, coneSize);
+        swoosher.transform.DOLocalRotate(new Vector3(0, coneSize / 2, 0), WeaponData.AttackSpeed).SetEase(Ease.Linear).SetAutoKill(true).OnComplete(()=>Destroy(swoosher));
+        */
+    }
+
+    private List<Vector3> GetSectorCirclePoints(Vector3 enemyPos, float enemyRadius, Vector3 sourcePos, Vector3 forward, float angle, float distance)
     {
 
         Vector3 sectorStart = Quaternion.Euler(0, -angle / 2, 0) * forward * angle + sourcePos;
@@ -72,7 +83,7 @@ public abstract class WeaponBaseMelee : WeaponBase
         points.AddRange(endLinePoints);
         return points;
     }
-    public List<Vector3> GetCircleLineIntersections(Vector3 P1, float R1, Vector3 lineStart, Vector3 lineEnd, float distance)
+    private List<Vector3> GetCircleLineIntersections(Vector3 P1, float R1, Vector3 lineStart, Vector3 lineEnd, float distance)
     {
         Vector3 intersection1 = Vector3.zero;
         Vector3 intersection2 = Vector3.zero;
