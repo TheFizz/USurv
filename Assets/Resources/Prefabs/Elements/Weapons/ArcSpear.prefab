@@ -143,8 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _circleData:
-    _radius: 6
-    _completion: 5
-    _angle: 357.5
+    _radius: 7
+    _completion: 20
+    _angle: 350
     _polygonQuantity: 36
     _keepPolygonQuantityConsistent: 1

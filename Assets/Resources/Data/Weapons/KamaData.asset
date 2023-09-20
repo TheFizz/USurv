@@ -38,5 +38,83 @@ MonoBehaviour:
     Param: 2
     Source: LOCAL
   UpgradePath:
-  - {fileID: 11400000, guid: 1374a3ddc2caac74c810b65bc2798014, type: 2}
-  - {fileID: 11400000, guid: aa5e8147387b535408a7936db1fea53d, type: 2}
+  - UpgradeNumber: 1
+    SelfStatMods:
+    - Value: 6
+      Type: 100
+      Param: 1
+      Source: SELF
+    PassiveStatMods:
+    - Value: 15
+      Type: 200
+      Param: 2
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 2
+    SelfStatMods:
+    - Value: 30
+      Type: 200
+      Param: 2
+      Source: SELF
+    PassiveStatMods:
+    - Value: 15
+      Type: 200
+      Param: 2
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 3
+    SelfStatMods:
+    - Value: 30
+      Type: 200
+      Param: 0
+      Source: SELF
+    PassiveStatMods:
+    - Value: 15
+      Type: 100
+      Param: 1
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 4
+    SelfStatMods:
+    - Value: 9
+      Type: 100
+      Param: 1
+      Source: SELF
+    PassiveStatMods:
+    - Value: 15
+      Type: 200
+      Param: 2
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 5
+    SelfStatMods:
+    - Value: 60
+      Type: 100
+      Param: 2
+      Source: SELF
+    PassiveStatMods:
+    - Value: 15
+      Type: 200
+      Param: 2
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF

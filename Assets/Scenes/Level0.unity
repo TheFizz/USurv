@@ -994,7 +994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &647529260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2657,6 +2657,7 @@ GameObject:
   - component: {fileID: 1535774020}
   - component: {fileID: 1535774019}
   - component: {fileID: 1535774023}
+  - component: {fileID: 1535774024}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -2760,6 +2761,19 @@ MonoBehaviour:
   - {fileID: 6976108617930502473, guid: 9fef99c1df6dfab45a48ad27543bfe73, type: 3}
   - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
   CurrentXP: 0
+--- !u!114 &1535774024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535774016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b9a0c3030063947a5f84fdd8744e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  a: {fileID: 2100000, guid: fa853c2a636985647b45b38972583b5a, type: 2}
 --- !u!1 &1569356502
 GameObject:
   m_ObjectHideFlags: 0

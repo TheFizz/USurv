@@ -1,16 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public AnimationCurve HpCurve;
+    public AnimationCurve HpDevCurve;
+    private float _baseHp = 6f;
+    private float _curveResolution = 120f;
+    private float _curveMultiplier = 1;
+    private float _time;
     public GameObject _enemyPrefab;
     public GameObject _player;
     [SerializeField] private float _secondsToSpawn = 0.5f;
     [SerializeField] private int _spawnLimit = 200;
     List<GameObject> _spawnedEnemies = new List<GameObject>();
 
-    // Start is called before the first frame update
+    public TextMeshProUGUI debug;
+
+    private void Update()
+    {
+        _time += Time.deltaTime;
+        if (_time > _curveResolution)
+        {
+            _curveMultiplier++;
+            _time = 0;
+        }
+    }
+
     void Start()
     {
         InvokeRepeating("Spawn", 1, _secondsToSpawn);
@@ -45,6 +63,23 @@ public class Spawner : MonoBehaviour
             attempts--;
         }
         if (pointFound)
-            _spawnedEnemies.Add(GameObject.Instantiate(_enemyPrefab, spawnPoint, Quaternion.identity, gameObject.transform));
+        {
+            var go = Instantiate(_enemyPrefab, spawnPoint, Quaternion.identity, gameObject.transform);
+            var enemy = go.GetComponent<NewEnemyBase>();
+            var hpVal = _curveMultiplier + (HpCurve.Evaluate(_time) * _curveMultiplier);
+            var hpDev = HpDevCurve.Evaluate(_time);
+
+            if (_curveMultiplier % 3 == 0)
+                hpDev *= _curveMultiplier / 3;
+
+            var min = _baseHp + (hpVal - hpDev);
+            var max = _baseHp + (hpVal + hpDev);
+            enemy.SetHp(min, max);
+            _spawnedEnemies.Add(go);
+
+            debug.text = $"HpVal: {hpVal}\n";
+            debug.text += $"HpDev: {hpDev}\n";
+            debug.text += $"Mult: {_curveMultiplier}\n";
+        }
     }
 }

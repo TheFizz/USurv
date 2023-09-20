@@ -41,4 +41,85 @@ MonoBehaviour:
     Type: 200
     Param: 3
     Source: LOCAL
+  UpgradePath:
+  - UpgradeNumber: 1
+    SelfStatMods:
+    - Value: 6
+      Type: 100
+      Param: 1
+      Source: SELF
+    PassiveStatMods:
+    - Value: 10
+      Type: 200
+      Param: 3
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 2
+    SelfStatMods:
+    - Value: 30
+      Type: 200
+      Param: 2
+      Source: SELF
+    PassiveStatMods:
+    - Value: 10
+      Type: 200
+      Param: 3
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 3
+    SelfStatMods:
+    - Value: 20
+      Type: 200
+      Param: 0
+      Source: SELF
+    PassiveStatMods:
+    - Value: 10
+      Type: 200
+      Param: 3
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 4
+    SelfStatMods:
+    - Value: 8
+      Type: 100
+      Param: 1
+      Source: SELF
+    PassiveStatMods:
+    - Value: 10
+      Type: 200
+      Param: 3
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
+  - UpgradeNumber: 5
+    SelfStatMods:
+    - Value: 3
+      Type: 100
+      Param: 6
+      Source: SELF
+    PassiveStatMods:
+    - Value: 10
+      Type: 200
+      Param: 3
+      Source: SELF
+    AbilityStatMods:
+    - Value: 20
+      Type: 200
+      Param: 10
+      Source: SELF
   Projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}

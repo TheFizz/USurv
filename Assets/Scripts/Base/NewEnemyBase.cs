@@ -29,9 +29,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
-        MaxHealth = Random.Range(EnemyData.HealthMin, EnemyData.HealthMax);
-        CurrentHealth = MaxHealth;
-
         _id = Globals.GenerateId();
         _RB = GetComponent<Rigidbody>();
         _baseSpeed = EnemyData.MoveSpeed;
@@ -54,6 +51,11 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
                 MoveTo(_target);
     }
 
+    public void SetHp(float min, float max)
+    {
+        MaxHealth = Random.Range(min, max);
+        CurrentHealth = MaxHealth;
+    }
     private void HandleAilments()
     {
         foreach (AilmentType type in AilmentType.GetValues(typeof(AilmentType)))

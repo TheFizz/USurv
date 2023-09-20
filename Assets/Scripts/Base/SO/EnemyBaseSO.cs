@@ -6,8 +6,6 @@ using UnityEngine;
 public abstract class EnemyBaseSO : ScriptableObject
 {
     [Header("Base Fields")]
-    public float HealthMin;
-    public float HealthMax;
     public float MoveSpeed;
 
     public float AttackSpeed;
