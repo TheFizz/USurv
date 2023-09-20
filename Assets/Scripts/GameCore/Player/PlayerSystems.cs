@@ -59,6 +59,10 @@ public class PlayerSystems : MonoBehaviour
     }
     private void Update()
     {
+
+        if (Input.GetKeyDown("k"))
+            _weapons[2].UpgradeToLevel(_weapons[2].WeaponLevel + 1);
+
         Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
 
         if (_input.SwapWeapon && _heat.CanSwap())

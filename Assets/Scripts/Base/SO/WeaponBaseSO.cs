@@ -14,7 +14,8 @@ public abstract class WeaponBaseSO : ScriptableObject
 
     public List<Stat> Stats = new List<Stat>();
     public List<StatModifier> PassiveModifiers = new List<StatModifier>();
-    [SerializeField] public List<WeaponUpgradeSO> UpgradePath;
+    //[SerializeField] public List<WeaponUpgradeSO> UpgradePath;
+    [SerializeField] public List<WeaponUpgrade> UpgradePath;
     public float AttackSpeed { get => 1 / GetStat(StatParam.AttackSpeed).Value; }
 
     public Stat GetStat(StatParam param)
