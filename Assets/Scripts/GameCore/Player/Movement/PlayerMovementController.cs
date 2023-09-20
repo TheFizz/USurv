@@ -49,7 +49,6 @@ public class PlayerMovementController : MonoBehaviour
 
         var speed = _pSystems.PlayerStats.GetStat(StatParam.PlayerMoveSpeed).Value;
         moveDirection *= speed;
-        debugSpeedText.text = speed.ToString();
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);
         _RB.velocity = projectedVelocity;
