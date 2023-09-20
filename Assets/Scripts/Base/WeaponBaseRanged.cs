@@ -21,6 +21,8 @@ public abstract class WeaponBaseRanged : WeaponBase
         }
 
         WeaponRangedSO wd = (WeaponRangedSO)WeaponData;
+
+
         var projectile = (GameObject)Instantiate(wd.Projectile, Source.position, Source.rotation);
         var movScript = projectile.GetComponent<ProjectileBehaviour>();
 
@@ -28,7 +30,9 @@ public abstract class WeaponBaseRanged : WeaponBase
             wd.GetStat(StatParam.ProjectileSpeed).Value,
             Mathf.RoundToInt(wd.GetStat(StatParam.PierceCount).Value),
             wd.GetStat(StatParam.AttackRange).Value,
-            wd.GetStat(StatParam.AttackDamage).Value,
+            WeaponData.GetStat(StatParam.AttackDamage).Value,
+            WeaponData.GetStat(StatParam.CritChance).Value,
+            WeaponData.GetStat(StatParam.CritMultiplierPerc).Value,
             Source.position
             );
 

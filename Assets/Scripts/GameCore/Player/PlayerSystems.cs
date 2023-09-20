@@ -77,7 +77,10 @@ public class PlayerSystems : MonoBehaviour
 
         if (_input.UseAbility)
             _weapons[2].UseAbility();
-
+        if (Input.GetKeyDown("k"))
+            _weapons[2].UpgradeToLevel(1);
+        if (Input.GetKeyDown("l"))
+            _weapons[2].UpgradeToLevel(2);
     }
 
     public void AddXP(float xpValue)
@@ -132,7 +135,7 @@ public class PlayerSystems : MonoBehaviour
     {
         if (modAndStart)
         {
-            _weapons[0].ApplyModifiers(_weapons[1].WeaponModifiers);
+            _weapons[0].ApplyModifiers(_weapons[1].WeaponData.PassiveModifiers);
             _weapons[0].StartAttack();
         }
     }

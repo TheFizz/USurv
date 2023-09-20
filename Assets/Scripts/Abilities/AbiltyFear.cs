@@ -5,10 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AbilityFear", menuName = "Abilities/Fear")]
 public class AbiltyFear : AbilityBase
 {
-    public GameObject AbilityGraphics;
-    public float AbilityRange;
-    public LayerMask TargetLayer;
-
     public override void Use(Transform source)
     {
         var sourceFloored = source.position;
@@ -16,11 +12,11 @@ public class AbiltyFear : AbilityBase
 
         Instantiate(AbilityGraphics, source.position, Quaternion.identity);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, AbilityRange, TargetLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, Stats.Find(x=>x.Parameter==StatParam.AbilityRange).Value, TargetLayer);
         foreach (var hitEnemy in hitEnemies)
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-            enemy.ReceiveAilment("fear", 3);
+            enemy.ReceiveAilment(AilmentType.Fear, 3);
         }
     }
 }

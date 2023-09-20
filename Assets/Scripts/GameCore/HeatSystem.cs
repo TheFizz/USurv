@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HeatStatus
-{
-    Default,
-    Cooling,
-    Overheated
-}
+
 
 public class HeatSystem : MonoBehaviour
 {

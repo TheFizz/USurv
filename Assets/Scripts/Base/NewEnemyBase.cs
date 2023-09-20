@@ -22,9 +22,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     private Renderer _renderer;
     private GameObject _damageText;
     private Transform _playerTransform;
-    private Dictionary<string, float> _ailments = new Dictionary<string, float>();
+    private Dictionary<AilmentType, Tuple<float, float>> _ailments = new Dictionary<AilmentType, Tuple<float, float>>();
 
-
+    private float _baseSpeed;
 
     void Awake()
     {
@@ -34,6 +34,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
         _id = Globals.GenerateId();
         _RB = GetComponent<Rigidbody>();
+        _baseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
         _playerTransform = Globals.PlayerTransform;
@@ -44,7 +45,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         HandleAilments();
 
         var distanceToPlayer = Vector3.Distance(transform.position, _target);
-        if (!_ailments.ContainsKey("fear"))
+        if (!_ailments.ContainsKey(AilmentType.Fear) && !_ailments.ContainsKey(AilmentType.Knockback))
         {
             _target = _playerTransform.position;
         }
@@ -55,22 +56,24 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
     private void HandleAilments()
     {
-        List<string> ailmentNames = new List<string>(_ailments.Keys);
-        foreach (var name in ailmentNames)
+        foreach (AilmentType type in AilmentType.GetValues(typeof(AilmentType)))
         {
-            var t = _ailments[name];
-            t -= Time.deltaTime;
-            if (t <= 0)
+            if (_ailments.ContainsKey(type))
             {
-                _ailments.Remove(name);
-
-                if (name == "fear")
+                var ailment = _ailments[type];
+                var tuple = new Tuple<float, float>(ailment.Item1 - Time.deltaTime, ailment.Item2);
+                if (ailment.Item1 <= 0)
                 {
-                    _renderer.material.color = _baseColor;
+                    _ailments.Remove(type);
+
+                    if (type == AilmentType.Fear)
+                    {
+                        _renderer.material.color = _baseColor;
+                    }
                 }
+                else
+                    _ailments[type] = tuple;
             }
-            else
-                _ailments[name] = t;
         }
     }
     public void MoveTo(Vector3 target)
@@ -78,16 +81,20 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var direction = (target - transform.position).normalized;
         _RB.velocity = direction * EnemyData.MoveSpeed;
 
+        if (_ailments.ContainsKey(AilmentType.Knockback))
+            return;
         var targetLook = target;
         targetLook.y = transform.position.y;
         transform.LookAt(targetLook);
     }
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, bool isCrit)
     {
         Vector3 cameraAngle = Globals.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
-        damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount));
+
+
+        damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount), isCrit);
 
         if (!_invulnerable)
             CurrentHealth -= damageAmount;
@@ -104,19 +111,27 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         Destroy(gameObject);
         Instantiate(DropOnDeath, pos, Quaternion.identity);
     }
-    public void ReceiveAilment(string name, float time)
+    public void ReceiveAilment(AilmentType type, float time, float force = 0)
     {
-        if (_ailments.ContainsKey(name))
-            _ailments[name] += time;
+        if (_ailments.ContainsKey(type))
+        {
+            var t = _ailments[type];
+            _ailments[type] = new Tuple<float, float>(t.Item1 + time, t.Item2);
+        }
         else
         {
-            _ailments.Add(name, time);
+            _ailments.Add(type, new Tuple<float, float>(time, force));
         }
 
-        if (name == "fear")
+        if (type == AilmentType.Fear)
         {
             _renderer.material.color = Color.blue;
             _target = (transform.forward * -1) * 100;
+        }
+        if (type == AilmentType.Knockback)
+        {
+            //_renderer.material.color = Color.blue;
+            //_target = (_playerTransform.position - transform.position).normalized;
         }
     }
     IEnumerator ShowDamage()

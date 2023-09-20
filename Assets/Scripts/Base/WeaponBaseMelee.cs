@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class WeaponBaseMelee : WeaponBase
 {
@@ -25,6 +26,7 @@ public abstract class WeaponBaseMelee : WeaponBase
 
         Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.EnemyLayer);
 
+        List<NewEnemyBase> dmgEnemies = new List<NewEnemyBase>();
         foreach (var hitEnemy in hitEnemies)
         {
             var capsule = ((CapsuleCollider)hitEnemy);
@@ -41,23 +43,39 @@ public abstract class WeaponBaseMelee : WeaponBase
 
             if (dot >= coneCos)
             {
-                var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-                enemy.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value);
+                dmgEnemies.Add(hitEnemy.GetComponent<NewEnemyBase>());
                 hasHit = true;
             }
 
             else if (d.Count > 0)
             {
-                var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-                enemy.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value);
+                dmgEnemies.Add(hitEnemy.GetComponent<NewEnemyBase>());
                 hasHit = true;
             }
         }
+        DamageAll(dmgEnemies);
         if (hasHit)
             Heat.AddHeat(1);
         ShowGraphics();
     }
 
+    private void DamageAll(List<NewEnemyBase> enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+            bool isCrit = false;
+            int roll = Random.Range(0, 100);
+            float chance = WeaponData.GetStat(StatParam.CritChance).Value;
+            float dmg = WeaponData.GetStat(StatParam.AttackDamage).Value;
+            if (roll < chance)
+            {
+                dmg *= (WeaponData.GetStat(StatParam.CritMultiplierPerc).Value + Globals.BaseCritMultiplierPerc) / 100;
+                isCrit = true;
+            }
+            enemy.Damage(dmg, isCrit);
+        }
+
+    }
     private void ShowGraphics()
     {
         var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);

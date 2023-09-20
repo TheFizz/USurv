@@ -2,11 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SwapMode
-{
-    Rotate,
-    TwoKey
-}
 
 public class InputHandler : MonoBehaviour
 {

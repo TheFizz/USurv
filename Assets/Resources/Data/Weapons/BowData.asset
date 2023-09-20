@@ -32,4 +32,13 @@ MonoBehaviour:
     Parameter: 6
   - BaseValue: 25
     Parameter: 7
+  - BaseValue: 0
+    Parameter: 8
+  - BaseValue: 0
+    Parameter: 9
+  PassiveModifiers:
+  - Value: 15
+    Type: 200
+    Param: 3
+    Source: LOCAL
   Projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}

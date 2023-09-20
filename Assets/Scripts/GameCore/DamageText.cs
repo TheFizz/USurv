@@ -12,10 +12,12 @@ public class DamageText : MonoBehaviour
     private float _fadeOffset = .2f;
     private float _ttlOriginal;
     private int _damage;
+    private bool _isCrit;
     private TextMeshPro _textMesh;
-    public void Setup(int damage)
+    public void Setup(int damage, bool isCrit)
     {
         _damage = damage;
+        _isCrit = isCrit;
     }
     void Awake()
     {
@@ -27,6 +29,8 @@ public class DamageText : MonoBehaviour
     private void Start()
     {
         _textMesh.text = _damage.ToString();
+        if (_isCrit)
+            _textMesh.text += "!";
     }
     // Update is called once per frame
     void Update()

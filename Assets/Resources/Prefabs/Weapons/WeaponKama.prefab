@@ -44,12 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc46c2731d523e42822b5529c1e9de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultWeaponData: {fileID: 11400000, guid: c793e745650d9f445b833e421462bd47, type: 2}
+  _defaultWeaponAbility: {fileID: 11400000, guid: 6f1d316435d0c0c4e8429e3426e7bb84, type: 2}
+  WeaponData: {fileID: 11400000, guid: c793e745650d9f445b833e421462bd47, type: 2}
+  WeaponAbility: {fileID: 11400000, guid: 6f1d316435d0c0c4e8429e3426e7bb84, type: 2}
   UIObject: {fileID: 0}
   UIImage: {fileID: 0}
   UIOverlay: {fileID: 0}
   UIRect: {fileID: 0}
-  WeaponData: {fileID: 11400000, guid: c793e745650d9f445b833e421462bd47, type: 2}
-  WeaponAbility: {fileID: 11400000, guid: 6f1d316435d0c0c4e8429e3426e7bb84, type: 2}
   AbilityCooldown: 0
   AbilityState: 0
   _damageCone: {fileID: 4914937731850679169, guid: 3bbdda60efd76024a903d454f5aad361, type: 3}

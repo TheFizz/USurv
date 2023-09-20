@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public enum StatModType
+{
+    Flat = 100,
+    PercentAdd = 200,
+    PercentMult = 300,
+}
+
+public enum StatParam
+{
+    AttackSpeed = 0,
+    AttackDamage = 1,
+    AttackCone = 2,
+    AttackRange = 3,
+    PlayerMoveSpeed = 4,
+    PlayerMaxHealth = 5,
+    PierceCount = 6,
+    ProjectileSpeed = 7,
+    CritChance = 8,
+    CritMultiplierPerc = 9,
+    AbilityPower = 10,
+    AbilityRange = 11
+}
+
+public enum AilmentType
+{
+    Fear,
+    Knockback
+}
+
+public enum AbilityState
+{
+    Ready,
+    Cooldown
+}
+public enum HeatStatus
+{
+    Default,
+    Cooling,
+    Overheated
+}
+
+public enum SwapMode
+{
+    Rotate,
+    TwoKey
+}

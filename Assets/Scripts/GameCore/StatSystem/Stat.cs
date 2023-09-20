@@ -2,17 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public enum StatParam
-{
-    AttackSpeed=0,
-    AttackDamage=1,
-    AttackCone=2,
-    AttackRange=3,
-    PlayerMoveSpeed=4,
-    PlayerMaxHealth=5,
-    PierceCount = 6,
-    ProjectileSpeed = 7
-}
 
 [Serializable]
 public class Stat
@@ -68,7 +57,7 @@ public class Stat
         }
         return false;
     }
-    public virtual bool RemoveAllModifiersFromSource(object source)
+    public virtual bool RemoveAllModifiersFromSource(string source)
     {
         int numRemovals = statModifiers.RemoveAll(mod => mod.Source == source);
 
@@ -78,6 +67,11 @@ public class Stat
             return true;
         }
         return false;
+    }
+
+    public virtual List<StatModifier> GetStatModifiersFromSource(string source)
+    {
+        return statModifiers.FindAll(mod => mod.Source == source);
     }
 
     public virtual bool RemoveAllModifiers()

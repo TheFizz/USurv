@@ -28,3 +28,15 @@ MonoBehaviour:
     Parameter: 2
   - BaseValue: 3
     Parameter: 3
+  - BaseValue: 0
+    Parameter: 8
+  - BaseValue: 0
+    Parameter: 9
+  PassiveModifiers:
+  - Value: 15
+    Type: 200
+    Param: 2
+    Source: LOCAL
+  UpgradePath:
+  - {fileID: 11400000, guid: 1374a3ddc2caac74c810b65bc2798014, type: 2}
+  - {fileID: 11400000, guid: aa5e8147387b535408a7936db1fea53d, type: 2}

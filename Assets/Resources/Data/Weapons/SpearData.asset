@@ -28,3 +28,12 @@ MonoBehaviour:
     Parameter: 2
   - BaseValue: 6
     Parameter: 3
+  - BaseValue: 5
+    Parameter: 8
+  - BaseValue: 0
+    Parameter: 9
+  PassiveModifiers:
+  - Value: 15
+    Type: 100
+    Param: 8
+    Source: LOCAL

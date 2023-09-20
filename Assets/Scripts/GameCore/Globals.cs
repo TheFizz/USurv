@@ -21,6 +21,8 @@ public class Globals : MonoBehaviour
     public static Transform PlayerTransform { get; private set; }
     public static Camera MainCamera { get; private set; }
     public static Swoosher Swoosher { get; private set; }
+
+    public static float BaseCritMultiplierPerc = 200f;
     public static List<StatModifier> AvailablePerks = new List<StatModifier>();
 
     void Awake()
@@ -72,7 +74,7 @@ public class Globals : MonoBehaviour
             {
                 for (int i = 5; i < 30; i += 5)
                 {
-                    AvailablePerks.Add(new StatModifier(i, modType, param));
+                    AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
                 }
             }
         }

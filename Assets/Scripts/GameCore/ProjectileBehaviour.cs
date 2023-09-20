@@ -9,13 +9,17 @@ public class ProjectileBehaviour : MonoBehaviour
     private Vector3 _sourcePoint;
     private int _pierceCount;
     private float _attackDamage;
-    public void Setup(float projectileSpeed, int pierceCount, float maxDistance, float attackDamage, Vector3 sourcePoint)
+    private float _critChance;
+    private float _critMult;
+    public void Setup(float projectileSpeed, int pierceCount, float maxDistance, float attackDamage, float critChance, float critMult, Vector3 sourcePoint)
     {
         _projectileSpeed = projectileSpeed;
         _pierceCount = pierceCount;
         _maxDistance = maxDistance;
         _attackDamage = attackDamage;
         _sourcePoint = sourcePoint;
+        _critChance = critChance;
+        _critMult = critMult;
     }
 
     // Update is called once per frame
@@ -31,8 +35,19 @@ public class ProjectileBehaviour : MonoBehaviour
         if (other.gameObject.tag != "Enemy")
             return;
 
+
+        bool isCrit = false;
+        int roll = Random.Range(0, 100);
+        float chance = _critChance;
+        float dmg = _attackDamage;
+        if (roll < chance)
+        {
+            dmg *= (_critMult + Globals.BaseCritMultiplierPerc) / 100;
+            isCrit = true;
+        }
+
         var enemy = other.GetComponent<NewEnemyBase>();
-        enemy.Damage(_attackDamage);
+        enemy.Damage(dmg, isCrit);
         if (_pierceCount <= 0)
             Destroy(gameObject);
         _pierceCount--;

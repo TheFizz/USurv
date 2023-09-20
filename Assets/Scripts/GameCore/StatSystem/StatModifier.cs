@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-public enum StatModType
-{
-    Flat = 100,
-    PercentAdd = 200,
-    PercentMult = 300,
-}
 [Serializable]
 public class StatModifier
 {
@@ -16,9 +10,9 @@ public class StatModifier
     public StatModType Type;
     public StatParam Param;
     public readonly int Order;
-    public readonly object Source;
+    public string Source;
 
-    public StatModifier(float value, StatModType type, StatParam param, int order, object source)
+    public StatModifier(float value, StatModType type, StatParam param, int order, string source)
     {
         Value = value;
         Type = type;
@@ -31,7 +25,7 @@ public class StatModifier
 
     public StatModifier(float value, StatModType type, StatParam param, int order) : this(value, type, param, order, null) { }
 
-    public StatModifier(float value, StatModType type, StatParam param, object source) : this(value, type, param, (int)type, source) { }
+    public StatModifier(float value, StatModType type, StatParam param, string source) : this(value, type, param, (int)type, source) { }
 
     private string StringifyAmount()
     {
@@ -85,11 +79,15 @@ public class StatModifier
             default:
                 break;
         }
-        return parameter;
+        return Param.ToString();
     }
     public override string ToString()
     {
         return $"{StringifyAmount()} {StringifyParameter()}";
+    }
+    public string ToStringWithSource()
+    {
+        return $"{StringifyAmount()} {StringifyParameter()} : {Source}";
     }
     public string ToStringWithBreak()
     {
@@ -100,5 +98,13 @@ public class StatModifier
         if ((int)Param < Globals.StatModIconsSt.Count)
             return Globals.StatModIconsSt[(int)Param];
         else return null;
+    }
+    public void CombineWith(StatModifier stat)
+    {
+        if (stat.Param != Param)
+            return;
+        if (stat.Type != Type)
+            return;
+        Value += stat.Value;
     }
 }

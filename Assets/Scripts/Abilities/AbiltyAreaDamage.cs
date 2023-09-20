@@ -5,11 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AbiltyAreaDamage", menuName = "Abilities/AreaDamage")]
 public class AbiltyAreaDamage : AbilityBase
 {
-    public GameObject AbilityGraphics;
-    public float AbilityRange;
-    public float AbilityDamage;
-    public LayerMask TargetLayer;
-
     public override void Use(Transform source)
     {
         var sourceFloored = source.position;
@@ -17,11 +12,11 @@ public class AbiltyAreaDamage : AbilityBase
 
         Instantiate(AbilityGraphics, source.position, Quaternion.identity);
 
-        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, AbilityRange, TargetLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(sourceFloored, Stats.Find(x => x.Parameter == StatParam.AbilityRange).Value, TargetLayer);
         foreach (var hitEnemy in hitEnemies)
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-            enemy.Damage(AbilityDamage);
+            enemy.Damage(Stats.Find(x => x.Parameter == StatParam.AttackDamage).Value, false);
         }
     }
 }

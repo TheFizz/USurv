@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AbilityTeleport", menuName = "Abilities/Teleport")]
 public class AbiltyTeleport : AbilityBase
 {
-    public LayerMask TargetLayer;
-
     public override void Use(Transform source)
     {
         InputHandler input = null;

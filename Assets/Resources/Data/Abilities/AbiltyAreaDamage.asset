@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityName: AreaDamage
   AbilityCooldown: 20
+  Stats:
+  - BaseValue: 7
+    Parameter: 11
+  - BaseValue: 20
+    Parameter: 10
   AbilityGraphics: {fileID: 3267284291621483931, guid: caacbe338ed6bd84fa8b5afe4ad23079, type: 3}
-  AbilityRange: 7
-  AbilityDamage: 20
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128

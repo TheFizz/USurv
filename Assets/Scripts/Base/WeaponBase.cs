@@ -7,28 +7,32 @@ using UnityEngine.UI;
 
 public abstract class WeaponBase : MonoBehaviour
 {
-    public abstract List<StatModifier> WeaponModifiers { get; }
+    [SerializeField] private WeaponBaseSO _defaultWeaponData;
+    [SerializeField] private AbilityBase _defaultWeaponAbility;
+
+    [HideInInspector] public WeaponBaseSO WeaponData;
+    [HideInInspector] public AbilityBase WeaponAbility;
+
     [HideInInspector] public GameObject UIObject;
     [HideInInspector] public Image UIImage;
     [HideInInspector] public Image UIOverlay;
     [HideInInspector] public RectTransform UIRect;
 
-    public WeaponBaseSO WeaponData;
-    public AbilityBase WeaponAbility;
 
     protected HeatSystem Heat;
     protected Transform Source;
 
     private PlayerDamageHandler _pDamageHandler;
     private InputHandler _input;
-    public float AbilityCooldown;
-    public AbilityState AbilityState;
+    private float AbilityCooldown;
+    private AbilityState AbilityState;
     private UIManager _ui;
 
     private bool _isActive = false;
 
     protected virtual void Awake()
     {
+        InstantiateSOs();
         Heat = Globals.Heat;
         AbilityState = AbilityState.Ready;
         UIObject = Instantiate(WeaponData.UIWeaponIcon);
@@ -43,8 +47,21 @@ public abstract class WeaponBase : MonoBehaviour
         _input = Globals.Input;
         _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
         _ui = Globals.UIManager;
-
     }
+
+    private void InstantiateSOs()
+    {
+        WeaponData = Instantiate(_defaultWeaponData);
+        WeaponAbility = Instantiate(_defaultWeaponAbility);
+
+        List<WeaponUpgradeSO> upgrades = new List<WeaponUpgradeSO>();
+        foreach (var upgrade in _defaultWeaponData.UpgradePath)
+        {
+            upgrades.Add(Instantiate(upgrade));
+        }
+        WeaponData.UpgradePath = upgrades;
+    }
+
     protected virtual void Update()
     {
         HandleAbilityCooldown();
@@ -60,8 +77,15 @@ public abstract class WeaponBase : MonoBehaviour
             text += $"{stat.Parameter}: {stat.Value}\n";
             foreach (var mod in stat.StatModifiers)
             {
-
                 text += $"# {mod}\n";
+            }
+        }
+        foreach (var stat in WeaponAbility.Stats)
+        {
+            text += $"ABL {stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"ABL # {mod}\n";
             }
         }
         _ui.WriteDebug(text);
@@ -167,6 +191,60 @@ public abstract class WeaponBase : MonoBehaviour
         foreach (var stat in WeaponData.Stats)
         {
             stat.RemoveAllModifiers();
+        }
+    }
+    public virtual void UpgradeToLevel(int level)
+    {
+        var upgrade = WeaponData.UpgradePath.Find(x => x.UpgradeNumber == level);
+
+        foreach (var upgradeMod in upgrade.SelfStatMods)
+        {
+            var stat = WeaponData.GetStat(upgradeMod.Param);
+
+            if (stat == null)
+                continue;
+
+            var statMods = stat.GetStatModifiersFromSource("SELF");
+            if (statMods.Count > 0)
+                foreach (var statMod in statMods)
+                {
+                    stat.RemoveModifier(statMod);
+                    statMod.CombineWith(upgradeMod);
+                    stat.AddModifier(statMod);
+                }
+            else
+                stat.AddModifier(upgradeMod);
+        }
+
+        foreach (var upgradeMod in upgrade.AbilityStatMods)
+        {
+            var stat = WeaponAbility.GetStat(upgradeMod.Param);
+
+            if (stat == null)
+                continue;
+
+            var statMods = stat.GetStatModifiersFromSource("SELF");
+            if (statMods.Count > 0)
+                foreach (var statMod in statMods)
+                {
+                    stat.RemoveModifier(statMod);
+                    statMod.CombineWith(upgradeMod);
+                    stat.AddModifier(statMod);
+                }
+            else
+                stat.AddModifier(upgradeMod);
+        }
+
+        foreach (var upgradeMod in upgrade.PassiveStatMods)
+        {
+            var passiveMod = WeaponData.PassiveModifiers.Find(x => x.Param == upgradeMod.Param);
+
+            if (passiveMod == null)
+                WeaponData.PassiveModifiers.Add(upgradeMod);
+            else
+            {
+                passiveMod.CombineWith(upgradeMod);
+            }
         }
     }
 }
