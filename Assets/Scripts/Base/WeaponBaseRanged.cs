@@ -31,7 +31,7 @@ public abstract class WeaponBaseRanged : WeaponBase
             Mathf.RoundToInt(wd.GetStat(StatParam.PierceCount).Value),
             wd.GetStat(StatParam.AttackRange).Value,
             WeaponData.GetStat(StatParam.AttackDamage).Value,
-            WeaponData.GetStat(StatParam.CritChance).Value,
+            WeaponData.GetStat(StatParam.CritChancePerc).Value,
             WeaponData.GetStat(StatParam.CritMultiplierPerc).Value,
             Source.position
             );

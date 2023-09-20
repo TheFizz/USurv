@@ -6,11 +6,10 @@ public class XPCollector : MonoBehaviour
 {
     private Transform _myTransform;
     private PlayerSystems _pSystems;
-    [SerializeField] private float _collectionRange = 20f;
     [SerializeField] private LayerMask _targetLayer;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _myTransform = GetComponent<Transform>();
         _pSystems = Globals.PlayerSystems;
@@ -19,7 +18,8 @@ public class XPCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Collider[] hitDrops = Physics.OverlapSphere(_myTransform.position, _collectionRange, _targetLayer);
+        float range = _pSystems.PlayerStats.GetStat(StatParam.PickupRange).Value;
+        Collider[] hitDrops = Physics.OverlapSphere(_myTransform.position, range, _targetLayer);
         foreach (var hit in hitDrops)
         {
             var drop = hit.GetComponent<XPDrop>();

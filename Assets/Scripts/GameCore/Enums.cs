@@ -21,10 +21,11 @@ public enum StatParam
     PlayerMaxHealth = 5,
     PierceCount = 6,
     ProjectileSpeed = 7,
-    CritChance = 8,
+    CritChancePerc = 8,
     CritMultiplierPerc = 9,
     AbilityPower = 10,
-    AbilityRange = 11
+    AbilityRange = 11,
+    PickupRange = 12
 }
 
 public enum AilmentType

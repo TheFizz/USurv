@@ -61,18 +61,18 @@ public class UIManager : MonoBehaviour
     {
         _heat = Globals.Heat;
         _pSystems = Globals.PlayerSystems;
-        HpText.text = Mathf.RoundToInt(_pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value).ToString();
+        HpText.text = Mathf.RoundToInt(_pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value).ToString();
         LevelText.text = "1";
 
         _heatSlider = HeatBar.GetComponent<Slider>();
         _heatFill = HeatBar.GetComponentInChildren<Image>();
 
         _hpSlider = HpBar.GetComponent<Slider>();
-        _hpSlider.maxValue = _pSystems.Stats.GetStat(StatParam.PlayerMaxHealth).Value;
+        _hpSlider.maxValue = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
 
         _xpSlider = XpBar.GetComponent<Slider>();
-        _xpSlider.maxValue = _pSystems.Stats.XPThresholdBase;
-        MaxXpText.text = _pSystems.Stats.XPThresholdBase.ToString("0.00");
+        _xpSlider.maxValue = _pSystems.PlayerStats.XPThresholdBase;
+        MaxXpText.text = _pSystems.PlayerStats.XPThresholdBase.ToString("0.00");
 
     }
     private void Update()
@@ -93,9 +93,11 @@ public class UIManager : MonoBehaviour
         }
 
         _heatSlider.value = _heat.GetHeat();
-        _hpSlider.value = _pSystems.DmgHandler.CurrentHealth;
+        _hpSlider.value = Globals.DmgHandler.CurrentHealth;
 
-        HpText.text = Mathf.RoundToInt(_pSystems.DmgHandler.CurrentHealth).ToString();
+
+        _hpSlider.maxValue = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
+        HpText.text = Mathf.RoundToInt(Globals.DmgHandler.CurrentHealth).ToString();
         SwapMode.text = Globals.Input.swapMode.ToString();
 
         _xpSlider.value = _pSystems.CurrentXP;

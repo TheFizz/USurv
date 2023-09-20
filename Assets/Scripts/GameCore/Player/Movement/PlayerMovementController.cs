@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
@@ -7,12 +8,14 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask _mouseHitMask;
     private InputHandler _input;
     private Rigidbody _RB;
-    private float _moveSpeed;
+    private PlayerSystems _pSystems;
+    public TextMeshProUGUI debugSpeedText;
 
     public bool lockPosition = false, lockRotation = false;
     void Awake()
     {
         _input = Globals.Input;
+        _pSystems = Globals.PlayerSystems;
         _RB = GetComponent<Rigidbody>();
     }
     public void Update()
@@ -44,14 +47,11 @@ public class PlayerMovementController : MonoBehaviour
         moveDirection = Quaternion.Euler(0, Globals.MainCamera.gameObject.transform.eulerAngles.y, 0) * moveDirection;
         moveDirection.Normalize();
 
-        float speed = _moveSpeed;
+        var speed = _pSystems.PlayerStats.GetStat(StatParam.PlayerMoveSpeed).Value;
         moveDirection *= speed;
+        debugSpeedText.text = speed.ToString();
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);
         _RB.velocity = projectedVelocity;
-    }
-    public void SetMoveSpeed(float moveSpeed)
-    {
-        _moveSpeed = moveSpeed;
     }
 }

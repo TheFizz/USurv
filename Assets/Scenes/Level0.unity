@@ -994,7 +994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &647529260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,6 +1389,7 @@ MonoBehaviour:
   _mouseHitMask:
     serializedVersion: 2
     m_Bits: 64
+  debugSpeedText: {fileID: 0}
   lockPosition: 0
   lockRotation: 0
 --- !u!54 &776415902
@@ -1482,7 +1483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8257eeae939327444b28c58177ebc3fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectionRange: 1.5
   _targetLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -2657,7 +2657,6 @@ GameObject:
   - component: {fileID: 1535774020}
   - component: {fileID: 1535774019}
   - component: {fileID: 1535774023}
-  - component: {fileID: 1535774024}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -2750,57 +2749,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ff0583542cce54bb0f01b4ee3eede2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stats: {fileID: 11400000, guid: 0572104cb749c844185424108c48e0ea, type: 2}
+  PlayerStats: {fileID: 0}
+  _defaultPlayerStats: {fileID: 11400000, guid: 0572104cb749c844185424108c48e0ea, type: 2}
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   _attackSource: {fileID: 35940486}
-  _globalMods: []
-  DmgHandler: {fileID: 0}
-  WeaponQueue:
+  _weaponQueue:
   - {fileID: 2153163811958126480, guid: 579b1632778b7fb469f634601c8ae05e, type: 3}
-  - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
   - {fileID: 6976108617930502473, guid: 9fef99c1df6dfab45a48ad27543bfe73, type: 3}
+  - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
   CurrentXP: 0
-  _currentLevel: 1
---- !u!114 &1535774024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535774016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17756bc5fe7abd64d96c0d92734878e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _swooshMat: {fileID: 2100000, guid: 4aef5991a9f46c4409b038cd3c2ecc73, type: 2}
-  _swooshTipMat: {fileID: 2100000, guid: 3d4e544de0a461642b3210a213763843, type: 2}
-  _swooshCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1569356502
 GameObject:
   m_ObjectHideFlags: 0

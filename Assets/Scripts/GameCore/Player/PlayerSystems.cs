@@ -9,58 +9,53 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
-    public PlayerStatsSO Stats;
-    private int _perksPerLevel = 3;
+    [HideInInspector] public PlayerStatsSO PlayerStats;
+    [SerializeField] private PlayerStatsSO _defaultPlayerStats;
 
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
-    [SerializeField] private List<StatModifier> _globalMods = new List<StatModifier>();
 
+    [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
+    private WeaponBase[] _weapons = new WeaponBase[3];
+
+    [HideInInspector] public float CurrentXP = 0;
+    private float _xpThreshold;
+    private float _xpThresholdMultipltier;
+    private int _perksPerLevel = 3;
+    private int _currentLevel = 1;
+
+    //[HideInInspector] public PlayerDamageHandler DmgHandler;
+    private List<StatModifier> _globalMods = new List<StatModifier>();
     private InputHandler _input;
     private HeatSystem _heat;
     private UIManager _uiManager;
-    public PlayerDamageHandler DmgHandler;
-    private PlayerMovementController _movementController;
-
-    private float _currentHealth;
-    private float _moveSpeed;
-
-    public GameObject[] WeaponQueue = new GameObject[3];
-    private WeaponBase[] _weapons = new WeaponBase[3];
-
-    private float _xpThreshold;
-    public float CurrentXP = 0;
-    private float _xpThresholdMultipltier;
-
-    public int _currentLevel = 1;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        _currentHealth = Stats.GetStat(StatParam.PlayerMaxHealth).Value;
-        _moveSpeed = Stats.GetStat(StatParam.PlayerMoveSpeed).Value;
-        _xpThreshold = Stats.XPThresholdBase;
-        _xpThresholdMultipltier = Stats.XPThresholdMultiplier;
+        InstantiateSOs();
 
         _heat = Globals.Heat;
         _input = Globals.Input;
         _uiManager = Globals.UIManager;
+        //DmgHandler = Globals.DmgHandler;
 
-        _movementController = Globals.PlayerTransform.GetComponent<PlayerMovementController>();
-        _movementController.SetMoveSpeed(_moveSpeed);
+        _xpThreshold = PlayerStats.XPThresholdBase;
+        _xpThresholdMultipltier = PlayerStats.XPThresholdMultiplier;
 
-        DmgHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
-        DmgHandler.SetMaxHealth(_currentHealth);
-
-        for (int i = 0; i < WeaponQueue.Length; i++)
+        for (int i = 0; i < _weaponQueue.Length; i++)
         {
-            var go = WeaponQueue[i] = Instantiate(WeaponQueue[i]);
+            var go = _weaponQueue[i] = Instantiate(_weaponQueue[i]);
             _weapons[i] = go.GetComponent<WeaponBase>();
         }
         _uiManager.SetupWeaponIcons(_weapons);
 
         SetWeaponsSource();
         ActivateTopWeapon();
+    }
+    private void InstantiateSOs()
+    {
+        PlayerStats = Instantiate(_defaultPlayerStats);
     }
     private void Update()
     {
@@ -77,10 +72,6 @@ public class PlayerSystems : MonoBehaviour
 
         if (_input.UseAbility)
             _weapons[2].UseAbility();
-        if (Input.GetKeyDown("k"))
-            _weapons[2].UpgradeToLevel(1);
-        if (Input.GetKeyDown("l"))
-            _weapons[2].UpgradeToLevel(2);
     }
 
     public void AddXP(float xpValue)
@@ -112,11 +103,20 @@ public class PlayerSystems : MonoBehaviour
         _globalMods.Add(mod);
         _uiManager.EndLevelup();
 
-        foreach (var wpn in _weapons)
+        if (Globals.PlayerParams.Contains(mod.Param))
         {
-            wpn.ApplyModifiers(new List<StatModifier>() { mod });
+            var stat = PlayerStats.GetStat(mod.Param);
+            if (stat != null)
+                stat.AddModifier(mod);
         }
-        _weapons[0].RestartAttack();
+        if (Globals.WeaponParams.Contains(mod.Param))
+        {
+            foreach (var wpn in _weapons)
+            {
+                wpn.ApplyModifiers(new List<StatModifier>() { mod });
+            }
+            _weapons[0].RestartAttack();
+        }
     }
     public void PlayerDeath()
     {
@@ -170,6 +170,10 @@ public class PlayerSystems : MonoBehaviour
         _uiManager.Swap2Anim(idxA, idxB, _weapons);
 
         ActivateTopWeapon((idxA == 0 || idxB == 0));
+    }
+    public void UpdateMaxHealthUI()
+    {
+
     }
     #endregion
 }

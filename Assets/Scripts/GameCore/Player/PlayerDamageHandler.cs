@@ -15,10 +15,18 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
     private bool _preInv = false;
 
     private List<string> _recentAttackers = new List<string>();
-    public void SetMaxHealth(float health)
+    void Awake()
     {
-        MaxHealth = health;
-        CurrentHealth = health;
+        _pSystems = Globals.PlayerSystems;
+    }
+    void Start()
+    {
+        MaxHealth = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
+        CurrentHealth = MaxHealth;
+    }
+    void Update()
+    {
+        MaxHealth = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
     }
 
     public void Damage(float damageAmount, string attackerID, bool overrideITime = false)

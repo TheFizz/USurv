@@ -12,20 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bbcc557f72a06b4b85de1ca896703bc, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  PlayerStats:
-  - BaseValue: 1
-    Parameter: 0
-  - BaseValue: 1
-    Parameter: 3
-  - BaseValue: 1
-    Parameter: 1
-  - BaseValue: 1
-    Parameter: 2
+  Stats:
   - BaseValue: 60
     Parameter: 5
   - BaseValue: 7
     Parameter: 4
-  - BaseValue: 1
-    Parameter: 8
+  - BaseValue: 2
+    Parameter: 12
   XPThresholdBase: 12
   XPThresholdMultiplier: 1.2

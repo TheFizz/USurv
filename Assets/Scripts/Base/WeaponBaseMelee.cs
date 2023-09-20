@@ -65,7 +65,7 @@ public abstract class WeaponBaseMelee : WeaponBase
         {
             bool isCrit = false;
             int roll = Random.Range(0, 100);
-            float chance = WeaponData.GetStat(StatParam.CritChance).Value;
+            float chance = WeaponData.GetStat(StatParam.CritChancePerc).Value;
             float dmg = WeaponData.GetStat(StatParam.AttackDamage).Value;
             if (roll < chance)
             {

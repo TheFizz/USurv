@@ -25,6 +25,24 @@ public class Globals : MonoBehaviour
     public static float BaseCritMultiplierPerc = 200f;
     public static List<StatModifier> AvailablePerks = new List<StatModifier>();
 
+    public static List<StatParam> PlayerParams = new List<StatParam>()
+    {
+        StatParam.CritChancePerc,
+        StatParam.CritMultiplierPerc,
+        StatParam.PickupRange,
+        StatParam.PlayerMaxHealth,
+        StatParam.PlayerMoveSpeed,
+        StatParam.AttackCone,
+        StatParam.AttackSpeed
+    };
+    public static List<StatParam> WeaponParams = new List<StatParam>()
+    {
+        StatParam.CritChancePerc,
+        StatParam.CritMultiplierPerc,
+        StatParam.AttackCone,
+        StatParam.AttackSpeed
+    };
+
     void Awake()
     {
         if (me != null)
@@ -67,17 +85,27 @@ public class Globals : MonoBehaviour
     }
     private void GeneratePerks()
     {
-        foreach (StatModType modType in StatModType.GetValues(typeof(StatModType)))
+        foreach (StatParam param in PlayerParams)
         {
-            if (modType == StatModType.Flat) continue;
-            foreach (StatParam param in StatParam.GetValues(typeof(StatParam)))
+            foreach (StatModType modType in StatModType.GetValues(typeof(StatModType)))
             {
-                for (int i = 5; i < 30; i += 5)
-                {
-                    AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
-                }
+                if (param == StatParam.CritMultiplierPerc || param == StatParam.CritChancePerc)
+                    if (modType != StatModType.Flat) continue;
+
+
+                if (modType == StatModType.Flat)
+                    for (int i = 1; i < 5; i += 1)
+                    {
+                        AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
+                    }
+                else
+                    for (int i = 5; i < 30; i += 5)
+                    {
+                        AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
+                    }
             }
         }
+
     }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
 }
