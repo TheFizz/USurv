@@ -35,6 +35,11 @@ public class Globals : MonoBehaviour
         StatParam.AttackCone,
         StatParam.AttackSpeed
     };
+
+    // pAPS + wAps
+    // pAPS.Mod + wAPS.Mod
+    // wAPS.Mod <=pAPS.Mods
+
     public static List<StatParam> WeaponParams = new List<StatParam>()
     {
         StatParam.CritChancePerc,
@@ -89,17 +94,17 @@ public class Globals : MonoBehaviour
         {
             foreach (StatModType modType in StatModType.GetValues(typeof(StatModType)))
             {
-                if (param == StatParam.CritMultiplierPerc || param == StatParam.CritChancePerc)
+                if (param == StatParam.CritMultiplierPerc || param == StatParam.CritChancePerc || param == StatParam.AttackSpeed)
                     if (modType != StatModType.Flat) continue;
 
 
                 if (modType == StatModType.Flat)
-                    for (int i = 1; i < 5; i += 1)
+                    for (int i = 1; i < 6; i += 1)
                     {
                         AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
                     }
                 else
-                    for (int i = 5; i < 30; i += 5)
+                    for (int i = 5; i < 35; i += 5)
                     {
                         AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
                     }
