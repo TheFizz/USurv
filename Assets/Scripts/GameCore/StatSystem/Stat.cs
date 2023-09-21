@@ -57,7 +57,7 @@ public class Stat
         }
         return false;
     }
-    public virtual bool RemoveAllModifiersFromSource(string source)
+    public virtual bool RemoveAllModifiersFromSource(object source)
     {
         int numRemovals = statModifiers.RemoveAll(mod => mod.Source == source);
 
@@ -69,7 +69,7 @@ public class Stat
         return false;
     }
 
-    public virtual List<StatModifier> GetStatModifiersFromSource(string source)
+    public virtual List<StatModifier> GetStatModifiersFromSource(object source)
     {
         return statModifiers.FindAll(mod => mod.Source == source);
     }

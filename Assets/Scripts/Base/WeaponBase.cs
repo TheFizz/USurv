@@ -35,6 +35,7 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Awake()
     {
         InstantiateSOs();
+        AssignModSource();
         WeaponLevel = 0;
         Heat = Globals.Heat;
         AbilityState = AbilityState.Ready;
@@ -50,6 +51,30 @@ public abstract class WeaponBase : MonoBehaviour
         _input = Globals.Input;
         _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
         _ui = Globals.UIManager;
+    }
+
+    private void AssignModSource()
+    {
+        foreach (var mod in WeaponData.PassiveModifiers)
+        {
+            mod.Source = this;
+        }
+        foreach (var upgrade in WeaponData.UpgradePath)
+        {
+            foreach (var mod in upgrade.AbilityStatMods)
+            {
+                mod.Source = this;
+            }
+            foreach (var mod in upgrade.PassiveStatMods)
+            {
+                mod.Source = this;
+            }
+            foreach (var mod in upgrade.SelfStatMods)
+            {
+                mod.Source = this;
+            }
+
+        }
     }
 
     private void InstantiateSOs()
@@ -157,11 +182,11 @@ public abstract class WeaponBase : MonoBehaviour
             //Debug.Log($"Applied {mod} to {WeaponData.WeaponName}");
         }
     }
-    public virtual void ClearLocalModifiers()
+    public virtual void ClearSourcedModifiers(object source)
     {
         foreach (var stat in WeaponData.Stats)
         {
-            stat.RemoveAllModifiersFromSource("LOCAL");
+            stat.RemoveAllModifiersFromSource(source);
         }
         //Debug.Log($"Removed local mods from {WeaponData.WeaponName}");
     }
@@ -207,7 +232,7 @@ public abstract class WeaponBase : MonoBehaviour
             if (stat == null)
                 continue;
 
-            var statMods = stat.GetStatModifiersFromSource("SELF");
+            var statMods = stat.GetStatModifiersFromSource(this);
             if (statMods.Count > 0)
                 foreach (var statMod in statMods)
                 {
@@ -231,7 +256,7 @@ public abstract class WeaponBase : MonoBehaviour
             if (stat == null)
                 continue;
 
-            var statMods = stat.GetStatModifiersFromSource("SELF");
+            var statMods = stat.GetStatModifiersFromSource(this);
             if (statMods.Count > 0)
                 foreach (var statMod in statMods)
                 {
@@ -250,7 +275,6 @@ public abstract class WeaponBase : MonoBehaviour
 
         foreach (var upgradeMod in upgrade.PassiveStatMods)
         {
-            upgradeMod.Source = "LOCAL";
             var passiveMod = WeaponData.PassiveModifiers.Find(x => x.Param == upgradeMod.Param);
 
             if (passiveMod == null)

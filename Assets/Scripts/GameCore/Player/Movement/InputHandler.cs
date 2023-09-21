@@ -46,8 +46,6 @@ public class InputHandler : MonoBehaviour
         MoveInput(delta);
         MousePosition = Input.mousePosition;
 
-        if(Input.GetKeyDown("k"))
-            ScreenCapture.CaptureScreenshot("test.png");
         if (Input.GetKeyDown("space"))
             UseAbility = true;
         else

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Globals : MonoBehaviour
 {
@@ -77,16 +78,11 @@ public class Globals : MonoBehaviour
             v3.y = 0;
         return Mathf.Max(Mathf.Max(v3.x, v3.y), v3.z);
     }
-
     public static string GenerateId()
     {
         int a = Random.Range(int.MinValue, int.MaxValue);
         int b = Random.Range(int.MinValue, int.MaxValue);
         return $"{a.ToString("x").ToUpperInvariant()}{b.ToString("x").ToUpperInvariant()}";
-    }
-    public static bool CompareLayers(int layer, LayerMask layerMask)
-    {
-        return (((1 << layer) & layerMask) == 1);
     }
     private void GeneratePerks()
     {
@@ -101,16 +97,30 @@ public class Globals : MonoBehaviour
                 if (modType == StatModType.Flat)
                     for (int i = 1; i < 6; i += 1)
                     {
-                        AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
+                        AvailablePerks.Add(new StatModifier(i, modType, param, source: this));
                     }
                 else
                     for (int i = 5; i < 35; i += 5)
                     {
-                        AvailablePerks.Add(new StatModifier(i, modType, param, "GLOBAL"));
+                        AvailablePerks.Add(new StatModifier(i, modType, param, source: this));
                     }
             }
         }
 
     }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
+
+    public static void ReloadScene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public static void QuitGame()
+    {// save any game data here
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+    }
 }

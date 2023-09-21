@@ -22,11 +22,11 @@ MonoBehaviour:
   Stats:
   - BaseValue: 1.5
     Parameter: 0
-  - BaseValue: 1
+  - BaseValue: 10
     Parameter: 1
   - BaseValue: 45
     Parameter: 2
-  - BaseValue: 3
+  - BaseValue: 5
     Parameter: 3
   - BaseValue: 0
     Parameter: 8
@@ -36,85 +36,69 @@ MonoBehaviour:
   - Value: 15
     Type: 200
     Param: 2
-    Source: LOCAL
   UpgradePath:
   - UpgradeNumber: 1
     SelfStatMods:
     - Value: 6
       Type: 100
       Param: 1
-      Source: SELF
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
-      Source: SELF
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
-      Source: SELF
   - UpgradeNumber: 2
     SelfStatMods:
     - Value: 30
       Type: 200
       Param: 2
-      Source: SELF
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
-      Source: SELF
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
-      Source: SELF
   - UpgradeNumber: 3
     SelfStatMods:
     - Value: 30
       Type: 200
       Param: 0
-      Source: SELF
     PassiveStatMods:
     - Value: 15
       Type: 100
       Param: 1
-      Source: SELF
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
-      Source: SELF
   - UpgradeNumber: 4
     SelfStatMods:
     - Value: 9
       Type: 100
       Param: 1
-      Source: SELF
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
-      Source: SELF
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
-      Source: SELF
   - UpgradeNumber: 5
     SelfStatMods:
     - Value: 60
       Type: 100
       Param: 2
-      Source: SELF
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
-      Source: SELF
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
-      Source: SELF

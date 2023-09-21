@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   Stats:
-  - BaseValue: 60
+  - BaseValue: 50
     Parameter: 5
   - BaseValue: 7
     Parameter: 4

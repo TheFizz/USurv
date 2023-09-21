@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI CurXpText;
     public TextMeshProUGUI MaxXpText;
 
-    public Canvas MainCanvas;
+    public GameObject GameUI;
 
     private HeatSystem _heat;
     private PlayerSystems _pSystems;
@@ -109,7 +109,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < weaponQueue.Length; i++)
         {
             weaponQueue[i].UIImage.color = SlotColors[i];
-            weaponQueue[i].UIImage.transform.SetParent(MainCanvas.transform, false);
+            weaponQueue[i].UIImage.transform.SetParent(GameUI.transform, false);
             weaponQueue[i].UIObject.transform.SetAsFirstSibling();
             weaponQueue[i].UIRect.anchoredPosition = SlotPositions[i];
             weaponQueue[i].UIRect.sizeDelta = SlotSizes[i];
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour
         _xpSlider.maxValue = threshold;
         MaxXpText.text = threshold.ToString("0.00");
 
-        _levelupWindowInstance = Instantiate(LevelUpWindow, MainCanvas.transform);
+        _levelupWindowInstance = Instantiate(LevelUpWindow, GameUI.transform);
         var rect = _levelupWindowInstance.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0, Screen.height / 4);
         var window = _levelupWindowInstance.GetComponent<LevelupModal>();

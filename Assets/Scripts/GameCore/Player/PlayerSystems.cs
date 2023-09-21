@@ -9,6 +9,10 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
+    const int ACTIVE = 0;
+    const int PASSIVE = 1;
+    const int ABILITY = 2;
+
     [HideInInspector] public PlayerStatsSO PlayerStats;
     [SerializeField] private PlayerStatsSO _defaultPlayerStats;
 
@@ -29,6 +33,8 @@ public class PlayerSystems : MonoBehaviour
     private InputHandler _input;
     private HeatSystem _heat;
     private UIManager _uiManager;
+
+    [SerializeField] private EndScreen _endScreen;
 
     // Start is called before the first frame update
     private void Awake()
@@ -61,7 +67,7 @@ public class PlayerSystems : MonoBehaviour
     {
 
         if (Input.GetKeyDown("k"))
-            _weapons[2].UpgradeToLevel(_weapons[2].WeaponLevel + 1);
+            _weapons[ABILITY].UpgradeToLevel(_weapons[ABILITY].WeaponLevel + 1);
 
         Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
 
@@ -75,7 +81,7 @@ public class PlayerSystems : MonoBehaviour
             SwapSlots(1, 2);
 
         if (_input.UseAbility)
-            _weapons[2].UseAbility();
+            _weapons[ABILITY].UseAbility();
     }
 
     public void AddXP(float xpValue)
@@ -119,12 +125,12 @@ public class PlayerSystems : MonoBehaviour
             {
                 wpn.ApplyModifiers(new List<StatModifier>() { mod });
             }
-            _weapons[0].RestartAttack();
+            _weapons[ACTIVE].RestartAttack();
         }
     }
     public void PlayerDeath()
     {
-
+        _endScreen.End();
     }
 
     #region Weapons
@@ -139,15 +145,15 @@ public class PlayerSystems : MonoBehaviour
     {
         if (modAndStart)
         {
-            _weapons[0].ApplyModifiers(_weapons[1].WeaponData.PassiveModifiers);
-            _weapons[0].StartAttack();
+            _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+            _weapons[ACTIVE].StartAttack();
         }
     }
     private void SwapRotate()
     {
         _heat.StartCooldown();
-        _weapons[0].StopAttack();
-        _weapons[0].ClearLocalModifiers();
+        _weapons[ACTIVE].StopAttack();
+        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
         _uiManager.SwapAllAnim(_weapons);
 
         var first = _weapons[0];
@@ -163,9 +169,9 @@ public class PlayerSystems : MonoBehaviour
         if (idxA == 0 || idxB == 0)
         {
             _heat.StartCooldown();
-            _weapons[0].StopAttack();
+            _weapons[ACTIVE].StopAttack();
         }
-        _weapons[0].ClearLocalModifiers();
+        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
 
         var tmp = _weapons[idxA];
         _weapons[idxA] = _weapons[idxB];

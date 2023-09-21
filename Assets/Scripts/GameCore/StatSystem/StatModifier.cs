@@ -10,9 +10,9 @@ public class StatModifier
     public StatModType Type;
     public StatParam Param;
     public readonly int Order;
-    public string Source;
+    public object Source;
 
-    public StatModifier(float value, StatModType type, StatParam param, int order, string source)
+    public StatModifier(float value, StatModType type, StatParam param, int order, object source)
     {
         Value = value;
         Type = type;
@@ -25,7 +25,7 @@ public class StatModifier
 
     public StatModifier(float value, StatModType type, StatParam param, int order) : this(value, type, param, order, null) { }
 
-    public StatModifier(float value, StatModType type, StatParam param, string source) : this(value, type, param, (int)type, source) { }
+    public StatModifier(float value, StatModType type, StatParam param, object source) : this(value, type, param, (int)type, source) { }
 
     private string StringifyAmount()
     {
@@ -49,36 +49,6 @@ public class StatModifier
     }
     private string StringifyParameter()
     {
-        string parameter = "";
-        switch (Param)
-        {
-            case StatParam.AttackSpeed:
-                parameter = "Attack Speed";
-                break;
-            case StatParam.AttackDamage:
-                parameter = "Attack Damage";
-                break;
-            case StatParam.AttackCone:
-                parameter = "Attack Cone";
-                break;
-            case StatParam.AttackRange:
-                parameter = "Attack Range";
-                break;
-            case StatParam.PlayerMoveSpeed:
-                parameter = "Move Speed";
-                break;
-            case StatParam.PlayerMaxHealth:
-                parameter = "Max Health";
-                break;
-            case StatParam.PierceCount:
-                parameter = "Pierce Count";
-                break;
-            case StatParam.ProjectileSpeed:
-                parameter = "Projectile Speed";
-                break;
-            default:
-                break;
-        }
         return Param.ToString();
     }
     public override string ToString()
