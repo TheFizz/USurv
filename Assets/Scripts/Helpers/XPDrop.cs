@@ -4,9 +4,15 @@ using UnityEngine;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using System;
+using Random = UnityEngine.Random;
 
 public class XPDrop : MonoBehaviour
 {
+
+    const int TEAL = 0;
+    const int JADE = 1;
+
     public float XpValue;
     public string ID;
     private Transform _myTransform;
@@ -14,18 +20,40 @@ public class XPDrop : MonoBehaviour
 
     [SerializeField] private float _speed;
     private float _minSpeed = 0.01f;
-    private float _maxSpeed = 0.1f;
+    private float _maxSpeed = 0.15f;
     private float _stepInc = 0.02f;
+
+    private Material _mat;
 
     TweenerCore<Vector3, Vector3, VectorOptions> _hoverTween;
     TweenerCore<Vector3, Vector3, VectorOptions> _inBounce;
     TweenerCore<Quaternion, Vector3, QuaternionOptions> _rotateTween;
 
+    private List<Tuple<Color, Color, Color>> _gradients = new List<Tuple<Color, Color, Color>>() //Top, Bottom
+    {
+        new Tuple<Color, Color, Color>(new Color32(0,225,255,255),new Color32(0,60,175,255),new Color32(5,55,125,255)), // Teal
+        new Tuple<Color, Color, Color>(new Color32(0,255,50,255),new Color32(0,95,50,255),new Color32(15,125,50,255))  // Jade
+    };
+
     // Start is called before the first frame update
     void Awake()
     {
+        _mat = GetComponentInChildren<MeshRenderer>().material;
         ID = Globals.GenerateId();
         XpValue = Random.Range(0.5f, 1.5f);
+
+        if (XpValue > 1.2f)
+        {
+            _mat.SetColor("_Gradient_Top", _gradients[JADE].Item1);
+            _mat.SetColor("_Gradient_Bottom", _gradients[JADE].Item2);
+            _mat.SetColor("_Flaps_color", _gradients[JADE].Item3);
+        }
+        else
+        {
+            _mat.SetColor("_Gradient_Top", _gradients[TEAL].Item1);
+            _mat.SetColor("_Gradient_Bottom", _gradients[TEAL].Item2);
+            _mat.SetColor("_Flaps_color", _gradients[TEAL].Item3);
+        }
 
         float loopTime = Random.Range(1f, 2f);
         bool ccwRotation = Random.Range(0, 2) == 1;
