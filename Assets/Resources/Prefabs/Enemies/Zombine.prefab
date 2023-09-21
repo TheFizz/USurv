@@ -156,7 +156,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5381120996283059679}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9d3067e295f23584bb09bd3458ff4b25, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -186,6 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EnemyData>k__BackingField: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
   <DropOnDeath>k__BackingField: {fileID: 1286712164637996121, guid: 00c263d67b5c6e44e98ec3a7803eec91, type: 3}
-  _damageTextAnchor: {fileID: 3593957456782774958}
-  _invulnerable: 0
   _canMove: 1
+  _invulnerable: 0
+  _damageTextAnchor: {fileID: 3593957456782774958}
