@@ -34,10 +34,15 @@ public class EndScreen : MonoBehaviour
     };
     private void Awake()
     {
-        tr = trail.GetComponent<TrailRenderer>();
-        tr.enabled = false;
+        //tr = trail.GetComponent<TrailRenderer>();
+        //tr.enabled = false;
     }
-    // Update is called once per frame
+    private void Update()
+    {
+       // if (Input.GetKeyDown("k"))
+       //     End();
+    }
+
     public void End()
     {
         StartCoroutine(RecordFrame());
@@ -66,28 +71,28 @@ public class EndScreen : MonoBehaviour
     }
     void Animate()
     {
-        Sequence s = DOTween.Sequence();
-        s.SetUpdate(true);
-        s.AppendInterval(.5f);
-        s.AppendCallback(() => tr.enabled = true);
-        s.Append(trail.transform.DOMove(_cutPoints[1], 0.05f));
-        s.AppendInterval(.1f);
-        s.Append(trail.transform.DOMove(_cutPoints[2], 0.05f));
-        s.AppendCallback(() => tr.enabled = false);
-        s.AppendInterval(.2f);
-        s.AppendCallback(StopGame);
-        s.AppendInterval(.5f);
-        s.Join(top.transform.DOLocalMove(_partsMove[0], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
-        s.Join(mid.transform.DOLocalMove(_partsMove[1], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
-        s.Join(bot.transform.DOLocalMove(_partsMove[2], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
-        s.OnComplete(() =>
-        {
-            DeathUI.SetActive(true);
-            s.Kill();
-            Destroy(trail);
-        }
-        );
-        s.Play();
+        Sequence trailSeq = DOTween.Sequence();
+        trailSeq.SetUpdate(true);
+        trailSeq.AppendInterval(.5f);
+        trailSeq.Append(trail.transform.DOMove(_cutPoints[1], 0.05f));
+        trailSeq.AppendInterval(.1f);
+        trailSeq.Append(trail.transform.DOMove(_cutPoints[2], 0.05f));
+        trailSeq.AppendInterval(.2f);
+        trailSeq.AppendCallback(StopGame);
+        trailSeq.AppendInterval(.5f);
+        trailSeq.Join(top.transform.DOLocalMove(_partsMove[0], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
+        trailSeq.Join(mid.transform.DOLocalMove(_partsMove[1], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
+        trailSeq.Join(bot.transform.DOLocalMove(_partsMove[2], 0.5f).SetEase(Ease.OutBounce).SetUpdate(true));
+        trailSeq.AppendCallback(() =>
+                {
+                    trailSeq.Kill(true);
+                    Destroy(trail);
+                    DeathUI.SetActive(true);
+                }
+                );
+        trailSeq.Play();
+
+
     }
     void StopGame()
     {

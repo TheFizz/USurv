@@ -14,6 +14,9 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
     private bool _invulnerable = false;
     private bool _preInv = false;
 
+    private bool _isDead = false;
+
+
     private List<string> _recentAttackers = new List<string>();
     void Awake()
     {
@@ -31,11 +34,13 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
 
     public void Damage(float damageAmount, string attackerID, bool overrideITime = false)
     {
+        if (_isDead)
+            return;
+
         if (!overrideITime)
         {
             if (_recentAttackers.Contains(attackerID))
                 return;
-
             if (_invulnerable)
                 return;
             _recentAttackers.Add(attackerID);
@@ -44,14 +49,18 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
                 StartCoroutine(PreInv(_preInvDelay));
             }
         }
-
         CurrentHealth -= damageAmount;
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0 && !_isDead)
+        {
+            _isDead = true;
+            CurrentHealth = 0;
             Die();
+        }
     }
 
     public void Die()
     {
+        _invulnerable = true;
         _pSystems.PlayerDeath();
     }
 
