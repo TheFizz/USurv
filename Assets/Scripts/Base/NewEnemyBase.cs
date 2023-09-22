@@ -15,7 +15,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     [SerializeField] private bool _invulnerable = false;
     [SerializeField] private Transform _damageTextAnchor;
 
-    private string _id;
+    [HideInInspector] public string ID;
     private Rigidbody _RB;
     private Vector3 _target;
     private Color _baseColor;
@@ -29,13 +29,15 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
-        _id = Globals.GenerateId();
+        ID = Globals.GenerateId();
+        gameObject.name = $"Enemy<{ID}>";
         _RB = GetComponent<Rigidbody>();
         _baseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
         _playerTransform = Globals.PlayerTransform;
         _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
+        Globals.EnemyPool.Add(ID, this);
     }
     void Update()
     {
@@ -110,8 +112,17 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     {
         var pos = gameObject.transform.position;
         pos.y = 1f;
-        Destroy(gameObject);
         Instantiate(DropOnDeath, pos, Quaternion.identity);
+        Globals.EnemyPool.Remove(ID);
+        Destroy(gameObject);
+        Game.KillCount++;
+    }
+    public void Kill()
+    {
+        var pos = gameObject.transform.position;
+        pos.y = 1f;
+        Instantiate(DropOnDeath, pos, Quaternion.identity);
+        Destroy(gameObject);
     }
     public void ReceiveAilment(AilmentType type, float time, float force = 0)
     {
@@ -147,6 +158,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     {
         if (!Globals.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
             return;
-        Globals.DmgHandler.Damage(EnemyData.AttackDamage, _id);
+        Globals.DmgHandler.Damage(EnemyData.AttackDamage, ID);
     }
+
 }

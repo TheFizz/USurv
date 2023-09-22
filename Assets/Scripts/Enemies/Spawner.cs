@@ -77,9 +77,17 @@ public class Spawner : MonoBehaviour
             enemy.SetHp(min, max);
             _spawnedEnemies.Add(go);
 
-            debug.text = $"HpVal: {hpVal}\n";
-            debug.text += $"HpDev: {hpDev}\n";
-            debug.text += $"Mult: {_curveMultiplier}\n";
+            if (debug != null)
+            {
+                debug.text = $"HpVal: {hpVal}\n";
+                debug.text += $"HpDev: {hpDev}\n";
+                debug.text += $"Mult: {_curveMultiplier}\n";
+            }
         }
+    }
+
+    public void StopSpawn()
+    {
+        CancelInvoke();
     }
 }

@@ -5,73 +5,66 @@ using UnityEngine.SceneManagement;
 
 public class Globals : MonoBehaviour
 {
+    public const string PARAMICONLOC = "UI/Sprites/Parameters";
+
     private static Globals me;
 
     [SerializeReference] private Transform _playerTransform;
     [SerializeReference] private Camera _mainCamera;
     [SerializeReference] private UIManager _uiManager;
-    [SerializeReference] public List<Sprite> StatModIcons = new List<Sprite>();
-
-    public static List<Sprite> StatModIconsSt = new List<Sprite>();
+    [SerializeReference] private Spawner _spawner;
     public static HeatSystem Heat { get; private set; }
     public static InputHandler Input { get; private set; }
     public static PlayerSystems PlayerSystems { get; private set; }
     public static PlayerDamageHandler DmgHandler { get; private set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
+    public static Dictionary<string, NewEnemyBase> EnemyPool { get; private set; } = new Dictionary<string, NewEnemyBase>();
     public static UIManager UIManager { get; private set; }
     public static Transform PlayerTransform { get; private set; }
     public static Camera MainCamera { get; private set; }
-    public static Swoosher Swoosher { get; private set; }
+    public static Spawner Spawner { get; private set; }
 
     public static float BaseCritMultiplierPerc = 200f;
-    public static List<StatModifier> AvailablePerks = new List<StatModifier>();
 
-    public static List<StatParam> PlayerParams = new List<StatParam>()
-    {
-        StatParam.CritChancePerc,
-        StatParam.CritMultiplierPerc,
-        StatParam.PickupRange,
-        StatParam.PlayerMaxHealth,
-        StatParam.PlayerMoveSpeed,
-        StatParam.AttackCone,
-        StatParam.AttackSpeed
-    };
-
-    // pAPS + wAps
-    // pAPS.Mod + wAPS.Mod
-    // wAPS.Mod <=pAPS.Mods
-
-    public static List<StatParam> WeaponParams = new List<StatParam>()
-    {
-        StatParam.CritChancePerc,
-        StatParam.CritMultiplierPerc,
-        StatParam.AttackCone,
-        StatParam.AttackSpeed
-    };
-
+    public static Dictionary<StatParam, ParameterInfo> ParamReference;
     void Awake()
     {
-        if (me != null)
+        CreateParamReference();
+        if (me != null && me != this)
         {
             Debug.LogError("There is more than one instance of Globals!");
+            Destroy(gameObject);
             return;
         }
         PlayerTransform = _playerTransform;
         MainCamera = _mainCamera;
         UIManager = _uiManager;
-        StatModIconsSt = StatModIcons;
+        Spawner = _spawner;
 
         Heat = GetComponent<HeatSystem>();
         Input = GetComponent<InputHandler>();
         PlayerSystems = GetComponent<PlayerSystems>();
         DmgHandler = PlayerTransform.GetComponent<PlayerDamageHandler>();
-        Swoosher = GetComponent<Swoosher>();
-
-        GeneratePerks();
-
         me = this;
     }
 
+    private void CreateParamReference()
+    {
+        ParamReference = new Dictionary<StatParam, ParameterInfo>()
+        {
+            {StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") },
+            {StatParam.AttackSpeed, new ParameterInfo("Attack Speed", "APS") },
+            {StatParam.AttackDamage, new ParameterInfo("Attack Damage", "ATK") },
+            //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") }, //CDR
+            {StatParam.AttackCone, new ParameterInfo("Attack Cone", "Cone") },
+            {StatParam.CritChancePerc, new ParameterInfo("Crit Chance", "CritC") },
+            {StatParam.PlayerMaxHealth, new ParameterInfo("Max Health", "HP") },
+            //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") }, //HPR
+            {StatParam.PlayerMoveSpeed, new ParameterInfo("Move Speed", "MSPD") },
+            {StatParam.PickupRange, new ParameterInfo("Pickup Range", "PRNG") }
+            //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") },//XP Rate
+        };
+    }
     public static float GetLargestValue(Vector3 v3, bool omitY = false)
     {
         if (omitY)
@@ -84,43 +77,6 @@ public class Globals : MonoBehaviour
         int b = Random.Range(int.MinValue, int.MaxValue);
         return $"{a.ToString("x").ToUpperInvariant()}{b.ToString("x").ToUpperInvariant()}";
     }
-    private void GeneratePerks()
-    {
-        foreach (StatParam param in PlayerParams)
-        {
-            foreach (StatModType modType in StatModType.GetValues(typeof(StatModType)))
-            {
-                if (param == StatParam.CritMultiplierPerc || param == StatParam.CritChancePerc || param == StatParam.AttackSpeed)
-                    if (modType != StatModType.Flat) continue;
-
-
-                if (modType == StatModType.Flat)
-                    for (int i = 1; i < 6; i += 1)
-                    {
-                        AvailablePerks.Add(new StatModifier(i, modType, param, source: this));
-                    }
-                else
-                    for (int i = 5; i < 35; i += 5)
-                    {
-                        AvailablePerks.Add(new StatModifier(i, modType, param, source: this));
-                    }
-            }
-        }
-
-    }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
 
-    public static void ReloadScene()
-    {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public static void QuitGame()
-    {// save any game data here
-    #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-    #else
-        Application.Quit();
-    #endif
-    }
 }

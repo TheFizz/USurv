@@ -10,6 +10,12 @@ public enum StatModType
     PercentAdd = 200,
     PercentMult = 300,
 }
+public enum LevelState
+{
+    Active,
+    Ending,
+    Ended
+}
 
 public enum StatParam
 {

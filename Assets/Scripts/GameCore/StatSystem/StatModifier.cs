@@ -9,7 +9,7 @@ public class StatModifier
     public float Value;
     public StatModType Type;
     public StatParam Param;
-    public readonly int Order;
+    public int Order;
     public object Source;
 
     public StatModifier(float value, StatModType type, StatParam param, int order, object source)
@@ -49,7 +49,11 @@ public class StatModifier
     }
     private string StringifyParameter()
     {
-        return Param.ToString();
+        if (!Globals.ParamReference.ContainsKey(Param))
+            return Param.ToString();
+
+        var pRef = Globals.ParamReference[Param];
+        return pRef.Name;
     }
     public override string ToString()
     {
@@ -57,7 +61,7 @@ public class StatModifier
     }
     public string ToStringWithSource()
     {
-        return $"{StringifyAmount()} {StringifyParameter()} : {Source}";
+        return $"{StringifyAmount()} {StringifyParameter()} : {Source.ToString()}";
     }
     public string ToStringWithBreak()
     {
@@ -65,9 +69,11 @@ public class StatModifier
     }
     public Sprite GetSprite()
     {
-        if ((int)Param < Globals.StatModIconsSt.Count)
-            return Globals.StatModIconsSt[(int)Param];
-        else return null;
+        if (!Globals.ParamReference.ContainsKey(Param))
+            return null;
+
+        var pRef = Globals.ParamReference[Param];
+        return pRef.Image;
     }
     public void CombineWith(StatModifier stat)
     {
@@ -76,5 +82,10 @@ public class StatModifier
         if (stat.Type != Type)
             return;
         Value += stat.Value;
+    }
+    public void ValidateOrder()
+    {
+        if (Order == 0)
+            Order = (int)Type;
     }
 }

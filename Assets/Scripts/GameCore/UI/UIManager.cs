@@ -10,11 +10,17 @@ public class UIManager : MonoBehaviour
 {
     public GameObject LevelUpWindow;
 
+    public TextMeshProUGUI DeathToll;
+    public TextMeshProUGUI DeathGoal;
+
     public GameObject HpBar;
     public GameObject XpBar;
     public GameObject HeatBar;
 
     public TextMeshProUGUI DebugText;
+    public TextMeshProUGUI DebugTextAbl;
+    public TextMeshProUGUI DebugTextPlr;
+
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI LevelText;
     public TextMeshProUGUI SwapMode;
@@ -102,6 +108,9 @@ public class UIManager : MonoBehaviour
 
         _xpSlider.value = _pSystems.CurrentXP;
         CurXpText.text = _pSystems.CurrentXP.ToString("0.00");
+
+        DeathToll.text = Game.KillCount.ToString();
+        DeathGoal.text = Game.WinCondition.ToString();
     }
 
     public void SetupWeaponIcons(WeaponBase[] weaponQueue)
@@ -116,10 +125,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void LevelUp(int level, float threshold, List<StatModifier> perks)
+    public void LevelUp(int level, float threshold, List<GlobalUpgrade> upgrades)
     {
         Time.timeScale = 0;
         Globals.Input.SetInputEnabled(false);
+        Game.PlayerInMenu = true;
 
         LevelText.text = level.ToString();
         _xpSlider.maxValue = threshold;
@@ -129,12 +139,13 @@ public class UIManager : MonoBehaviour
         var rect = _levelupWindowInstance.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0, Screen.height / 4);
         var window = _levelupWindowInstance.GetComponent<LevelupModal>();
-        window.Show(perks);
+        window.Show(upgrades);
     }
     public void EndLevelup()
     {
         Time.timeScale = 1;
         Globals.Input.SetInputEnabled(true);
+        Game.PlayerInMenu = false;
 
         Destroy(_levelupWindowInstance);
     }
@@ -182,5 +193,15 @@ public class UIManager : MonoBehaviour
     public void WriteDebug(string text)
     {
         DebugText.text = text;
+
+    }
+    public void WriteDebugPlr(string text)
+    {
+        DebugTextPlr.text = text;
+
+    }
+    public void WriteDebugAbl(string text)
+    {
+        DebugTextAbl.text = text;
     }
 }

@@ -32,18 +32,7 @@ public class EndScreen : MonoBehaviour
         new Vector3(-0.268f, -0.218f,0),
         new Vector3(0.276f, -0.317f,0)
     };
-    private void Awake()
-    {
-        //tr = trail.GetComponent<TrailRenderer>();
-        //tr.enabled = false;
-    }
-    private void Update()
-    {
-       // if (Input.GetKeyDown("k"))
-       //     End();
-    }
-
-    public void End()
+    public void Play()
     {
         StartCoroutine(RecordFrame());
     }

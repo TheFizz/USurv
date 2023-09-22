@@ -13,6 +13,9 @@ public class PlayerSystems : MonoBehaviour
     const int PASSIVE = 1;
     const int ABILITY = 2;
 
+    [HideInInspector] public GlobalUpgradePathSO GlobalUpgradePath;
+    [SerializeField] private GlobalUpgradePathSO _defaultGlobalUpgradePath;
+
     [HideInInspector] public PlayerStatsSO PlayerStats;
     [SerializeField] private PlayerStatsSO _defaultPlayerStats;
 
@@ -40,7 +43,7 @@ public class PlayerSystems : MonoBehaviour
     private void Awake()
     {
         InstantiateSOs();
-
+        ValidateModsAndAssignSource();
         _heat = Globals.Heat;
         _input = Globals.Input;
         _uiManager = Globals.UIManager;
@@ -57,17 +60,42 @@ public class PlayerSystems : MonoBehaviour
         _uiManager.SetupWeaponIcons(_weapons);
 
         SetWeaponsSource();
-        ActivateTopWeapon();
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        _weapons[ACTIVE].StartAttack();
     }
     private void InstantiateSOs()
     {
         PlayerStats = Instantiate(_defaultPlayerStats);
+        GlobalUpgradePath = Instantiate(_defaultGlobalUpgradePath);
     }
     private void Update()
     {
+        string text = _weapons[ABILITY].WeaponAbility.AbilityName + "\n";
+        foreach (var stat in _weapons[ABILITY].WeaponAbility.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"# {mod}\n";
+            }
+        }
+        _uiManager.WriteDebugAbl(text);
+
+        text = "Player\n";
+        foreach (var stat in PlayerStats.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"# {mod}\n";
+            }
+        }
+        _uiManager.WriteDebugPlr(text);
+
 
         if (Input.GetKeyDown("k"))
-            _weapons[ABILITY].UpgradeToLevel(_weapons[ABILITY].WeaponLevel + 1);
+            //_weapons[ABILITY].UpgradeToLevel(_weapons[ABILITY].WeaponLevel + 1);
+            Game.Instance.NextLevel();
 
         Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
 
@@ -98,39 +126,37 @@ public class PlayerSystems : MonoBehaviour
     }
     private void LevelUp()
     {
-        List<StatModifier> perks = new List<StatModifier>();
-        for (int i = 0; i < _perksPerLevel; i++)
+        List<StatParam> randomParams = new List<StatParam>();
+        while (randomParams.Count < _perksPerLevel)
         {
-            var idx = Random.Range(0, Globals.AvailablePerks.Count - 1);
-            var perk = Globals.AvailablePerks[idx];
-            perks.Add(perk);
-            Globals.AvailablePerks.RemoveAt(idx);
+            var idx = Random.Range(0, GlobalUpgradePath.Upgrades.Count);
+            if (randomParams.Contains(GlobalUpgradePath.Upgrades[idx].UpgradeParam))
+                continue;
+            randomParams.Add(GlobalUpgradePath.Upgrades[idx].UpgradeParam);
         }
-        _uiManager.LevelUp(_currentLevel, _xpThreshold, perks);
+
+        List<GlobalUpgrade> randomUpgrades = new List<GlobalUpgrade>();
+        foreach (var param in randomParams)
+        {
+            randomUpgrades.Add(GlobalUpgradePath.Upgrades.Find(x => x.UpgradeParam == param));
+        }
+
+        _uiManager.LevelUp(_currentLevel, _xpThreshold, randomUpgrades);
     }
     public void AddGlobalMod(StatModifier mod)
     {
         _globalMods.Add(mod);
         _uiManager.EndLevelup();
-
-        if (Globals.PlayerParams.Contains(mod.Param))
+        foreach (var wpn in _weapons)
         {
-            var stat = PlayerStats.GetStat(mod.Param);
-            if (stat != null)
-                stat.AddModifier(mod);
+            wpn.ApplyModifiers(new List<StatModifier>() { mod });
         }
-        if (Globals.WeaponParams.Contains(mod.Param))
-        {
-            foreach (var wpn in _weapons)
-            {
-                wpn.ApplyModifiers(new List<StatModifier>() { mod });
-            }
-            _weapons[ACTIVE].RestartAttack();
-        }
+        _weapons[ACTIVE].RestartAttack();
+        PlayerStats.GetStat(mod.Param)?.AddModifier(mod);
     }
     public void PlayerDeath()
     {
-        _endScreen.End();
+        Game.PlayerDeath();
     }
 
     #region Weapons
@@ -139,14 +165,6 @@ public class PlayerSystems : MonoBehaviour
         foreach (var weapon in _weapons)
         {
             weapon.SetSource(_attackSource.transform);
-        }
-    }
-    void ActivateTopWeapon(bool modAndStart = true)
-    {
-        if (modAndStart)
-        {
-            _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-            _weapons[ACTIVE].StartAttack();
         }
     }
     private void SwapRotate()
@@ -162,7 +180,8 @@ public class PlayerSystems : MonoBehaviour
             _weapons[i] = _weapons[i + 1];
         }
         _weapons[_weapons.Length - 1] = first;
-        ActivateTopWeapon();
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        _weapons[ACTIVE].StartAttack();
     }
     private void SwapSlots(int idxA, int idxB)
     {
@@ -178,12 +197,23 @@ public class PlayerSystems : MonoBehaviour
         _weapons[idxB] = tmp;
 
         _uiManager.Swap2Anim(idxA, idxB, _weapons);
-
-        ActivateTopWeapon((idxA == 0 || idxB == 0));
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        if (idxA == 0 || idxB == 0)
+        {
+            _weapons[ACTIVE].StartAttack();
+        }
     }
-    public void UpdateMaxHealthUI()
+    private void ValidateModsAndAssignSource()
     {
-
+        foreach (var upgrade in GlobalUpgradePath.Upgrades)
+        {
+            foreach (var mod in upgrade.Modifiers)
+            {
+                mod.Source = this;
+                mod.Param = upgrade.UpgradeParam;
+                mod.ValidateOrder();
+            }
+        }
     }
     #endregion
 }

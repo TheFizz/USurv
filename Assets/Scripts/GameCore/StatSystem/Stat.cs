@@ -83,6 +83,9 @@ public class Stat
 
     protected virtual int CompareModifierOrder(StatModifier a, StatModifier b)
     {
+        a.ValidateOrder();
+        b.ValidateOrder();
+
         if (a.Order < b.Order)
             return -1;
         else if (a.Order > b.Order)

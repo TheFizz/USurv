@@ -35,7 +35,7 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Awake()
     {
         InstantiateSOs();
-        AssignModSource();
+        ValidateModsAndAssignSource();
         WeaponLevel = 0;
         Heat = Globals.Heat;
         AbilityState = AbilityState.Ready;
@@ -53,25 +53,29 @@ public abstract class WeaponBase : MonoBehaviour
         _ui = Globals.UIManager;
     }
 
-    private void AssignModSource()
+    private void ValidateModsAndAssignSource()
     {
         foreach (var mod in WeaponData.PassiveModifiers)
         {
             mod.Source = this;
+            mod.ValidateOrder();
         }
         foreach (var upgrade in WeaponData.UpgradePath)
         {
             foreach (var mod in upgrade.AbilityStatMods)
             {
                 mod.Source = this;
+                mod.ValidateOrder();
             }
             foreach (var mod in upgrade.PassiveStatMods)
             {
                 mod.Source = this;
+                mod.ValidateOrder();
             }
             foreach (var mod in upgrade.SelfStatMods)
             {
                 mod.Source = this;
+                mod.ValidateOrder();
             }
 
         }
@@ -81,13 +85,6 @@ public abstract class WeaponBase : MonoBehaviour
     {
         WeaponData = Instantiate(_defaultWeaponData);
         WeaponAbility = Instantiate(_defaultWeaponAbility);
-
-        List<WeaponUpgradeSO> upgrades = new List<WeaponUpgradeSO>();
-        foreach (var upgrade in _defaultWeaponData.UpgradePath)
-        {
-            //upgrades.Add(Instantiate(upgrade));
-        }
-        // WeaponData.UpgradePath = upgrades;
     }
 
     protected virtual void Update()
@@ -99,21 +96,13 @@ public abstract class WeaponBase : MonoBehaviour
 
     private void ShowDebugText()
     {
-        string text = "";
+        string text = WeaponData.WeaponName+"\n";
         foreach (var stat in WeaponData.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";
             foreach (var mod in stat.StatModifiers)
             {
                 text += $"# {mod}\n";
-            }
-        }
-        foreach (var stat in WeaponAbility.Stats)
-        {
-            text += $"ABL {stat.Parameter}: {stat.Value}\n";
-            foreach (var mod in stat.StatModifiers)
-            {
-                text += $"ABL # {mod}\n";
             }
         }
         _ui.WriteDebug(text);
@@ -179,7 +168,7 @@ public abstract class WeaponBase : MonoBehaviour
         foreach (var mod in mods)
         {
             WeaponData.GetStat(mod.Param)?.AddModifier(mod);
-            //Debug.Log($"Applied {mod} to {WeaponData.WeaponName}");
+            WeaponAbility.GetStat(mod.Param)?.AddModifier(mod);
         }
     }
     public virtual void ClearSourcedModifiers(object source)
@@ -188,7 +177,6 @@ public abstract class WeaponBase : MonoBehaviour
         {
             stat.RemoveAllModifiersFromSource(source);
         }
-        //Debug.Log($"Removed local mods from {WeaponData.WeaponName}");
     }
     private void HandleAbilityCooldown()
     {
@@ -228,25 +216,52 @@ public abstract class WeaponBase : MonoBehaviour
         foreach (var upgradeMod in upgrade.SelfStatMods)
         {
             var stat = WeaponData.GetStat(upgradeMod.Param);
+            if (stat == null)
+                continue;
+            stat.AddModifier(upgradeMod);
+        }
+
+        foreach (var upgradeMod in upgrade.AbilityStatMods)
+        {
+            var stat = WeaponAbility.GetStat(upgradeMod.Param);
+            if (stat == null)
+                continue;
+            stat.AddModifier(upgradeMod);
+        }
+
+        foreach (var upgradeMod in upgrade.PassiveStatMods)
+        {
+            var passiveMod = WeaponData.PassiveModifiers.Find(x => x.Param == upgradeMod.Param);
+            WeaponData.PassiveModifiers.Add(upgradeMod);
+        }
+        WeaponLevel++;
+    }
+    public virtual void UpgradeToLevelOld(int level)
+    {
+        var upgrade = WeaponData.UpgradePath.Find(x => x.UpgradeNumber == level);
+
+        foreach (var upgradeMod in upgrade.SelfStatMods)
+        {
+            var stat = WeaponData.GetStat(upgradeMod.Param);
 
             if (stat == null)
                 continue;
 
-            var statMods = stat.GetStatModifiersFromSource(this);
-            if (statMods.Count > 0)
-                foreach (var statMod in statMods)
-                {
-                    if (statMod.Type == upgradeMod.Type)
-                    {
-                        stat.RemoveModifier(statMod);
-                        statMod.CombineWith(upgradeMod);
-                        stat.AddModifier(statMod);
-                    }
-                    else
-                        stat.AddModifier(upgradeMod);
-                }
-            else
-                stat.AddModifier(upgradeMod);
+            //var statMods = stat.GetStatModifiersFromSource(this);
+            //if (statMods.Count > 0)
+            //    foreach (var statMod in statMods)
+            //    {
+            //        if (statMod.Type == upgradeMod.Type)
+            //        {
+            //            stat.RemoveModifier(statMod);
+            //            statMod.CombineWith(upgradeMod);
+            //            stat.AddModifier(statMod);
+            //        }
+            //        else
+            //            stat.AddModifier(upgradeMod);
+            //    }
+            //else
+            stat.AddModifier(upgradeMod);
         }
 
         foreach (var upgradeMod in upgrade.AbilityStatMods)
@@ -256,34 +271,36 @@ public abstract class WeaponBase : MonoBehaviour
             if (stat == null)
                 continue;
 
-            var statMods = stat.GetStatModifiersFromSource(this);
-            if (statMods.Count > 0)
-                foreach (var statMod in statMods)
-                {
-                    if (statMod.Type == upgradeMod.Type)
-                    {
-                        stat.RemoveModifier(statMod);
-                        statMod.CombineWith(upgradeMod);
-                        stat.AddModifier(statMod);
-                    }
-                    else
-                        stat.AddModifier(upgradeMod);
-                }
-            else
-                stat.AddModifier(upgradeMod);
+            //var statMods = stat.GetStatModifiersFromSource(this);
+            //if (statMods.Count > 0)
+            //    foreach (var statMod in statMods)
+            //    {
+            //        if (statMod.Type == upgradeMod.Type)
+            //        {
+            //            stat.RemoveModifier(statMod);
+            //            statMod.CombineWith(upgradeMod);
+            //            stat.AddModifier(statMod);
+            //        }
+            //        else
+            //            stat.AddModifier(upgradeMod);
+            //    }
+            //else
+            stat.AddModifier(upgradeMod);
         }
 
         foreach (var upgradeMod in upgrade.PassiveStatMods)
         {
             var passiveMod = WeaponData.PassiveModifiers.Find(x => x.Param == upgradeMod.Param);
 
-            if (passiveMod == null)
-                WeaponData.PassiveModifiers.Add(upgradeMod);
-            else
-            {
-                passiveMod.CombineWith(upgradeMod);
+            WeaponData.PassiveModifiers.Add(upgradeMod);
 
-            }
+            //if (passiveMod == null)
+            //    WeaponData.PassiveModifiers.Add(upgradeMod);
+            //else
+            //{
+            //    passiveMod.CombineWith(upgradeMod);
+
+            //}
         }
         WeaponLevel++;
     }
