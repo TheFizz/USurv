@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     public static LevelState State = LevelState.Active;
 
     private static EndScreen _endScreen;
+    public bool UnlimitedPlay;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,6 +30,9 @@ public class Game : MonoBehaviour
     }
     public void Update()
     {
+        if (Instance.UnlimitedPlay)
+            return;
+
         if (State == LevelState.Active && KillCount >= WinCondition)
         {
             KillCount = WinCondition;

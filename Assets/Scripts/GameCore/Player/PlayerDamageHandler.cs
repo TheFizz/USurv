@@ -29,7 +29,10 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
     }
     void Update()
     {
+        var pHealth = MaxHealth;
         MaxHealth = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
+        if (MaxHealth > pHealth)
+            CurrentHealth += MaxHealth - pHealth;
     }
 
     public void Damage(float damageAmount, string attackerID, bool overrideITime = false)

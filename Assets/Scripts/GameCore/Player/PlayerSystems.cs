@@ -28,10 +28,9 @@ public class PlayerSystems : MonoBehaviour
     [HideInInspector] public float CurrentXP = 0;
     private float _xpThreshold;
     private float _xpThresholdMultipltier;
-    private int _perksPerLevel = 3;
+    private int _upgradesPerLevel = 3;
     private int _currentLevel = 1;
 
-    //[HideInInspector] public PlayerDamageHandler DmgHandler;
     private List<StatModifier> _globalMods = new List<StatModifier>();
     private InputHandler _input;
     private HeatSystem _heat;
@@ -47,7 +46,6 @@ public class PlayerSystems : MonoBehaviour
         _heat = Globals.Heat;
         _input = Globals.Input;
         _uiManager = Globals.UIManager;
-        //DmgHandler = Globals.DmgHandler;
 
         _xpThreshold = PlayerStats.XPThresholdBase;
         _xpThresholdMultipltier = PlayerStats.XPThresholdMultiplier;
@@ -127,7 +125,7 @@ public class PlayerSystems : MonoBehaviour
     private void LevelUp()
     {
         List<StatParam> randomParams = new List<StatParam>();
-        while (randomParams.Count < _perksPerLevel)
+        while (randomParams.Count < _upgradesPerLevel)
         {
             var idx = Random.Range(0, GlobalUpgradePath.Upgrades.Count);
             if (randomParams.Contains(GlobalUpgradePath.Upgrades[idx].UpgradeParam))
