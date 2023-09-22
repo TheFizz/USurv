@@ -9,7 +9,7 @@ public class StatModifier
     public float Value;
     public StatModType Type;
     public StatParam Param;
-    public int Order;
+    [HideInInspector] public int Order;
     public object Source;
 
     public StatModifier(float value, StatModType type, StatParam param, int order, object source)

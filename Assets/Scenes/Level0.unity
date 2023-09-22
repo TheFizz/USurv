@@ -617,8 +617,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1535774021}
-        m_TargetAssemblyTypeName: Globals, Assembly-CSharp
+      - m_Target: {fileID: 1535774025}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -4329,8 +4329,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1535774021}
-        m_TargetAssemblyTypeName: Globals, Assembly-CSharp
+      - m_Target: {fileID: 1535774025}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
         m_MethodName: ReloadScene
         m_Mode: 1
         m_Arguments:
