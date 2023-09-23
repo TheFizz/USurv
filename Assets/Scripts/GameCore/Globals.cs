@@ -61,8 +61,8 @@ public class Globals : MonoBehaviour
             {StatParam.PlayerMaxHealth, new ParameterInfo("Max Health", "HP") },
             //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") }, //HPR
             {StatParam.PlayerMoveSpeed, new ParameterInfo("Move Speed", "MSPD") },
-            {StatParam.PickupRange, new ParameterInfo("Pickup Range", "PRNG") }
-            //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") },//XP Rate
+            {StatParam.PickupRange, new ParameterInfo("Pickup Range", "PRNG") },
+            {StatParam.AttackRange, new ParameterInfo("Attack Range", "RNG") }
         };
     }
     public static float GetLargestValue(Vector3 v3, bool omitY = false)

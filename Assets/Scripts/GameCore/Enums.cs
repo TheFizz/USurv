@@ -13,10 +13,17 @@ public enum StatModType
 public enum LevelState
 {
     Active,
-    Ending,
-    Ended
+    EndingEnemy,
+    EndingXP,
+    RewardSpawned,
+    PortalSpawned
 }
 
+public enum InteractionType
+{
+    Take,
+    Consume
+}
 public enum StatParam
 {
     AttackSpeed = 0,

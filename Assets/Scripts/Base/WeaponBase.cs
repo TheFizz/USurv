@@ -36,6 +36,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         InstantiateSOs();
         ValidateModsAndAssignSource();
+        gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
         Heat = Globals.Heat;
         AbilityState = AbilityState.Ready;
@@ -96,7 +97,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     private void ShowDebugText()
     {
-        string text = WeaponData.WeaponName+"\n";
+        string text = WeaponData.WeaponName + "\n";
         foreach (var stat in WeaponData.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";

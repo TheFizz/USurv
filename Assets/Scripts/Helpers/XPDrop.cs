@@ -25,6 +25,8 @@ public class XPDrop : MonoBehaviour
 
     private Material _mat;
 
+    public DropAnimator Animator;
+
     TweenerCore<Vector3, Vector3, VectorOptions> _hoverTween;
     TweenerCore<Vector3, Vector3, VectorOptions> _inBounce;
     TweenerCore<Quaternion, Vector3, QuaternionOptions> _rotateTween;
@@ -38,6 +40,7 @@ public class XPDrop : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        _myTransform = transform;
         _mat = GetComponentInChildren<MeshRenderer>().material;
         ID = Globals.GenerateId();
         XpValue = Random.Range(0.5f, 1.5f);
@@ -54,21 +57,7 @@ public class XPDrop : MonoBehaviour
             _mat.SetColor("_Gradient_Bottom", _gradients[TEAL].Item2);
             _mat.SetColor("_Flaps_color", _gradients[TEAL].Item3);
         }
-
-        float loopTime = Random.Range(1f, 2f);
-        bool ccwRotation = Random.Range(0, 2) == 1;
-        float rotationDegrees = 90;
-
-        if (ccwRotation)
-            rotationDegrees *= -1;
-
-        _myTransform = GetComponent<Transform>();
-
-        _hoverTween = _myTransform.DOMoveY(0.2f, loopTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-        _rotateTween = _myTransform.DOLocalRotate(new Vector3(0, rotationDegrees, 0), loopTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
-
         gameObject.name = $"XPDrop<{ID}>";
-
         Globals.XPDropsPool.Add(ID, this);
     }
     private void Update()
@@ -89,21 +78,5 @@ public class XPDrop : MonoBehaviour
 
         _target = target;
         _speed = _minSpeed;
-    }
-    public void Destroy()
-    {
-        _hoverTween.Kill();
-        _rotateTween.Kill();
-
-        _inBounce = _myTransform.DOScale(0, 0.1f).SetEase(Ease.OutBounce).OnComplete(() =>
-         {
-             Globals.XPDropsPool.Remove(ID);
-             Destroy(gameObject);
-         }
-        );
-    }
-    private void OnDestroy()
-    {
-        _inBounce.Kill();
     }
 }

@@ -8,12 +8,15 @@ public class Game : MonoBehaviour
     public static bool PlayerInMenu = false;
     public static Game Instance;
 
-    public static int WinCondition;
-    public static int KillCount = 0;
-    public static LevelState State = LevelState.Active;
+    public int WinCondition;
+    public int KillCount = 0;
+    public LevelState State = LevelState.Active;
 
     private static EndScreen _endScreen;
     public bool UnlimitedPlay;
+    public GameObject Reward;
+    public GameObject Portal;
+    public bool RewardTaken = false;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,9 +26,7 @@ public class Game : MonoBehaviour
             return;
         }
         WinCondition = Random.Range(200, 400);
-        //WinCondition = 50;
         _endScreen = GetComponent<EndScreen>();
-        //Debug.Log(WinCondition);
         Instance = this;
     }
     public void Update()
@@ -38,16 +39,28 @@ public class Game : MonoBehaviour
             KillCount = WinCondition;
             NextLevel();
         }
-        if (State == LevelState.Ending && Globals.XPDropsPool.Count < 1)
+        if (State == LevelState.EndingXP && Globals.XPDropsPool.Count < 1)
         {
-            State = LevelState.Ended;
             SpawnReward();
+            State = LevelState.RewardSpawned;
         }
+        if (State == LevelState.RewardSpawned && RewardTaken)
+        {
+            SpawnPortal();
+            State = LevelState.PortalSpawned;
+        }
+    }
+
+    private void SpawnPortal()
+    {
+        var i = Instantiate(Portal);
+        i.transform.position = new Vector3(0, 0, 0);
     }
 
     private void SpawnReward()
     {
-        Debug.Log("Reward");
+        var i = Instantiate(Reward);
+        i.transform.position = new Vector3(0, 0, 5);
     }
 
     public static void PlayerDeath()
@@ -60,7 +73,8 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public static void QuitGame()
-    {// save any game data here
+    {
+        // save any game data here
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -71,12 +85,12 @@ public class Game : MonoBehaviour
     public void NextLevel()
     {
         Globals.Spawner.StopSpawn();
-        State = LevelState.Ending;
         StartCoroutine(KillEnemies());
     }
 
     IEnumerator KillEnemies()
     {
+        State = LevelState.EndingEnemy;
         yield return new WaitForSeconds(.2f);
         foreach (var enemy in Globals.EnemyPool.Values)
         {
@@ -92,5 +106,6 @@ public class Game : MonoBehaviour
         {
             xp.Attract(Globals.PlayerTransform);
         }
+        State = LevelState.EndingXP;
     }
 }

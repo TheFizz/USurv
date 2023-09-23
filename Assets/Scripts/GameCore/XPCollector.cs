@@ -22,8 +22,8 @@ public class XPCollector : MonoBehaviour
         Collider[] hitDrops = Physics.OverlapSphere(_myTransform.position, range, _targetLayer);
         foreach (var hit in hitDrops)
         {
-            var drop = hit.GetComponent<XPDrop>();
-            drop.Attract(_myTransform);
+            string id = hit.name.Split('<')[1].Replace(">", "");
+            Globals.XPDropsPool[id].Attract(_myTransform);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -35,6 +35,8 @@ public class XPCollector : MonoBehaviour
         string id = other.name.Split('<')[1].Replace(">", "");
 
         _pSystems.AddXP(Globals.XPDropsPool[id].XpValue);
-        Globals.XPDropsPool[id].Destroy();
+        Globals.XPDropsPool[id].Animator.Destroy();
+        Globals.XPDropsPool.Remove(id);
+        Destroy(other.gameObject);
     }
 }

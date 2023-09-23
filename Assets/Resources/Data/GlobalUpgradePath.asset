@@ -19,213 +19,347 @@ MonoBehaviour:
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
     - Value: 10
       Type: 100
       Param: 5
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 8
     Modifiers:
     - Value: 10
       Type: 100
       Param: 8
+      Order: 0
     - Value: 10
       Type: 100
       Param: 8
+      Order: 0
     - Value: 8
       Type: 100
       Param: 8
+      Order: 0
     - Value: 8
       Type: 100
       Param: 8
+      Order: 0
     - Value: 5
       Type: 100
       Param: 8
+      Order: 0
     - Value: 5
       Type: 100
       Param: 8
+      Order: 0
     - Value: 3
       Type: 100
       Param: 8
+      Order: 0
     - Value: 3
       Type: 100
       Param: 8
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 12
     Modifiers:
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
     - Value: 20
       Type: 200
       Param: 12
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 4
     Modifiers:
     - Value: 10
       Type: 200
       Param: 4
+      Order: 0
     - Value: 10
       Type: 200
       Param: 4
+      Order: 0
     - Value: 8
       Type: 200
       Param: 4
+      Order: 0
     - Value: 8
       Type: 200
       Param: 4
+      Order: 0
     - Value: 5
       Type: 200
       Param: 4
+      Order: 0
     - Value: 5
       Type: 200
       Param: 4
+      Order: 0
     - Value: 3
       Type: 200
       Param: 4
+      Order: 0
     - Value: 3
       Type: 200
       Param: 4
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 0
     Modifiers:
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
     - Value: 15
       Type: 200
       Param: 0
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 2
     Modifiers:
     - Value: 15
       Type: 200
       Param: 2
+      Order: 0
     - Value: 12
       Type: 200
       Param: 2
+      Order: 0
     - Value: 10
       Type: 200
       Param: 2
+      Order: 0
     - Value: 8
       Type: 200
       Param: 2
+      Order: 0
     - Value: 6
       Type: 200
       Param: 2
+      Order: 0
     - Value: 5
       Type: 200
       Param: 2
+      Order: 0
     - Value: 5
       Type: 200
       Param: 2
+      Order: 0
     - Value: 5
       Type: 200
       Param: 2
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 1
     Modifiers:
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
     - Value: 10
       Type: 200
       Param: 1
+      Order: 0
   - UpgradeNumber: 0
     UpgradeParam: 10
     Modifiers:
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
     - Value: 10
       Type: 200
       Param: 10
+      Order: 0
+  - UpgradeNumber: 0
+    UpgradeParam: 3
+    Modifiers:
+    - Value: 15
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 12
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 10
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 8
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 6
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 5
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 5
+      Type: 200
+      Param: 3
+      Order: 0
+    - Value: 5
+      Type: 200
+      Param: 3
+      Order: 0
+  - UpgradeNumber: 0
+    UpgradeParam: 1
+    Modifiers:
+    - Value: 3
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 3
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 2
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 2
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 2
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 1
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 1
+      Type: 100
+      Param: 1
+      Order: 0
+    - Value: 1
+      Type: 100
+      Param: 1
+      Order: 0

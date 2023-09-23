@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
+    static bool isNew = true;
     const int ACTIVE = 0;
     const int PASSIVE = 1;
     const int ABILITY = 2;
@@ -23,7 +24,7 @@ public class PlayerSystems : MonoBehaviour
     [SerializeField] private GameObject _attackSource;
 
     [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
-    private WeaponBase[] _weapons = new WeaponBase[3];
+    [HideInInspector] public WeaponBase[] Weapons = new WeaponBase[3];
 
     [HideInInspector] public float CurrentXP = 0;
     private float _xpThreshold;
@@ -41,6 +42,9 @@ public class PlayerSystems : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        if (!isNew)
+            return;
+        isNew = true;
         InstantiateSOs();
         ValidateModsAndAssignSource();
         _heat = Globals.Heat;
@@ -53,14 +57,15 @@ public class PlayerSystems : MonoBehaviour
         for (int i = 0; i < _weaponQueue.Length; i++)
         {
             var go = _weaponQueue[i] = Instantiate(_weaponQueue[i]);
-            _weapons[i] = go.GetComponent<WeaponBase>();
+            Weapons[i] = go.GetComponent<WeaponBase>();
         }
-        _uiManager.SetupWeaponIcons(_weapons);
+        _uiManager.SetupWeaponIcons(Weapons);
 
         SetWeaponsSource();
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-        _weapons[ACTIVE].StartAttack();
+        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
+        Weapons[ACTIVE].StartAttack();
     }
+
     private void InstantiateSOs()
     {
         PlayerStats = Instantiate(_defaultPlayerStats);
@@ -68,8 +73,8 @@ public class PlayerSystems : MonoBehaviour
     }
     private void Update()
     {
-        string text = _weapons[ABILITY].WeaponAbility.AbilityName + "\n";
-        foreach (var stat in _weapons[ABILITY].WeaponAbility.Stats)
+        string text = Weapons[ABILITY].WeaponAbility.AbilityName + "\n";
+        foreach (var stat in Weapons[ABILITY].WeaponAbility.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";
             foreach (var mod in stat.StatModifiers)
@@ -92,7 +97,6 @@ public class PlayerSystems : MonoBehaviour
 
 
         if (Input.GetKeyDown("k"))
-            //_weapons[ABILITY].UpgradeToLevel(_weapons[ABILITY].WeaponLevel + 1);
             Game.Instance.NextLevel();
 
         Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
@@ -107,7 +111,7 @@ public class PlayerSystems : MonoBehaviour
             SwapSlots(1, 2);
 
         if (_input.UseAbility)
-            _weapons[ABILITY].UseAbility();
+            Weapons[ABILITY].UseAbility();
     }
 
     public void AddXP(float xpValue)
@@ -144,12 +148,12 @@ public class PlayerSystems : MonoBehaviour
     public void AddGlobalMod(StatModifier mod)
     {
         _globalMods.Add(mod);
-        _uiManager.EndLevelup();
-        foreach (var wpn in _weapons)
+        _uiManager.EndWindow();
+        foreach (var wpn in Weapons)
         {
             wpn.ApplyModifiers(new List<StatModifier>() { mod });
         }
-        _weapons[ACTIVE].RestartAttack();
+        Weapons[ACTIVE].RestartAttack();
         PlayerStats.GetStat(mod.Param)?.AddModifier(mod);
     }
     public void PlayerDeath()
@@ -160,7 +164,7 @@ public class PlayerSystems : MonoBehaviour
     #region Weapons
     private void SetWeaponsSource()
     {
-        foreach (var weapon in _weapons)
+        foreach (var weapon in Weapons)
         {
             weapon.SetSource(_attackSource.transform);
         }
@@ -168,37 +172,37 @@ public class PlayerSystems : MonoBehaviour
     private void SwapRotate()
     {
         _heat.StartCooldown();
-        _weapons[ACTIVE].StopAttack();
-        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
-        _uiManager.SwapAllAnim(_weapons);
+        Weapons[ACTIVE].StopAttack();
+        Weapons[ACTIVE].ClearSourcedModifiers(Weapons[PASSIVE]);
+        _uiManager.SwapAllAnim(Weapons);
 
-        var first = _weapons[0];
-        for (int i = 0; i < _weapons.Length - 1; i++)
+        var first = Weapons[0];
+        for (int i = 0; i < Weapons.Length - 1; i++)
         {
-            _weapons[i] = _weapons[i + 1];
+            Weapons[i] = Weapons[i + 1];
         }
-        _weapons[_weapons.Length - 1] = first;
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-        _weapons[ACTIVE].StartAttack();
+        Weapons[Weapons.Length - 1] = first;
+        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
+        Weapons[ACTIVE].StartAttack();
     }
     private void SwapSlots(int idxA, int idxB)
     {
         if (idxA == 0 || idxB == 0)
         {
             _heat.StartCooldown();
-            _weapons[ACTIVE].StopAttack();
+            Weapons[ACTIVE].StopAttack();
         }
-        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
+        Weapons[ACTIVE].ClearSourcedModifiers(Weapons[PASSIVE]);
 
-        var tmp = _weapons[idxA];
-        _weapons[idxA] = _weapons[idxB];
-        _weapons[idxB] = tmp;
+        var tmp = Weapons[idxA];
+        Weapons[idxA] = Weapons[idxB];
+        Weapons[idxB] = tmp;
 
-        _uiManager.Swap2Anim(idxA, idxB, _weapons);
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        _uiManager.Swap2Anim(idxA, idxB, Weapons);
+        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
         if (idxA == 0 || idxB == 0)
         {
-            _weapons[ACTIVE].StartAttack();
+            Weapons[ACTIVE].StartAttack();
         }
     }
     private void ValidateModsAndAssignSource()
@@ -212,6 +216,16 @@ public class PlayerSystems : MonoBehaviour
                 mod.ValidateOrder();
             }
         }
+    }
+
+    public List<string> GetWeaponNames()
+    {
+        return new List<string>
+        {
+            Weapons[ACTIVE].WeaponData.WeaponName,
+            Weapons[PASSIVE].WeaponData.WeaponName,
+            Weapons[ABILITY].WeaponData.WeaponName,
+        };
     }
     #endregion
 }

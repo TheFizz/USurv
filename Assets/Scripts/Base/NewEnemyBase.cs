@@ -20,7 +20,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     private Vector3 _target;
     private Color _baseColor;
     private Renderer _renderer;
-    private GameObject _damageText;
+    [SerializeField] private GameObject _damageText;
     private Transform _playerTransform;
     private Dictionary<AilmentType, Tuple<float, float>> _ailments = new Dictionary<AilmentType, Tuple<float, float>>();
 
@@ -36,7 +36,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
         _playerTransform = Globals.PlayerTransform;
-        _damageText = (GameObject)Resources.Load("Prefabs/Service/DamageText");
         Globals.EnemyPool.Add(ID, this);
     }
     void Update()
@@ -115,7 +114,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         Instantiate(DropOnDeath, pos, Quaternion.identity);
         Globals.EnemyPool.Remove(ID);
         Destroy(gameObject);
-        Game.KillCount++;
+        Game.Instance.KillCount++;
     }
     public void Kill()
     {

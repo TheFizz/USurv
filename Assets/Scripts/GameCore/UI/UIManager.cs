@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-
+using System;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject LevelUpWindow;
+    public GameObject WIWindow;
+    public GameObject InteractionContainer;
+    public GameObject InteractionText;
 
     public TextMeshProUGUI DeathToll;
     public TextMeshProUGUI DeathGoal;
@@ -37,7 +40,7 @@ public class UIManager : MonoBehaviour
     private Slider _hpSlider;
     private Slider _xpSlider;
     private Slider _heatSlider;
-    private GameObject _levelupWindowInstance;
+    private GameObject _windowInstance;
 
     private Color _heatColorDefault = new Color32(252, 140, 3, 255);
     private Color _heatColorCooling = new Color32(47, 128, 204, 255);
@@ -81,6 +84,25 @@ public class UIManager : MonoBehaviour
         MaxXpText.text = _pSystems.PlayerStats.XPThresholdBase.ToString("0.00");
 
     }
+
+    public void ShowInteraction(List<Tuple<KeyCode, InteractionType>> options, string name = null)
+    {
+        if (options == null)
+        {
+            foreach (Transform child in InteractionContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            return;
+        }
+        foreach (var option in options)
+        {
+            var pf = Instantiate(InteractionText);
+            pf.GetComponent<TextMeshProUGUI>().text = $"[{option.Item1}] {option.Item2} {name}";
+            pf.transform.SetParent(InteractionContainer.transform, false);
+        }
+    }
+
     private void Update()
     {
         switch (_heat.GetHeatStatus())
@@ -109,8 +131,8 @@ public class UIManager : MonoBehaviour
         _xpSlider.value = _pSystems.CurrentXP;
         CurXpText.text = _pSystems.CurrentXP.ToString("0.00");
 
-        DeathToll.text = Game.KillCount.ToString();
-        DeathGoal.text = Game.WinCondition.ToString();
+        DeathToll.text = Game.Instance.KillCount.ToString();
+        DeathGoal.text = Game.Instance.WinCondition.ToString();
     }
 
     public void SetupWeaponIcons(WeaponBase[] weaponQueue)
@@ -135,19 +157,33 @@ public class UIManager : MonoBehaviour
         _xpSlider.maxValue = threshold;
         MaxXpText.text = threshold.ToString("0.00");
 
-        _levelupWindowInstance = Instantiate(LevelUpWindow, GameUI.transform);
-        var rect = _levelupWindowInstance.GetComponent<RectTransform>();
+        _windowInstance = Instantiate(LevelUpWindow, GameUI.transform);
+        var rect = _windowInstance.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0, Screen.height / 4);
-        var window = _levelupWindowInstance.GetComponent<LevelupModal>();
-        window.Show(upgrades);
+        var window = _windowInstance.GetComponent<LevelupModal>();
+        window.ShowUpgrades(upgrades);
     }
-    public void EndLevelup()
+    public void WeaponInteraction(InteractionType type, string pickupName)
+    {
+        ShowInteraction(null);
+        Time.timeScale = 0;
+        Globals.Input.SetInputEnabled(false);
+        Game.PlayerInMenu = true;
+
+        _windowInstance = Instantiate(WIWindow, GameUI.transform);
+        var rect = _windowInstance.GetComponent<RectTransform>();
+        rect.anchoredPosition = new Vector2(0, Screen.height / 4);
+        var window = _windowInstance.GetComponent<LevelupModal>();
+        window.ShowWeapons(new List<WeaponBase>(_pSystems.Weapons), type, pickupName);
+    }
+
+    public void EndWindow()
     {
         Time.timeScale = 1;
         Globals.Input.SetInputEnabled(true);
         Game.PlayerInMenu = false;
 
-        Destroy(_levelupWindowInstance);
+        Destroy(_windowInstance);
     }
     public void SwapAllAnim(WeaponBase[] weaponQueue)
     {

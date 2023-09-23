@@ -49,6 +49,7 @@ public class EndScreen : MonoBehaviour
     {
         var lines = DeathLines.text.Split('\n');
         var line = lines[Random.Range(0, lines.Length)];
+        //line = lines[8];
         GameUI.SetActive(false);
         DeathText.text = line;
         camPivot.GetComponent<CameraFollow>().enabled = false;
@@ -80,7 +81,6 @@ public class EndScreen : MonoBehaviour
                 }
                 );
         trailSeq.Play();
-
 
     }
     void StopGame()
