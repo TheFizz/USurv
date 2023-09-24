@@ -9,7 +9,13 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
-    static bool isNew = true;
+
+    public event LevelUpHandler OnLevelUp;
+    public event XpChangedHandler OnXpChanged;
+    public event WeaponPickupHandler OnWeaponPickup;
+    public event WeaponIconsHandler OnWeaponIconAction;
+    public event DebugTextHandler OnDebugText;
+
     const int ACTIVE = 0;
     const int PASSIVE = 1;
     const int ABILITY = 2;
@@ -17,117 +23,139 @@ public class PlayerSystems : MonoBehaviour
     [HideInInspector] public GlobalUpgradePathSO GlobalUpgradePath;
     [SerializeField] private GlobalUpgradePathSO _defaultGlobalUpgradePath;
 
-    [HideInInspector] public PlayerStatsSO PlayerStats;
-    [SerializeField] private PlayerStatsSO _defaultPlayerStats;
+    [HideInInspector] public PlayerStatsSO PlayerData;
+    [SerializeField] private PlayerStatsSO _defaultPlayerData;
 
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private GameObject _attackSource;
 
     [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
-    [HideInInspector] public WeaponBase[] Weapons = new WeaponBase[3];
+    [HideInInspector] private List<WeaponBase> _weapons = new List<WeaponBase>(new WeaponBase[3]);
 
-    [HideInInspector] public float CurrentXP = 0;
-    private float _xpThreshold;
-    private float _xpThresholdMultipltier;
+    private float _currentXP = 0;
     private int _upgradesPerLevel = 3;
     private int _currentLevel = 1;
 
     private List<StatModifier> _globalMods = new List<StatModifier>();
-    private InputHandler _input;
-    private HeatSystem _heat;
-    private UIManager _uiManager;
-
-    [SerializeField] private EndScreen _endScreen;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        if (!isNew)
-            return;
-        isNew = true;
+        Globals.PSystems = this;
         InstantiateSOs();
         ValidateModsAndAssignSource();
-        _heat = Globals.Heat;
-        _input = Globals.Input;
-        _uiManager = Globals.UIManager;
-
-        _xpThreshold = PlayerStats.XPThresholdBase;
-        _xpThresholdMultipltier = PlayerStats.XPThresholdMultiplier;
+    }
+    private void Start()
+    {
+        Globals.PInteractionManager.OnInteracted += OnInteracted;
 
         for (int i = 0; i < _weaponQueue.Length; i++)
         {
-            var go = _weaponQueue[i] = Instantiate(_weaponQueue[i]);
-            Weapons[i] = go.GetComponent<WeaponBase>();
+            var go = Instantiate(_weaponQueue[i]);
+            _weapons[i] = go.GetComponent<WeaponBase>();
         }
-        _uiManager.SetupWeaponIcons(Weapons);
+        OnWeaponIconAction?.Invoke(_weapons);
 
         SetWeaponsSource();
-        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
-        Weapons[ACTIVE].StartAttack();
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        _weapons[ACTIVE].StartAttack();
+        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
+    }
+
+    internal void AddWeaponUpgrade(WeaponBase weapon, int level)
+    {
+        weapon.UpgradeToLevel(level);
+        RoomManager.Instance.RewardTaken = true;
+        if (weapon == _weapons[PASSIVE])
+        {
+            _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
+            _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+            _weapons[ACTIVE].RestartAttack();
+        }
+    }
+
+    private void OnInteracted(InteractionType type, string auxName)
+    {
+        OnWeaponPickup?.Invoke(_weapons, type, auxName);
     }
 
     private void InstantiateSOs()
     {
-        PlayerStats = Instantiate(_defaultPlayerStats);
+        PlayerData = Instantiate(_defaultPlayerData);
         GlobalUpgradePath = Instantiate(_defaultGlobalUpgradePath);
     }
     private void Update()
     {
-        string text = Weapons[ABILITY].WeaponAbility.AbilityName + "\n";
-        foreach (var stat in Weapons[ABILITY].WeaponAbility.Stats)
-        {
-            text += $"{stat.Parameter}: {stat.Value}\n";
-            foreach (var mod in stat.StatModifiers)
-            {
-                text += $"# {mod}\n";
-            }
-        }
-        _uiManager.WriteDebugAbl(text);
+        ShowDebug();
 
-        text = "Player\n";
-        foreach (var stat in PlayerStats.Stats)
-        {
-            text += $"{stat.Parameter}: {stat.Value}\n";
-            foreach (var mod in stat.StatModifiers)
-            {
-                text += $"# {mod}\n";
-            }
-        }
-        _uiManager.WriteDebugPlr(text);
-
-
-        if (Input.GetKeyDown("k"))
-            Game.Instance.NextLevel();
-
-        Debug.DrawRay(_attackSource.transform.position, _attackSource.transform.forward * 10, Color.green);
-
-        if (_input.SwapWeapon && _heat.CanSwap())
+        if (Globals.InputHandler.SwapWeapon)
             SwapRotate();
 
-        if (_input.Swap01 && _heat.CanSwap())
+        if (Globals.InputHandler.Swap01)
             SwapSlots(0, 1);
 
-        if (_input.Swap12 && _heat.CanSwap())
+        if (Globals.InputHandler.Swap12)
             SwapSlots(1, 2);
 
-        if (_input.UseAbility)
-            Weapons[ABILITY].UseAbility();
+        if (Globals.InputHandler.UseAbility)
+            _weapons[ABILITY].UseAbility();
+    }
+
+    private void ShowDebug()
+    {
+        string text = _weapons[ABILITY].WeaponAbility.AbilityName + "\n";
+        foreach (var stat in _weapons[ABILITY].WeaponAbility.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"# {mod}\n";
+            }
+        }
+        OnDebugText?.Invoke(text, "ABILITY");
+
+        text = "Player\n";
+        foreach (var stat in PlayerData.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"# {mod}\n";
+            }
+        }
+        OnDebugText?.Invoke(text, "PLAYER");
+
+
+        text = _weapons[ACTIVE].WeaponData.WeaponName + "\n";
+        foreach (var stat in _weapons[ACTIVE].WeaponData.Stats)
+        {
+            text += $"{stat.Parameter}: {stat.Value}\n";
+            foreach (var mod in stat.StatModifiers)
+            {
+                text += $"# {mod}\n";
+            }
+        }
+        OnDebugText?.Invoke(text, "WEAPON");
+
     }
 
     public void AddXP(float xpValue)
     {
-        if (CurrentXP + xpValue < _xpThreshold)
-            CurrentXP += xpValue;
+        if (_currentXP + xpValue < PlayerData.XPThresholdBase)
+        {
+            _currentXP += xpValue;
+            OnXpChanged?.Invoke(_currentXP);
+        }
         else
         {
-            CurrentXP = xpValue - (_xpThreshold - CurrentXP);
-            _xpThreshold *= _xpThresholdMultipltier;
-            _currentLevel++;
+            _currentXP = xpValue - (PlayerData.XPThresholdBase - _currentXP);
             LevelUp();
         }
     }
     private void LevelUp()
     {
+        _currentLevel++;
+        PlayerData.XPThresholdBase *= PlayerData.XPThresholdMultiplier;
         List<StatParam> randomParams = new List<StatParam>();
         while (randomParams.Count < _upgradesPerLevel)
         {
@@ -143,66 +171,65 @@ public class PlayerSystems : MonoBehaviour
             randomUpgrades.Add(GlobalUpgradePath.Upgrades.Find(x => x.UpgradeParam == param));
         }
 
-        _uiManager.LevelUp(_currentLevel, _xpThreshold, randomUpgrades);
+        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel, randomUpgrades);
     }
     public void AddGlobalMod(StatModifier mod)
     {
         _globalMods.Add(mod);
-        _uiManager.EndWindow();
-        foreach (var wpn in Weapons)
+        foreach (var wpn in _weapons)
         {
             wpn.ApplyModifiers(new List<StatModifier>() { mod });
         }
-        Weapons[ACTIVE].RestartAttack();
-        PlayerStats.GetStat(mod.Param)?.AddModifier(mod);
+        _weapons[ACTIVE].RestartAttack();
+        PlayerData.GetStat(mod.Param)?.AddModifier(mod);
     }
     public void PlayerDeath()
     {
-        Game.PlayerDeath();
+        RoomManager.Instance.PlayerDeath();
     }
 
     #region Weapons
     private void SetWeaponsSource()
     {
-        foreach (var weapon in Weapons)
+        foreach (var weapon in _weapons)
         {
             weapon.SetSource(_attackSource.transform);
         }
     }
     private void SwapRotate()
     {
-        _heat.StartCooldown();
-        Weapons[ACTIVE].StopAttack();
-        Weapons[ACTIVE].ClearSourcedModifiers(Weapons[PASSIVE]);
-        _uiManager.SwapAllAnim(Weapons);
+        _weapons[ACTIVE].StopAttack();
+        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
 
-        var first = Weapons[0];
-        for (int i = 0; i < Weapons.Length - 1; i++)
+        OnWeaponIconAction?.Invoke(_weapons, true);
+
+        var first = _weapons[0];
+        for (int i = 0; i < _weapons.Count - 1; i++)
         {
-            Weapons[i] = Weapons[i + 1];
+            _weapons[i] = _weapons[i + 1];
         }
-        Weapons[Weapons.Length - 1] = first;
-        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
-        Weapons[ACTIVE].StartAttack();
+        _weapons[_weapons.Count - 1] = first;
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        _weapons[ACTIVE].StartAttack();
     }
     private void SwapSlots(int idxA, int idxB)
     {
         if (idxA == 0 || idxB == 0)
         {
-            _heat.StartCooldown();
-            Weapons[ACTIVE].StopAttack();
+            _weapons[ACTIVE].StopAttack();
         }
-        Weapons[ACTIVE].ClearSourcedModifiers(Weapons[PASSIVE]);
+        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
 
-        var tmp = Weapons[idxA];
-        Weapons[idxA] = Weapons[idxB];
-        Weapons[idxB] = tmp;
+        var tmp = _weapons[idxA];
+        _weapons[idxA] = _weapons[idxB];
+        _weapons[idxB] = tmp;
 
-        _uiManager.Swap2Anim(idxA, idxB, Weapons);
-        Weapons[ACTIVE].ApplyModifiers(Weapons[PASSIVE].WeaponData.PassiveModifiers);
+
+        OnWeaponIconAction?.Invoke(_weapons, true, idxA, idxB);
+        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
         if (idxA == 0 || idxB == 0)
         {
-            Weapons[ACTIVE].StartAttack();
+            _weapons[ACTIVE].StartAttack();
         }
     }
     private void ValidateModsAndAssignSource()
@@ -222,9 +249,9 @@ public class PlayerSystems : MonoBehaviour
     {
         return new List<string>
         {
-            Weapons[ACTIVE].WeaponData.WeaponName,
-            Weapons[PASSIVE].WeaponData.WeaponName,
-            Weapons[ABILITY].WeaponData.WeaponName,
+            _weapons[ACTIVE].WeaponData.WeaponName,
+            _weapons[PASSIVE].WeaponData.WeaponName,
+            _weapons[ABILITY].WeaponData.WeaponName,
         };
     }
     #endregion

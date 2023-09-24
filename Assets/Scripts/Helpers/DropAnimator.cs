@@ -8,7 +8,7 @@ public class DropAnimator : MonoBehaviour
     Transform _myTransform;
     [SerializeField] private float _floatTo;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         float loopTime = Random.Range(1f, 2f);
         bool ccwRotation = Random.Range(0, 2) == 1;

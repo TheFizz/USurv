@@ -26,6 +26,8 @@ public class InputHandler : MonoBehaviour
 
     public void OnEnable()
     {
+        Globals.InputHandler = this;
+
         if (_inputActions == null)
         {
             _inputActions = new PlayerControls();

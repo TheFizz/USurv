@@ -18,8 +18,6 @@ public abstract class WeaponBaseMelee : WeaponBase
     {
         base.Attack();
 
-        bool hasHit = false;
-
         var forward = Source.forward;
         var coneCos = Mathf.Cos((WeaponData.GetStat(StatParam.AttackCone).Value / 2) * Mathf.Deg2Rad);
         var sourceFloored = new Vector3(Source.position.x, 0, Source.position.z);
@@ -44,18 +42,14 @@ public abstract class WeaponBaseMelee : WeaponBase
             if (dot >= coneCos)
             {
                 dmgEnemies.Add(hitEnemy.GetComponent<NewEnemyBase>());
-                hasHit = true;
             }
 
             else if (d.Count > 0)
             {
                 dmgEnemies.Add(hitEnemy.GetComponent<NewEnemyBase>());
-                hasHit = true;
             }
         }
         DamageAll(dmgEnemies);
-        if (hasHit)
-            Heat.AddHeat(1);
         ShowGraphics();
     }
 

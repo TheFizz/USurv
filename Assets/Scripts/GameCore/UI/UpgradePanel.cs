@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WIPanel : MonoBehaviour
+public class UpgradePanel : MonoBehaviour
 {
     [SerializeField] Button _button;
     [SerializeField] TextMeshProUGUI _levelText;
@@ -15,9 +15,11 @@ public class WIPanel : MonoBehaviour
     [SerializeField] Image _image;
     WeaponUpgrade _upgrade;
     WeaponBase _weapon;
+    ModalWindow _parent;
 
-    public void Setup(WeaponBase weapon, string buttonText)
+    public void Setup(WeaponBase weapon, string buttonText, ModalWindow parent)
     {
+        _parent = parent;
         _weapon = weapon;
         _upgrade = _weapon.WeaponData.UpgradePath.Find(x => x.UpgradeNumber == _weapon.WeaponLevel + 1);
         _slfText.text = "(SLF) " + _upgrade.SelfStatMods[0].ToString();
@@ -36,8 +38,7 @@ public class WIPanel : MonoBehaviour
     }
     private void ApplyUpgrade()
     {
-        _weapon.UpgradeToLevel(_weapon.WeaponLevel + 1);
-        Globals.UIManager.EndWindow();
-        Game.Instance.RewardTaken = true;
+        Globals.PSystems.AddWeaponUpgrade(_weapon, _weapon.WeaponLevel + 1);
+        _parent.CloseWindow();
     }
 }

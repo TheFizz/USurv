@@ -8,21 +8,15 @@ public class Globals : MonoBehaviour
     public const string PARAMICONLOC = "UI/Sprites/Parameters";
 
     private static Globals me;
-
-    [SerializeReference] private Transform _playerTransform;
-    [SerializeReference] private Camera _mainCamera;
-    [SerializeReference] private UIManager _uiManager;
-    [SerializeReference] private Spawner _spawner;
-    public static HeatSystem Heat { get; private set; }
-    public static InputHandler Input { get; private set; }
-    public static PlayerSystems PlayerSystems { get; private set; }
-    public static PlayerDamageHandler DmgHandler { get; private set; }
-    public static Dictionary<string, XPDrop> XPDropsPool { get; private set; } = new Dictionary<string, XPDrop>();
-    public static Dictionary<string, NewEnemyBase> EnemyPool { get; private set; } = new Dictionary<string, NewEnemyBase>();
-    public static UIManager UIManager { get; private set; }
-    public static Transform PlayerTransform { get; private set; }
-    public static Camera MainCamera { get; private set; }
-    public static Spawner Spawner { get; private set; }
+    public static InputHandler InputHandler { get; set; }
+    public static PlayerSystems PSystems { get; set; }
+    public static PlayerDamageManager PDamageManager { get; set; }
+    public static PlayerInteractionManager PInteractionManager { get; set; }
+    public static Dictionary<string, XPDrop> XPDropsPool { get; set; } = new Dictionary<string, XPDrop>();
+    public static Dictionary<string, NewEnemyBase> EnemyPool { get; set; } = new Dictionary<string, NewEnemyBase>();
+    public static Transform PlayerTransform { get; set; }
+    public static Camera MainCamera { get; set; }
+    public static Spawner Spawner { get; set; }
 
     public static float BaseCritMultiplierPerc = 200f;
 
@@ -36,15 +30,8 @@ public class Globals : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        PlayerTransform = _playerTransform;
-        MainCamera = _mainCamera;
-        UIManager = _uiManager;
-        Spawner = _spawner;
 
-        Heat = GetComponent<HeatSystem>();
-        Input = GetComponent<InputHandler>();
-        PlayerSystems = GetComponent<PlayerSystems>();
-        DmgHandler = PlayerTransform.GetComponent<PlayerDamageHandler>();
+        MainCamera = Camera.main;
         me = this;
     }
 

@@ -11,7 +11,7 @@ public class WeaponInteraction : MonoBehaviour
     [SerializeField] private TextAsset _weaponRewards;
     [HideInInspector] public string RewardName;
     [HideInInspector] public List<Tuple<KeyCode, InteractionType>> Options = new List<Tuple<KeyCode, InteractionType>>();
-    private void Awake()
+    private void Start()
     {
         var lines = _weaponRewards.text.Split(Environment.NewLine);
         RewardName = lines[Random.Range(0, lines.Length)];
@@ -20,9 +20,5 @@ public class WeaponInteraction : MonoBehaviour
             new Tuple<KeyCode, InteractionType>(KeyCode.E, InteractionType.Take),
             new Tuple<KeyCode, InteractionType>(KeyCode.F, InteractionType.Consume)
         };
-    }
-    void Update()
-    {
-
     }
 }

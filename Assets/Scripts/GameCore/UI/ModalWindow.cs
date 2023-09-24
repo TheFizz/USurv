@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class LevelupModal : MonoBehaviour
+public class ModalWindow : MonoBehaviour
 {
+    public event WindowCloseHandler OnWindowClose;
+
     [SerializeField] TextMeshProUGUI _headerText;
     [SerializeField] Transform _content;
     [SerializeField] GameObject _perkPrefab;
@@ -14,8 +16,8 @@ public class LevelupModal : MonoBehaviour
         foreach (var upgrade in upgrades)
         {
             var perkPanel = Instantiate(_perkPrefab, _content);
-            var panelScript = perkPanel.GetComponent<PerkPanel>();
-            panelScript.Setup(upgrade);
+            var panelScript = perkPanel.GetComponent<LevelUpPanel>();
+            panelScript.Setup(upgrade, this);
         }
     }
     public void ShowWeapons(List<WeaponBase> weapons, InteractionType type, string pickupName)
@@ -36,8 +38,12 @@ public class LevelupModal : MonoBehaviour
         foreach (var wpn in weapons)
         {
             var perkPanel = Instantiate(_perkPrefab, _content);
-            var panelScript = perkPanel.GetComponent<WIPanel>();
-            panelScript.Setup(wpn, $"{actionString} {wpn.WeaponData.WeaponName}");
+            var panelScript = perkPanel.GetComponent<UpgradePanel>();
+            panelScript.Setup(wpn, $"{actionString} {wpn.WeaponData.WeaponName}", this);
         }
+    }
+    public void CloseWindow()
+    {
+        OnWindowClose?.Invoke(this);
     }
 }

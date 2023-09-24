@@ -28,7 +28,10 @@ public class Spawner : MonoBehaviour
             _time = 0;
         }
     }
-
+    private void Awake()
+    {
+        Globals.Spawner = this;
+    }
     void Start()
     {
         InvokeRepeating("Spawn", 1, _secondsToSpawn);

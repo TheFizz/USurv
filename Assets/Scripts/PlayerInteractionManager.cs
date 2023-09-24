@@ -3,23 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour
+public class PlayerInteractionManager : MonoBehaviour
 {
+    public event InteractionHandler OnInteraction;
+    public event InteractedHandler OnInteracted;
+
     private Transform _myTransform;
-    private PlayerSystems _pSystems;
     public float InteractionRange;
     [SerializeField] private LayerMask _targetLayer;
     WeaponInteraction _wi = null;
     bool _interactionShown;
     private List<Tuple<KeyCode, InteractionType>> _options;
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
+        Globals.PInteractionManager = this;
         _myTransform = GetComponent<Transform>();
-        _pSystems = Globals.PlayerSystems;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -27,9 +27,9 @@ public class InteractionManager : MonoBehaviour
         {
             foreach (var option in _options)
             {
-                if (Input.GetKeyDown(option.Item1) && Game.PlayerInMenu == false)
+                if (Input.GetKeyDown(option.Item1) && RoomManager.Instance.PlayerInMenu == false)
                 {
-                    Globals.UIManager.WeaponInteraction(option.Item2, _wi.RewardName);
+                    OnInteracted?.Invoke(option.Item2, _wi.RewardName);
                     Destroy(_wi.transform.gameObject);
                     return;
                 }
@@ -39,28 +39,28 @@ public class InteractionManager : MonoBehaviour
         if (hitInteractions.Length > 0)
         {
             var interaction = hitInteractions[0].GetComponent<WeaponInteraction>();
+            _wi = interaction;
             _options = new List<Tuple<KeyCode, InteractionType>>(interaction.Options);
-            var weapons = _pSystems.GetWeaponNames();
+            var weapons = Globals.PSystems.GetWeaponNames();
             if (weapons.Contains(interaction.RewardName))
                 _options.RemoveAt(0);
-            _wi = interaction;
             ShowInteraction(true);
         }
         else
         {
             _wi = null;
+            _options = null;
             ShowInteraction(false);
         }
     }
 
     void ShowInteraction(bool show)
     {
-        if (_wi == null)
-            return;
         if (show != _interactionShown)
             _interactionShown = show;
         else
             return;
-        Globals.UIManager.ShowInteraction(_options, _wi.RewardName);
+
+        OnInteraction?.Invoke(_options, _wi?.RewardName);
     }
 }

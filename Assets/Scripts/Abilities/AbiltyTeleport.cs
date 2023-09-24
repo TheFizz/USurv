@@ -7,10 +7,7 @@ public class AbiltyTeleport : AbilityBase
 {
     public override void Use(Transform source)
     {
-        InputHandler input = null;
-        input = Globals.Input;
-
-        Ray ray = Globals.MainCamera.ScreenPointToRay(input.MousePosition);
+        Ray ray = Globals.MainCamera.ScreenPointToRay(Globals.InputHandler.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: TargetLayer, maxDistance: 300f))
         {
             var player = GameObject.FindWithTag("Player");

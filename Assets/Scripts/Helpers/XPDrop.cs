@@ -38,11 +38,14 @@ public class XPDrop : MonoBehaviour
     };
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         _myTransform = transform;
-        _mat = GetComponentInChildren<MeshRenderer>().material;
         ID = Globals.GenerateId();
+        gameObject.name = $"XPDrop<{ID}>";
+        Globals.XPDropsPool.Add(ID, this);
+
+        _mat = GetComponentInChildren<MeshRenderer>().material;
         XpValue = Random.Range(0.5f, 1.5f);
 
         if (XpValue > 1.2f)
@@ -57,14 +60,13 @@ public class XPDrop : MonoBehaviour
             _mat.SetColor("_Gradient_Bottom", _gradients[TEAL].Item2);
             _mat.SetColor("_Flaps_color", _gradients[TEAL].Item3);
         }
-        gameObject.name = $"XPDrop<{ID}>";
-        Globals.XPDropsPool.Add(ID, this);
+
     }
     private void Update()
     {
         if (_target == null)
             return;
-        if (Game.PlayerInMenu == true)
+        if (RoomManager.Instance.PlayerInMenu == true)
             return;
 
         _speed = Mathf.Lerp(_speed, _maxSpeed, _stepInc);

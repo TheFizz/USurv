@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public abstract class WeaponBase : MonoBehaviour
 {
+
+
     [SerializeField] private WeaponBaseSO _defaultWeaponData;
     [SerializeField] private AbilityBase _defaultWeaponAbility;
 
@@ -21,16 +23,10 @@ public abstract class WeaponBase : MonoBehaviour
 
     [HideInInspector] public int WeaponLevel = 0;
 
-    protected HeatSystem Heat;
     protected Transform Source;
 
-    private PlayerDamageHandler _pDamageHandler;
-    private InputHandler _input;
     private float AbilityCooldown;
     private AbilityState AbilityState;
-    private UIManager _ui;
-
-    private bool _isActive = false;
 
     protected virtual void Awake()
     {
@@ -38,7 +34,6 @@ public abstract class WeaponBase : MonoBehaviour
         ValidateModsAndAssignSource();
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
-        Heat = Globals.Heat;
         AbilityState = AbilityState.Ready;
         UIObject = Instantiate(WeaponData.UIWeaponIcon);
         UIObject.name = WeaponData.WeaponName + "Icon";
@@ -48,12 +43,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         var overlayObj = UIObject.transform.GetChild(0);
         UIOverlay = overlayObj.GetComponentInChildren<Image>();
-
-        _input = Globals.Input;
-        _pDamageHandler = Globals.PlayerTransform.GetComponent<PlayerDamageHandler>();
-        _ui = Globals.UIManager;
     }
-
     private void ValidateModsAndAssignSource()
     {
         foreach (var mod in WeaponData.PassiveModifiers)
@@ -91,22 +81,6 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Update()
     {
         HandleAbilityCooldown();
-        if (_isActive)
-            ShowDebugText();
-    }
-
-    private void ShowDebugText()
-    {
-        string text = WeaponData.WeaponName + "\n";
-        foreach (var stat in WeaponData.Stats)
-        {
-            text += $"{stat.Parameter}: {stat.Value}\n";
-            foreach (var mod in stat.StatModifiers)
-            {
-                text += $"# {mod}\n";
-            }
-        }
-        _ui.WriteDebug(text);
     }
 
     public virtual void UseAbility()
@@ -122,16 +96,11 @@ public abstract class WeaponBase : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        if (Heat.GetHeatStatus() == HeatStatus.Overheated)
-        {
-            _pDamageHandler.Damage(WeaponData.GetStat(StatParam.AttackDamage).Value, WeaponData.WeaponName, true);
-        }
         AlignAttackVector();
     }
     public virtual void StartAttack()
     {
         Source.rotation = Source.parent.rotation;
-        _isActive = true;
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
 
@@ -143,7 +112,6 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void StopAttack()
     {
-        _isActive = false;
         CancelInvoke();
     }
 
@@ -152,7 +120,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (!WeaponData.AimAssist)
             return;
-        Ray ray = Globals.MainCamera.ScreenPointToRay(_input.MousePosition);
+        Ray ray = Globals.MainCamera.ScreenPointToRay(Globals.InputHandler.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;

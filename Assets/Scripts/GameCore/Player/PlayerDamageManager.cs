@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
+public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
 {
-    private PlayerSystems _pSystems;
+
+    public event HpChangedHandler OnHpChanged;
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public Vector2 HealthRange { get; set; }
@@ -20,19 +21,23 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
     private List<string> _recentAttackers = new List<string>();
     void Awake()
     {
-        _pSystems = Globals.PlayerSystems;
+        Globals.PDamageManager = this;
     }
     void Start()
     {
-        MaxHealth = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
+        MaxHealth = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
         CurrentHealth = MaxHealth;
+        OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
     }
     void Update()
     {
         var pHealth = MaxHealth;
-        MaxHealth = _pSystems.PlayerStats.GetStat(StatParam.PlayerMaxHealth).Value;
+        MaxHealth = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
         if (MaxHealth > pHealth)
+        {
             CurrentHealth += MaxHealth - pHealth;
+            OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
+        }
     }
 
     public void Damage(float damageAmount, string attackerID, bool overrideITime = false)
@@ -59,12 +64,13 @@ public class PlayerDamageHandler : MonoBehaviour, IPlayerDamageable
             CurrentHealth = 0;
             Die();
         }
+        OnHpChanged?.Invoke(CurrentHealth);
     }
 
     public void Die()
     {
         _invulnerable = true;
-        _pSystems.PlayerDeath();
+        Globals.PSystems.PlayerDeath();
     }
 
     IEnumerator PreInv(float time)

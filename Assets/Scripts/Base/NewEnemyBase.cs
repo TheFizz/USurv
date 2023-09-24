@@ -21,12 +21,11 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     private Color _baseColor;
     private Renderer _renderer;
     [SerializeField] private GameObject _damageText;
-    private Transform _playerTransform;
     private Dictionary<AilmentType, Tuple<float, float>> _ailments = new Dictionary<AilmentType, Tuple<float, float>>();
 
     private float _baseSpeed;
 
-    void Awake()
+    void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
         ID = Globals.GenerateId();
@@ -35,7 +34,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _baseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponent<Renderer>();
         _baseColor = _renderer.material.color;
-        _playerTransform = Globals.PlayerTransform;
         Globals.EnemyPool.Add(ID, this);
     }
     void Update()
@@ -45,7 +43,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var distanceToPlayer = Vector3.Distance(transform.position, _target);
         if (!_ailments.ContainsKey(AilmentType.Fear) && !_ailments.ContainsKey(AilmentType.Knockback))
         {
-            _target = _playerTransform.position;
+            _target = Globals.PlayerTransform.position;
         }
         if (distanceToPlayer > 1.5)
             if (_canMove)
@@ -114,11 +112,13 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         Instantiate(DropOnDeath, pos, Quaternion.identity);
         Globals.EnemyPool.Remove(ID);
         Destroy(gameObject);
-        Game.Instance.KillCount++;
+        RoomManager.Instance.KillCount++;
     }
     public void Kill()
     {
         var pos = gameObject.transform.position;
+        if (pos == null)
+            return;
         pos.y = 1f;
         Instantiate(DropOnDeath, pos, Quaternion.identity);
         Destroy(gameObject);
@@ -157,7 +157,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     {
         if (!Globals.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
             return;
-        Globals.DmgHandler.Damage(EnemyData.AttackDamage, ID);
+        Globals.PDamageManager.Damage(EnemyData.AttackDamage, ID);
     }
 
 }

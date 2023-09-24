@@ -19,15 +19,11 @@ public class DamageText : MonoBehaviour
         _damage = damage;
         _isCrit = isCrit;
     }
-    void Awake()
+    private void Start()
     {
         _textMesh = GetComponentInChildren<TextMeshPro>();
         _textMesh.fontSize = 9f;
         _ttlOriginal = _ttl;
-    }
-
-    private void Start()
-    {
         _textMesh.text = _damage.ToString();
         if (_isCrit)
             _textMesh.text += "!";

@@ -36,6 +36,5 @@ public abstract class WeaponBaseRanged : WeaponBase
             Source.position
             );
 
-        Heat.AddHeat(1);
     }
 }

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PerkPanel : MonoBehaviour
+public class LevelUpPanel : MonoBehaviour
 {
     [SerializeField] Button _button;
     [SerializeField] TextMeshProUGUI _levelText;
@@ -13,9 +13,11 @@ public class PerkPanel : MonoBehaviour
     [SerializeField] Image _image;
     GlobalUpgrade _upgrade;
     StatModifier _mod;
+    ModalWindow _parent;
 
-    public void Setup(GlobalUpgrade upgrade)
+    public void Setup(GlobalUpgrade upgrade, ModalWindow parent)
     {
+        _parent = parent;
         _upgrade = upgrade;
         _mod = _upgrade.Modifiers[_upgrade.UpgradeNumber];
         _upgradeText.text = _mod.ToStringWithBreak();
@@ -27,6 +29,7 @@ public class PerkPanel : MonoBehaviour
     private void ApplyUpgrade()
     {
         _upgrade.UpgradeNumber++;
-        Globals.PlayerSystems.AddGlobalMod(_mod);
+        Globals.PSystems.AddGlobalMod(_mod);
+        _parent.CloseWindow();
     }
 }

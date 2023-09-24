@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7003631518199643344}
   - component: {fileID: 2954533687172190269}
   m_Layer: 5
-  m_Name: WpnInterWindow
+  m_Name: UpgradeWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

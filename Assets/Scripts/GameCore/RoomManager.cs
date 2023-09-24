@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Game : MonoBehaviour
+public class RoomManager : MonoBehaviour
 {
-    public static bool PlayerInMenu = false;
-    public static Game Instance;
+    public static RoomManager Instance;
+    public bool PlayerInMenu = false;
 
     public int WinCondition;
     public int KillCount = 0;
     public LevelState State = LevelState.Active;
 
-    private static EndScreen _endScreen;
+    private EndScreen _endScreen;
     public bool UnlimitedPlay;
     public GameObject Reward;
     public GameObject Portal;
@@ -26,6 +26,7 @@ public class Game : MonoBehaviour
             return;
         }
         WinCondition = Random.Range(200, 400);
+        //WinCondition = 10;
         _endScreen = GetComponent<EndScreen>();
         Instance = this;
     }
@@ -63,16 +64,16 @@ public class Game : MonoBehaviour
         i.transform.position = new Vector3(0, 0, 5);
     }
 
-    public static void PlayerDeath()
+    public void PlayerDeath()
     {
         _endScreen.Play();
     }
-    public static void ReloadScene()
+    public void ReloadScene()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    public static void QuitGame()
+    public void QuitGame()
     {
         // save any game data here
 #if UNITY_EDITOR

@@ -86,6 +86,6 @@ public class EndScreen : MonoBehaviour
     void StopGame()
     {
         Time.timeScale = 0;
-        Globals.Input.SetInputEnabled(false);
+        Globals.InputHandler.SetInputEnabled(false);
     }
 }

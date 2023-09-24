@@ -618,7 +618,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1535774025}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -3315,9 +3315,9 @@ GameObject:
   - component: {fileID: 776415903}
   - component: {fileID: 776415902}
   - component: {fileID: 776415900}
-  - component: {fileID: 776415905}
   - component: {fileID: 776415906}
   - component: {fileID: 776415907}
+  - component: {fileID: 776415908}
   m_Layer: 8
   m_Name: PlayerObject
   m_TagString: Player
@@ -3410,18 +3410,6 @@ Transform:
   - {fileID: 35940487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &776415905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776415898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 490df7a29d19ff84a97d0208faf62b25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &776415906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3453,6 +3441,18 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &776415908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776415898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc94142e8ecb54ba4a8bea046f22a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &831516731
 GameObject:
   m_ObjectHideFlags: 0
@@ -4485,7 +4485,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1535774025}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
         m_MethodName: ReloadScene
         m_Mode: 1
         m_Arguments:
@@ -5863,8 +5863,8 @@ GameObject:
   - component: {fileID: 1535774020}
   - component: {fileID: 1535774019}
   - component: {fileID: 1535774023}
-  - component: {fileID: 1535774025}
   - component: {fileID: 1535774024}
+  - component: {fileID: 1535774025}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -5920,10 +5920,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c32e297e68213648aa73ee7a932aeb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTransform: {fileID: 776415904}
-  _mainCamera: {fileID: 900256928}
-  _uiManager: {fileID: 1911591983}
-  _spawner: {fileID: 647529260}
 --- !u!4 &1535774022
 Transform:
   m_ObjectHideFlags: 0
@@ -5953,8 +5949,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalUpgradePath: {fileID: 0}
   _defaultGlobalUpgradePath: {fileID: 11400000, guid: 987958504d46a2848942215dade84a6c, type: 2}
-  PlayerStats: {fileID: 0}
-  _defaultPlayerStats: {fileID: 11400000, guid: 0572104cb749c844185424108c48e0ea, type: 2}
+  PlayerData: {fileID: 0}
+  _defaultPlayerData: {fileID: 11400000, guid: 0572104cb749c844185424108c48e0ea, type: 2}
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -5963,12 +5959,6 @@ MonoBehaviour:
   - {fileID: 2153163811958126480, guid: 579b1632778b7fb469f634601c8ae05e, type: 3}
   - {fileID: 6976108617930502473, guid: 9fef99c1df6dfab45a48ad27543bfe73, type: 3}
   - {fileID: 8427117006592234862, guid: 015cdc05422e39d439d73c5a3fe62125, type: 3}
-  Weapons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  CurrentXP: 0
-  _endScreen: {fileID: 0}
 --- !u!114 &1535774024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6001,11 +5991,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1535774016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1ea887b9037d694d90689ef3271fc27, type: 3}
+  m_Script: {fileID: 11500000, guid: c7e5a2ab84a0b6242aacc896183d3cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerInMenu: 0
   WinCondition: 0
   KillCount: 0
+  State: 0
   UnlimitedPlay: 0
   Reward: {fileID: 5651589707143657426, guid: 049aacf89f2e9624e8a3949c20fdce07, type: 3}
   Portal: {fileID: 7970321444402832342, guid: 2cb93df837c100840a85c012bc291254, type: 3}
@@ -6091,9 +6083,9 @@ RectTransform:
   - {fileID: 1523700229}
   - {fileID: 679075431}
   - {fileID: 1110477466}
+  - {fileID: 2140181696}
   - {fileID: 1895941862}
   - {fileID: 1451847602}
-  - {fileID: 2140181696}
   m_Father: {fileID: 1561924687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7355,7 +7347,7 @@ GameObject:
   - component: {fileID: 1895941863}
   - component: {fileID: 1895941864}
   m_Layer: 5
-  m_Name: MAX
+  m_Name: MaxXpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7936,7 +7928,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1911591982}
-  - component: {fileID: 1911591983}
+  - component: {fileID: 1911591987}
+  - component: {fileID: 1911591986}
+  - component: {fileID: 1911591985}
+  - component: {fileID: 1911591984}
+  - component: {fileID: 1911591988}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -7961,7 +7957,7 @@ Transform:
   - {fileID: 591365764}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1911591983
+--- !u!114 &1911591984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7970,27 +7966,68 @@ MonoBehaviour:
   m_GameObject: {fileID: 1911591981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 449f3dbab1d252442ac7bafc123f911f, type: 3}
+  m_Script: {fileID: 11500000, guid: 239f269378ac3ba4888b10f3dfa726ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameUI: {fileID: 1561924686}
   LevelUpWindow: {fileID: 3497010923527361530, guid: 3f25a2cc68f2a2541a4b7b5ff001e1c2, type: 3}
-  WIWindow: {fileID: 4376732646555303847, guid: 40d8ccc327fafdc49976fd5b1577ef1b, type: 3}
-  InteractionContainer: {fileID: 482671341}
-  InteractionText: {fileID: 3745014255564277139, guid: 1cf6810b80bdcc34b85bff163abcd46a, type: 3}
-  DeathToll: {fileID: 1386000406}
-  DeathGoal: {fileID: 932787644}
+  UpgradeWindow: {fileID: 4376732646555303847, guid: 40d8ccc327fafdc49976fd5b1577ef1b, type: 3}
+--- !u!114 &1911591985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911591981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 643eebabe7af962438d5b9fd4e4b0f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugWeapon: {fileID: 571526726}
+  DebugAbility: {fileID: 1608244971}
+  DebugPlayer: {fileID: 1293435697}
+--- !u!114 &1911591986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911591981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa2df5e84265be49928496d8ea9e506, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameUI: {fileID: 1561924686}
+--- !u!114 &1911591987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911591981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d26e04c8cc4be449330d9e0e6fcbd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   HpBar: {fileID: 923934739}
   XpBar: {fileID: 1569356502}
-  HeatBar: {fileID: 831516731}
-  DebugText: {fileID: 571526726}
-  DebugTextAbl: {fileID: 1608244971}
-  DebugTextPlr: {fileID: 1293435697}
-  HpText: {fileID: 22677828}
-  LevelText: {fileID: 1110477467}
-  SwapMode: {fileID: 1703931244}
-  CurXpText: {fileID: 2140181698}
-  MaxXpText: {fileID: 1895941864}
-  GameUI: {fileID: 1561924686}
+--- !u!114 &1911591988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911591981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9aa048aceee684fa93c5f7de7e320d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionContainer: {fileID: 482671341}
+  InteractionText: {fileID: 3745014255564277139, guid: 1cf6810b80bdcc34b85bff163abcd46a, type: 3}
 --- !u!1 &1963649128
 GameObject:
   m_ObjectHideFlags: 0
@@ -8477,7 +8514,7 @@ GameObject:
   - component: {fileID: 2140181697}
   - component: {fileID: 2140181698}
   m_Layer: 5
-  m_Name: CUR
+  m_Name: CurXpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

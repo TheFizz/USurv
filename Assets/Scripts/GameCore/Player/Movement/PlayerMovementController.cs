@@ -6,16 +6,16 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private LayerMask _mouseHitMask;
-    private InputHandler _input;
     private Rigidbody _RB;
-    private PlayerSystems _pSystems;
     public TextMeshProUGUI debugSpeedText;
 
     public bool lockPosition = false, lockRotation = false;
     void Awake()
     {
-        _input = Globals.Input;
-        _pSystems = Globals.PlayerSystems;
+        Globals.PlayerTransform = transform;
+    }
+    private void Start()
+    {
         _RB = GetComponent<Rigidbody>();
     }
     public void Update()
@@ -28,7 +28,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     private void HandleRotation()
     {
-        Ray ray = Globals.MainCamera.ScreenPointToRay(_input.MousePosition);
+        Ray ray = Globals.MainCamera.ScreenPointToRay(Globals.InputHandler.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: _mouseHitMask, maxDistance: 300f))
         {
             var targetLook = hitinfo.point;
@@ -39,15 +39,15 @@ public class PlayerMovementController : MonoBehaviour
     private void HandleMovement()
     {
         float delta = Time.deltaTime;
-        _input.TickInput(delta);
+        Globals.InputHandler.TickInput(delta);
         Vector3 moveDirection;
 
-        moveDirection = Vector3.forward * _input.Vertical;
-        moveDirection += Vector3.right * _input.Horizontal;
+        moveDirection = Vector3.forward * Globals.InputHandler.Vertical;
+        moveDirection += Vector3.right * Globals.InputHandler.Horizontal;
         moveDirection = Quaternion.Euler(0, Globals.MainCamera.gameObject.transform.eulerAngles.y, 0) * moveDirection;
         moveDirection.Normalize();
 
-        var speed = _pSystems.PlayerStats.GetStat(StatParam.PlayerMoveSpeed).Value;
+        var speed = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMoveSpeed).Value;
         moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);
