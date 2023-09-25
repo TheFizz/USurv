@@ -32,7 +32,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         gameObject.name = $"Enemy<{ID}>";
         _RB = GetComponent<Rigidbody>();
         _baseSpeed = EnemyData.MoveSpeed;
-        _renderer = GetComponent<Renderer>();
+        _renderer = GetComponentInChildren<Renderer>();
         _baseColor = _renderer.material.color;
         Globals.EnemyPool.Add(ID, this);
     }
