@@ -19,10 +19,12 @@ public class InteractionUI : MonoBehaviour
         {
             foreach (Transform child in InteractionContainer.transform)
             {
+                InteractionContainer.transform.parent.gameObject.SetActive(false);
                 Destroy(child.gameObject);
             }
             return;
         }
+        InteractionContainer.transform.parent.gameObject.SetActive(true);
         foreach (var option in options)
         {
             var pf = Instantiate(InteractionText);

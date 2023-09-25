@@ -6,17 +6,31 @@ using UnityEngine;
 public class WeaponUI : MonoBehaviour
 {
     public GameObject GameUI;
-    private List<Vector2> SlotPositions = new List<Vector2>()
+    private List<Vector2> SlotPositionsOld = new List<Vector2>()
     {
         new Vector2(-185,100),//150,150 Size
         new Vector2(-135,200), //100,100 Size
         new Vector2(-85,100) //100,100 Size
     };
-    private List<Vector2> SlotSizes = new List<Vector2>()
+
+    private List<Vector2> SlotPositions = new List<Vector2>()
+    {
+        new Vector2(-125,20),//150,150 Size
+        new Vector2(0,20), //100,100 Size
+        new Vector2(125,20) //100,100 Size
+    };
+
+    private List<Vector2> SlotSizesOld = new List<Vector2>()
     {
         new Vector2(150,150),//150,150 Size
         new Vector2(100,100), //100,100 Size
         new Vector2(100,100) //100,100 Size
+    };
+    private List<Vector2> SlotSizes = new List<Vector2>()
+    {
+        new Vector2(1,1),//150,150 Size
+        new Vector2(.5f,.5f), //100,100 Size
+        new Vector2(1,1) //100,100 Size
     };
     private List<Color> SlotColors = new List<Color>()
     {
@@ -47,32 +61,29 @@ public class WeaponUI : MonoBehaviour
         }
     }
 
-    public void SwapAll(List<WeaponBase> weaponQueue)
+    public void SwapAll(List<WeaponBase> weapons)
     {
-        for (int i = 0; i < weaponQueue.Count; i++)
+        for (int i = 0; i < weapons.Count; i++)
         {
             var k = i - 1;
             if (k < 0)
-                k = weaponQueue.Count - 1;
+                k = weapons.Count - 1;
 
-            weaponQueue[i].UIRect.DOAnchorPos(SlotPositions[k], _animTime, true);
-            weaponQueue[i].UIRect.DOSizeDelta(SlotSizes[k], _animTime, true);
-            weaponQueue[i].UIImage.DOColor(SlotColors[k], _animTime);
-            weaponQueue[i].UIObject.transform.SetAsFirstSibling();
+            weapons[i].UIObject.transform.SetAsFirstSibling();
+            weapons[i].UIRect.DOAnchorPos(SlotPositions[k], _animTime, true);
+            weapons[i].UIRect.DOScale(SlotSizes[k], _animTime);
         }
     }
-    public void SwapTwo(int idxA, int idxB, List<WeaponBase> weaponQueue)
+    public void SwapTwo(int idxA, int idxB, List<WeaponBase> weapons)
     {
-        var A = weaponQueue[idxA].UIObject;
-        var B = weaponQueue[idxB].UIObject;
+        var A = weapons[idxA].UIObject;
+        var B = weapons[idxB].UIObject;
 
-        weaponQueue[idxA].UIRect.DOAnchorPos(SlotPositions[idxA], _animTime, true);
-        weaponQueue[idxA].UIRect.DOSizeDelta(SlotSizes[idxA], _animTime, true);
-        weaponQueue[idxA].UIImage.DOColor(SlotColors[idxA], _animTime);
+        weapons[idxA].UIRect.DOAnchorPos(SlotPositions[idxA], _animTime, true);
+        weapons[idxA].UIRect.DOScale(SlotSizes[idxA], _animTime);
 
-        weaponQueue[idxB].UIRect.DOAnchorPos(SlotPositions[idxB], _animTime, true);
-        weaponQueue[idxB].UIRect.DOSizeDelta(SlotSizes[idxB], _animTime, true);
-        weaponQueue[idxB].UIImage.DOColor(SlotColors[idxB], _animTime);
+        weapons[idxB].UIRect.DOAnchorPos(SlotPositions[idxB], _animTime, true);
+        weapons[idxB].UIRect.DOScale(SlotSizes[idxB], _animTime);
 
         if (idxA > idxB)
         {
@@ -89,11 +100,10 @@ public class WeaponUI : MonoBehaviour
     {
         for (int i = 0; i < weaponQueue.Count; i++)
         {
-            weaponQueue[i].UIImage.color = SlotColors[i];
-            weaponQueue[i].UIImage.transform.SetParent(GameUI.transform, false);
+            weaponQueue[i].UIObject.transform.SetParent(GameUI.transform, false);
             weaponQueue[i].UIObject.transform.SetAsFirstSibling();
             weaponQueue[i].UIRect.anchoredPosition = SlotPositions[i];
-            weaponQueue[i].UIRect.sizeDelta = SlotSizes[i];
+            weaponQueue[i].UIRect.localScale = SlotSizes[i];
         }
     }
 }

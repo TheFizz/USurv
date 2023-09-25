@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    public SwapMode swapMode = SwapMode.Rotate;
+    public SwapMode swapMode = SwapMode.TwoKey;
     public Vector3 MousePosition { get; set; }
     private bool _inputEnabled = true;
 

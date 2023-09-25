@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32eea5e48b8be5a4c8e7824f06144e48, type: 3}
   m_Name: KamaData
   m_EditorClassIdentifier: 
-  UIWeaponIcon: {fileID: 8861405806011201607, guid: 8dce434169b47a04996c736904073060, type: 3}
-  UIWeaponSprite: {fileID: 21300000, guid: 6a203fa0b1bf7b64f860e70bd0531b51, type: 3}
+  UIWeaponIcon: {fileID: 1977914615918250163, guid: a7d453f1f212d4b409b8f3394ab0f3b2, type: 3}
+  UIWeaponSprite: {fileID: 21300000, guid: 16cf4c61713b5c940a7f3da60cb03679, type: 3}
   AimAssist: 0
   EnemyLayer:
     serializedVersion: 2
@@ -36,69 +36,85 @@ MonoBehaviour:
   - Value: 15
     Type: 200
     Param: 2
+    Order: 0
   UpgradePath:
   - UpgradeNumber: 1
     SelfStatMods:
     - Value: 6
       Type: 100
       Param: 1
+      Order: 0
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
+      Order: 0
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
+      Order: 0
   - UpgradeNumber: 2
     SelfStatMods:
     - Value: 30
       Type: 200
       Param: 2
+      Order: 0
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
+      Order: 0
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
+      Order: 0
   - UpgradeNumber: 3
     SelfStatMods:
     - Value: 30
       Type: 200
       Param: 0
+      Order: 0
     PassiveStatMods:
     - Value: 15
       Type: 100
       Param: 1
+      Order: 0
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
+      Order: 0
   - UpgradeNumber: 4
     SelfStatMods:
     - Value: 9
       Type: 100
       Param: 1
+      Order: 0
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
+      Order: 0
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
+      Order: 0
   - UpgradeNumber: 5
     SelfStatMods:
     - Value: 60
       Type: 100
       Param: 2
+      Order: 0
     PassiveStatMods:
     - Value: 15
       Type: 200
       Param: 2
+      Order: 0
     AbilityStatMods:
     - Value: 20
       Type: 200
       Param: 10
+      Order: 0

@@ -40,7 +40,7 @@ public class WindowsUI : MonoBehaviour
         var window = Instantiate(prefab, GameUI.transform);
 
         var rect = window.GetComponent<RectTransform>();
-        rect.anchoredPosition = new Vector2(0, Screen.height / 4);
+        rect.anchoredPosition = new Vector2(0, 80);
         return window.GetComponent<ModalWindow>();
     }
     private void OnWindowClose(ModalWindow source)

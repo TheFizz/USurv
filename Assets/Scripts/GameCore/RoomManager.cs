@@ -1,10 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
+
+    public TextMeshProUGUI TollText, GoalText;
+
     public static RoomManager Instance;
     public bool PlayerInMenu = false;
 
@@ -27,13 +31,19 @@ public class RoomManager : MonoBehaviour
         }
         WinCondition = Random.Range(200, 400);
         //WinCondition = 10;
+        GoalText.text = WinCondition.ToString();
         _endScreen = GetComponent<EndScreen>();
         Instance = this;
     }
     public void Update()
     {
+        TollText.text = KillCount.ToString();
+
         if (Instance.UnlimitedPlay)
+        {
+            GoalText.text = "∞";
             return;
+        }
 
         if (State == LevelState.Active && KillCount >= WinCondition)
         {

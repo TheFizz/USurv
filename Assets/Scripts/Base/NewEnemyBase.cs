@@ -116,9 +116,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     public void Kill()
     {
-        var pos = gameObject.transform.position;
-        if (pos == null)
+        if (gameObject == null)
             return;
+        var pos = gameObject.transform.position;
         pos.y = 1f;
         Instantiate(DropOnDeath, pos, Quaternion.identity);
         Destroy(gameObject);

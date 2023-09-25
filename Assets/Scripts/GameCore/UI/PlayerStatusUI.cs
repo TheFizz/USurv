@@ -41,7 +41,9 @@ public class PlayerStatusUI : MonoBehaviour
     {
         SetXPMax(newMaxXP);
         SetXPValue(newCurrentXp);
-        _levelText.text = level.ToString();
+
+        if (_levelText != null)
+            _levelText.text = level.ToString();
     }
 
     private void OnHpChanged(float newCurrentHp, float newMaxHp = -1)
@@ -57,16 +59,19 @@ public class PlayerStatusUI : MonoBehaviour
     void SetXPMax(float value)
     {
         _xpSlider.maxValue = value;
-        _maxXpText.text = value.ToString();
+        if (_maxXpText != null)
+            _maxXpText.text = value.ToString();
     }
     public void SetHPValue(float value)
     {
         _hpSlider.value = value;
-        _hpText.text = value.ToString();
+        if (_hpText != null)
+            _hpText.text = value.ToString();
     }
     public void SetXPValue(float value)
     {
         _xpSlider.value = value;
-        _curXpText.text = value.ToString();
+        if (_curXpText != null)
+            _curXpText.text = value.ToString();
     }
 }

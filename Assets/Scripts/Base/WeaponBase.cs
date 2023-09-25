@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public abstract class WeaponBase : MonoBehaviour
 {
-
+    public event OverlayFillHandler OnAbilityFillChanged;
+    public event OverlayFillHandler OnHeatFillChanged;
 
     [SerializeField] private WeaponBaseSO _defaultWeaponData;
     [SerializeField] private AbilityBase _defaultWeaponAbility;
@@ -20,6 +21,8 @@ public abstract class WeaponBase : MonoBehaviour
     [HideInInspector] public Image UIOverlay;
     [HideInInspector] public RectTransform UIRect;
 
+    [HideInInspector] public WeaponIcon UIWeaponIcon;
+
 
     [HideInInspector] public int WeaponLevel = 0;
 
@@ -27,6 +30,12 @@ public abstract class WeaponBase : MonoBehaviour
 
     private float AbilityCooldown;
     private AbilityState AbilityState;
+
+    protected float MaxHeat = 100;
+    protected float CurHeat = 0;
+    private float _cdRate = 4;
+    protected float HeatRate = 8;
+
 
     protected virtual void Awake()
     {
@@ -36,13 +45,11 @@ public abstract class WeaponBase : MonoBehaviour
         WeaponLevel = 0;
         AbilityState = AbilityState.Ready;
         UIObject = Instantiate(WeaponData.UIWeaponIcon);
+        UIWeaponIcon = UIObject.GetComponent<WeaponIcon>();
+        UIWeaponIcon.SetPartner(this);
+
         UIObject.name = WeaponData.WeaponName + "Icon";
         UIRect = UIObject.GetComponent<RectTransform>();
-        UIImage = UIObject.GetComponent<Image>();
-        UIImage.sprite = WeaponData.UIWeaponSprite;
-
-        var overlayObj = UIObject.transform.GetChild(0);
-        UIOverlay = overlayObj.GetComponentInChildren<Image>();
     }
     private void ValidateModsAndAssignSource()
     {
@@ -81,6 +88,16 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Update()
     {
         HandleAbilityCooldown();
+        if (CurHeat > 0)
+        {
+            CurHeat -= Time.deltaTime * _cdRate;
+            OnHeatFillChanged?.Invoke(CurHeat / MaxHeat);
+        }
+        if (CurHeat <= 0)
+        {
+            CurHeat = 0;
+            OnHeatFillChanged?.Invoke(0);
+        }
     }
 
     public virtual void UseAbility()
@@ -151,7 +168,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (AbilityState == AbilityState.Cooldown)
         {
-            UIOverlay.fillAmount = AbilityCooldown / WeaponAbility.AbilityCooldown;
+            OnAbilityFillChanged?.Invoke(AbilityCooldown / WeaponAbility.AbilityCooldown);
 
             if (AbilityCooldown > 0)
                 AbilityCooldown -= Time.deltaTime;

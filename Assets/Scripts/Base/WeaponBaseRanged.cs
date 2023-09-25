@@ -35,6 +35,7 @@ public abstract class WeaponBaseRanged : WeaponBase
             WeaponData.GetStat(StatParam.CritMultiplierPerc).Value,
             Source.position
             );
-
+        if (CurHeat < MaxHeat)
+            CurHeat += HeatRate;
     }
 }
