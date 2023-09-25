@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Globals : MonoBehaviour
 {
+
     public const string PARAMICONLOC = "UI/Sprites/Parameters";
 
     private static Globals me;
@@ -23,6 +24,7 @@ public class Globals : MonoBehaviour
     public static Dictionary<StatParam, ParameterInfo> ParamReference;
     void Awake()
     {
+
         CreateParamReference();
         if (me != null && me != this)
         {

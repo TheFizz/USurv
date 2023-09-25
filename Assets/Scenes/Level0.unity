@@ -3602,6 +3602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7b16e50c80bdd478223a3d6569baaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _charAnimator: {fileID: 97471506}
   _mouseHitMask:
     serializedVersion: 2
     m_Bits: 64
@@ -6096,7 +6097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fabde725dcf484b9fec5c1282ec406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _charAnimator: {fileID: 97471506}
   swapMode: 1
   SwapWeapon: 0
   UseAbility: 0
