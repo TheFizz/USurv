@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
+
+    [SerializeField] private Animator _charAnimator;
     public SwapMode swapMode = SwapMode.TwoKey;
     public Vector3 MousePosition { get; set; }
     private bool _inputEnabled = true;
@@ -98,6 +100,10 @@ public class InputHandler : MonoBehaviour
     {
         Horizontal = _movementInput.x;
         Vertical = _movementInput.y;
+
+        _charAnimator.SetFloat("Horizontal", Horizontal);
+        _charAnimator.SetFloat("Vertical", Vertical);
+
         _moveAmount = Mathf.Clamp01(Mathf.Abs(Horizontal) + Mathf.Abs(Vertical));
     }
     public void SetInputEnabled(bool enabled)

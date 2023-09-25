@@ -14,4 +14,5 @@ public delegate void WindowCloseHandler(ModalWindow source);
 public delegate void WeaponIconsHandler(List<WeaponBase> weaponQueue, bool swap = false, int idxA = -1, int idxB = -1);
 public delegate void DebugTextHandler(string text, string destination);
 public delegate void OverlayFillHandler(float fill);
-
+public delegate void MovementAnimHandler(float hor, float ver);
+public delegate void AttackActionHandler();

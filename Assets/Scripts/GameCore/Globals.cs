@@ -17,7 +17,7 @@ public class Globals : MonoBehaviour
     public static Transform PlayerTransform { get; set; }
     public static Camera MainCamera { get; set; }
     public static Spawner Spawner { get; set; }
-
+    public static CharacterAnimator CharacterAnimator { get; set; }
     public static float BaseCritMultiplierPerc = 200f;
 
     public static Dictionary<StatParam, ParameterInfo> ParamReference;

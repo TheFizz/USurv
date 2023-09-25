@@ -15,6 +15,7 @@ public class PlayerSystems : MonoBehaviour
     public event WeaponPickupHandler OnWeaponPickup;
     public event WeaponIconsHandler OnWeaponIconAction;
     public event DebugTextHandler OnDebugText;
+    public event AttackActionHandler OnAttack;
 
     const int ACTIVE = 0;
     const int PASSIVE = 1;
@@ -137,6 +138,11 @@ public class PlayerSystems : MonoBehaviour
         }
         OnDebugText?.Invoke(text, "WEAPON");
 
+    }
+
+    internal void OnWeaponAttack()
+    {
+        OnAttack?.Invoke();
     }
 
     public void AddXP(float xpValue)

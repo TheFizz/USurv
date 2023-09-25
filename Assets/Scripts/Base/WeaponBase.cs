@@ -113,6 +113,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
     protected virtual void Attack()
     {
+        Globals.PSystems.OnWeaponAttack();
         AlignAttackVector();
     }
     public virtual void StartAttack()
