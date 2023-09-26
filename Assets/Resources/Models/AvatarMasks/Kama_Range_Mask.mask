@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Kama_Range_Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Kama
+    m_Weight: 0
+  - m_Path: Kama/root
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range
+    m_Weight: 1
+  - m_Path: Kama/root/MCH_Range/DEF_Blade_1
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Blade_2
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Blade_3
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Blade_Base
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Blade_Tip
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Lower_Handle
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Middle_Handle
+    m_Weight: 0
+  - m_Path: Kama/root/MCH_Range/DEF_Upper_Handle
+    m_Weight: 0
+  - m_Path: Kama_Mesh
+    m_Weight: 0
