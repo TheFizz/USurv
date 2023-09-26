@@ -18,7 +18,9 @@ public class Globals : MonoBehaviour
     public static Transform PlayerTransform { get; set; }
     public static Camera MainCamera { get; set; }
     public static Spawner Spawner { get; set; }
-    public static CharacterAnimator CharacterAnimator { get; set; }
+    public static PlayerAnimationController PAnimationController { get; set; }
+    public static PlayerMovementController PMovementController { get; set; }
+
     public static float BaseCritMultiplierPerc = 200f;
 
     public static Dictionary<StatParam, ParameterInfo> ParamReference;
@@ -44,7 +46,7 @@ public class Globals : MonoBehaviour
             {StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") },
             {StatParam.AttackSpeed, new ParameterInfo("Attack Speed", "APS") },
             {StatParam.AttackDamage, new ParameterInfo("Attack Damage", "ATK") },
-            //{StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") }, //CDR
+            {StatParam.CooldownReductionPerc, new ParameterInfo("Cooldown Reduction", "CDR") },
             {StatParam.AttackCone, new ParameterInfo("Attack Cone", "Cone") },
             {StatParam.CritChancePerc, new ParameterInfo("Crit Chance", "CritC") },
             {StatParam.PlayerMaxHealth, new ParameterInfo("Max Health", "HP") },

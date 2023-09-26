@@ -20,11 +20,11 @@ MonoBehaviour:
     m_Bits: 128
   WeaponName: Spear
   Stats:
-  - BaseValue: 2
+  - BaseValue: 1.5
     Parameter: 0
-  - BaseValue: 6
+  - BaseValue: 7
     Parameter: 1
-  - BaseValue: 20
+  - BaseValue: 15
     Parameter: 2
   - BaseValue: 7
     Parameter: 3

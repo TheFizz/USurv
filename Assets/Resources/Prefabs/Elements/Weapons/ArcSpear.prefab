@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _circleData:
     _radius: 7
-    _completion: 20
-    _angle: 350
+    _completion: 15
+    _angle: 352.5
     _polygonQuantity: 36
     _keepPolygonQuantityConsistent: 1

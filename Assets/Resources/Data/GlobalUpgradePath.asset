@@ -363,3 +363,38 @@ MonoBehaviour:
       Type: 100
       Param: 1
       Order: 0
+  - UpgradeNumber: 0
+    UpgradeParam: 13
+    Modifiers:
+    - Value: 10
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 10
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 8
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 8
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 5
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 5
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 3
+      Type: 100
+      Param: 13
+      Order: 0
+    - Value: 3
+      Type: 100
+      Param: 13
+      Order: 0

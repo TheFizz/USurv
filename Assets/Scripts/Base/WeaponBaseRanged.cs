@@ -6,6 +6,8 @@ public abstract class WeaponBaseRanged : WeaponBase
 {
     protected override void Attack()
     {
+        if (HeatStatus == HeatStatus.Overheated || HeatStatus == HeatStatus.Cooling)
+            return;
         base.Attack();
 
         if (gameObject.activeSelf == false)
@@ -35,7 +37,6 @@ public abstract class WeaponBaseRanged : WeaponBase
             WeaponData.GetStat(StatParam.CritMultiplierPerc).Value,
             Source.position
             );
-        if (CurHeat < MaxHeat)
-            CurHeat += HeatRate;
+        AddHeat(1);
     }
 }

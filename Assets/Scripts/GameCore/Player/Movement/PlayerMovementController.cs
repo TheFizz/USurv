@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    private float _animRatio = 0.43f;
+    public event MovementAnimHandler OnMove;
 
     [SerializeField] private Animator _charAnimator;
     [SerializeField] private LayerMask _mouseHitMask;
@@ -15,6 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     public bool lockPosition = false, lockRotation = false;
     void Awake()
     {
+        Globals.PMovementController = this;
         Globals.PlayerTransform = transform;
     }
     private void Start()
@@ -51,16 +52,11 @@ public class PlayerMovementController : MonoBehaviour
 
         moveDirection = Quaternion.Euler(0, Globals.MainCamera.gameObject.transform.eulerAngles.y, 0) * moveDirection;
 
-        var VAnim = Vector3.Dot(Globals.PlayerTransform.forward, moveDirection.normalized);
-        var HAnim = Vector3.Dot(Globals.PlayerTransform.right, moveDirection.normalized);
-
-        _charAnimator.SetFloat("Horizontal", HAnim);
-        _charAnimator.SetFloat("Vertical", VAnim);
 
         moveDirection.Normalize();
 
         var speed = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMoveSpeed).Value;
-        _charAnimator.SetFloat("Speed", speed * _animRatio);
+        OnMove?.Invoke(moveDirection, speed);
         moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);

@@ -54,6 +54,7 @@ public class PlayerSystems : MonoBehaviour
         {
             var go = Instantiate(_weaponQueue[i]);
             _weapons[i] = go.GetComponent<WeaponBase>();
+            _weapons[i].SwappedTo(i);
         }
         OnWeaponIconAction?.Invoke(_weapons);
 
@@ -104,7 +105,12 @@ public class PlayerSystems : MonoBehaviour
 
     private void ShowDebug()
     {
+        var cd = _weapons[ABILITY].WeaponAbility.AbilityCooldown;
+        var cdr = _weapons[ABILITY].WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value;
+
         string text = _weapons[ABILITY].WeaponAbility.AbilityName + "\n";
+        text += $"Base CD: {cd}\n";
+        text += $"Modded CD: {cd - (cd * (cdr / 100))}\n";
         foreach (var stat in _weapons[ABILITY].WeaponAbility.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";
@@ -212,8 +218,11 @@ public class PlayerSystems : MonoBehaviour
         var first = _weapons[0];
         for (int i = 0; i < _weapons.Count - 1; i++)
         {
+            _weapons[i + 1].SwappedTo(i);
             _weapons[i] = _weapons[i + 1];
+
         }
+        first.SwappedTo(_weapons.Count - 1);
         _weapons[_weapons.Count - 1] = first;
         _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
         _weapons[ACTIVE].StartAttack();
@@ -227,7 +236,11 @@ public class PlayerSystems : MonoBehaviour
         _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
 
         var tmp = _weapons[idxA];
+
+        _weapons[idxB].SwappedTo(idxA);
         _weapons[idxA] = _weapons[idxB];
+
+        tmp.SwappedTo(idxB);
         _weapons[idxB] = tmp;
 
 

@@ -19,6 +19,8 @@ MonoBehaviour:
     Parameter: 11
   - BaseValue: 0
     Parameter: 10
+  - BaseValue: 0
+    Parameter: 13
   AbilityGraphics: {fileID: 3267284291621483931, guid: 16c1f25cb8851c7458ff86687a1f178f, type: 3}
   TargetLayer:
     serializedVersion: 2

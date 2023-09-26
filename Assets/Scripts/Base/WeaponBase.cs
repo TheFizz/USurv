@@ -9,6 +9,7 @@ public abstract class WeaponBase : MonoBehaviour
 {
     public event OverlayFillHandler OnAbilityFillChanged;
     public event OverlayFillHandler OnHeatFillChanged;
+    public event WeaponOverheatHandler OnWeaponOverheated;
 
     [SerializeField] private WeaponBaseSO _defaultWeaponData;
     [SerializeField] private AbilityBase _defaultWeaponAbility;
@@ -28,14 +29,15 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected Transform Source;
 
-    private float AbilityCooldown;
-    private AbilityState AbilityState;
+    private float _abilityCooldown;
+    private AbilityState _abilityState;
+    protected HeatStatus HeatStatus = HeatStatus.None;
 
-    protected float MaxHeat = 100;
-    protected float CurHeat = 0;
+    private float _maxHeat = 100;
+    private float _curHeat = 0;
     private float _cdRate = 4;
-    protected float HeatRate = 8;
-
+    private float _heatRate = 8;
+    private int _myPosition;
 
     protected virtual void Awake()
     {
@@ -43,7 +45,7 @@ public abstract class WeaponBase : MonoBehaviour
         ValidateModsAndAssignSource();
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
-        AbilityState = AbilityState.Ready;
+        _abilityState = AbilityState.Ready;
         UIObject = Instantiate(WeaponData.UIWeaponIcon);
         UIWeaponIcon = UIObject.GetComponent<WeaponIcon>();
         UIWeaponIcon.SetPartner(this);
@@ -88,28 +90,37 @@ public abstract class WeaponBase : MonoBehaviour
     protected virtual void Update()
     {
         HandleAbilityCooldown();
-        if (CurHeat > 0)
+
+        if (HeatStatus == HeatStatus.Overheated)
+            return;
+        _curHeat -= (Time.deltaTime * _cdRate);
+        OnHeatFillChanged?.Invoke(_curHeat / _maxHeat);
+        if (_curHeat <= 0)
         {
-            CurHeat -= Time.deltaTime * _cdRate;
-            OnHeatFillChanged?.Invoke(CurHeat / MaxHeat);
-        }
-        if (CurHeat <= 0)
-        {
-            CurHeat = 0;
-            OnHeatFillChanged?.Invoke(0);
+            _curHeat = 0;
+            HeatStatus = HeatStatus.None;
+            OnWeaponOverheated?.Invoke(false);
         }
     }
 
+    public void SwappedTo(int position)
+    {
+        if (_myPosition == 0 && HeatStatus == HeatStatus.Overheated)
+            HeatStatus = HeatStatus.Cooling;
+        _myPosition = position;
+
+    }
     public virtual void UseAbility()
     {
-        if (AbilityState != AbilityState.Ready)
+        if (_abilityState != AbilityState.Ready)
         {
-            Debug.Log("Ability not ready (" + AbilityCooldown + ")");
+            Debug.Log("Ability not ready (" + _abilityCooldown + ")");
             return;
         }
         WeaponAbility.Use(Source);
-        AbilityState = AbilityState.Cooldown;
-        AbilityCooldown = WeaponAbility.AbilityCooldown;
+        _abilityState = AbilityState.Cooldown;
+        var cd = WeaponAbility.AbilityCooldown;
+        _abilityCooldown = cd - (cd * (WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value / 100));
     }
     protected virtual void Attack()
     {
@@ -134,6 +145,22 @@ public abstract class WeaponBase : MonoBehaviour
     }
 
     #region Private methods 
+
+    protected void AddHeat(float heat)
+    {
+        if (HeatStatus == HeatStatus.Overheated)
+            return;
+
+        heat *= _heatRate;
+        _curHeat += heat;
+        OnHeatFillChanged?.Invoke(_curHeat / _maxHeat);
+        if (_curHeat >= _maxHeat)
+        {
+            _curHeat = _maxHeat;
+            HeatStatus = HeatStatus.Overheated;
+            OnWeaponOverheated?.Invoke(true);
+        }
+    }
     private void AlignAttackVector()
     {
         if (!WeaponData.AimAssist)
@@ -167,14 +194,14 @@ public abstract class WeaponBase : MonoBehaviour
     }
     private void HandleAbilityCooldown()
     {
-        if (AbilityState == AbilityState.Cooldown)
+        if (_abilityState == AbilityState.Cooldown)
         {
-            OnAbilityFillChanged?.Invoke(AbilityCooldown / WeaponAbility.AbilityCooldown);
+            OnAbilityFillChanged?.Invoke(_abilityCooldown / WeaponAbility.AbilityCooldown);
 
-            if (AbilityCooldown > 0)
-                AbilityCooldown -= Time.deltaTime;
+            if (_abilityCooldown > 0)
+                _abilityCooldown -= Time.deltaTime;
             else
-                AbilityState = AbilityState.Ready;
+                _abilityState = AbilityState.Ready;
         }
     }
     #endregion

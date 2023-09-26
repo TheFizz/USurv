@@ -67,7 +67,7 @@ public class HeatSystem : MonoBehaviour
         else if (_isCooling)
             return HeatStatus.Cooling;
         else
-            return HeatStatus.Default;
+            return HeatStatus.None;
     }
     public float GetHeat()
     {

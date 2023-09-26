@@ -20,9 +20,9 @@ MonoBehaviour:
     m_Bits: 128
   WeaponName: Kama
   Stats:
-  - BaseValue: 1.5
+  - BaseValue: 0.75
     Parameter: 0
-  - BaseValue: 10
+  - BaseValue: 7
     Parameter: 1
   - BaseValue: 45
     Parameter: 2

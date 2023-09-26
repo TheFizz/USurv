@@ -38,7 +38,8 @@ public enum StatParam
     CritMultiplierPerc = 9,
     AbilityPower = 10,
     AbilityRange = 11,
-    PickupRange = 12
+    PickupRange = 12,
+    CooldownReductionPerc=13
 }
 
 public enum AilmentType
@@ -54,7 +55,7 @@ public enum AbilityState
 }
 public enum HeatStatus
 {
-    Default,
+    None,
     Cooling,
     Overheated
 }

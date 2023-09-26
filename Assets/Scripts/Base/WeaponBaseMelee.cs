@@ -16,6 +16,9 @@ public abstract class WeaponBaseMelee : WeaponBase
     }
     protected override void Attack()
     {
+        if (HeatStatus == HeatStatus.Overheated || HeatStatus == HeatStatus.Cooling)
+            return;
+
         base.Attack();
         bool hasHit = false;
         var forward = Source.forward;
@@ -52,9 +55,8 @@ public abstract class WeaponBaseMelee : WeaponBase
             }
 
         }
-
-        if (CurHeat < MaxHeat && hasHit)
-            CurHeat += HeatRate;
+        if (hasHit)
+            AddHeat(1);
         DamageAll(dmgEnemies);
         ShowGraphics();
     }

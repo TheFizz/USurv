@@ -22,7 +22,7 @@ MonoBehaviour:
   Stats:
   - BaseValue: 1
     Parameter: 0
-  - BaseValue: 7
+  - BaseValue: 8
     Parameter: 1
   - BaseValue: 15
     Parameter: 2

@@ -20,7 +20,7 @@ public class LevelUpPanel : MonoBehaviour
         _parent = parent;
         _upgrade = upgrade;
         _mod = _upgrade.Modifiers[_upgrade.UpgradeNumber];
-        _upgradeText.text = _mod.ToStringWithBreak();
+        _upgradeText.text = _mod.ToStringWithBreaks();
         _buttonText.text = "Get!";
         _levelText.text = $"Level {_upgrade.UpgradeNumber + 1}";
         _image.sprite = Globals.ParamReference[_mod.Param].Image;

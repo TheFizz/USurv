@@ -67,6 +67,10 @@ public class StatModifier
     {
         return $"{StringifyAmount()}\n{StringifyParameter()}";
     }
+    public string ToStringWithBreaks()
+    {
+        return ToString().Replace(" ", "\n");
+    }
     public Sprite GetSprite()
     {
         if (!Globals.ParamReference.ContainsKey(Param))
