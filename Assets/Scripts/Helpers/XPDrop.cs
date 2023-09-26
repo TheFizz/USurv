@@ -37,7 +37,6 @@ public class XPDrop : MonoBehaviour
         new Tuple<Color, Color, Color>(new Color32(0,255,50,255),new Color32(0,95,50,255),new Color32(15,125,50,255))  // Jade
     };
 
-    // Start is called before the first frame update
     private void Awake()
     {
         _myTransform = transform;

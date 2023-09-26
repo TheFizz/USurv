@@ -2421,7 +2421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &647529260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3478,7 +3478,7 @@ MonoBehaviour:
     m_Bits: 64
   debugSpeedText: {fileID: 0}
   lockPosition: 0
-  lockRotation: 0
+  lockRotation: 1
 --- !u!54 &776415902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3601,6 +3601,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa749b1e27471b242aba5d0207e8b06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wpnPf: {fileID: 919132149155446097, guid: 30be47fba9537874c929624ff6ddfb93, type: 3}
+  _angVel: 1
 --- !u!1 &785799326
 GameObject:
   m_ObjectHideFlags: 0
@@ -5976,7 +5978,7 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  _attackSource: {fileID: 35940486}
+  AttackSource: {fileID: 35940486}
   _weaponQueue:
   - {fileID: 2153163811958126480, guid: 579b1632778b7fb469f634601c8ae05e, type: 3}
   - {fileID: 6976108617930502473, guid: 9fef99c1df6dfab45a48ad27543bfe73, type: 3}

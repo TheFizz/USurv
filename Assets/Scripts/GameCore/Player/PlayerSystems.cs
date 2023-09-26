@@ -15,7 +15,7 @@ public class PlayerSystems : MonoBehaviour
     public event WeaponPickupHandler OnWeaponPickup;
     public event WeaponIconsHandler OnWeaponIconAction;
     public event DebugTextHandler OnDebugText;
-    public event AttackActionHandler OnAttack;
+    public event Action<float, float> OnAttack;
 
     const int ACTIVE = 0;
     const int PASSIVE = 1;
@@ -28,7 +28,7 @@ public class PlayerSystems : MonoBehaviour
     [SerializeField] private PlayerStatsSO _defaultPlayerData;
 
     [SerializeField] private LayerMask _enemyLayer;
-    [SerializeField] private GameObject _attackSource;
+    [SerializeField] public GameObject AttackSource;
 
     [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
     [HideInInspector] private List<WeaponBase> _weapons = new List<WeaponBase>(new WeaponBase[3]);
@@ -146,9 +146,9 @@ public class PlayerSystems : MonoBehaviour
 
     }
 
-    internal void OnWeaponAttack()
+    internal void OnWeaponAttack(float range, float cone)
     {
-        OnAttack?.Invoke();
+        OnAttack?.Invoke(range, cone);
     }
 
     public void AddXP(float xpValue)
@@ -205,7 +205,7 @@ public class PlayerSystems : MonoBehaviour
     {
         foreach (var weapon in _weapons)
         {
-            weapon.SetSource(_attackSource.transform);
+            weapon.SetSource(AttackSource.transform);
         }
     }
     private void SwapRotate()

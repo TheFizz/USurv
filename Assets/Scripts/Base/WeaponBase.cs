@@ -124,7 +124,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        Globals.PSystems.OnWeaponAttack();
+        Globals.PSystems.OnWeaponAttack(WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.GetStat(StatParam.AttackCone).Value);
         AlignAttackVector();
     }
     public virtual void StartAttack()

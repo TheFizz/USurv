@@ -26,7 +26,6 @@ public class Globals : MonoBehaviour
     public static Dictionary<StatParam, ParameterInfo> ParamReference;
     void Awake()
     {
-
         CreateParamReference();
         if (me != null && me != this)
         {
@@ -41,6 +40,7 @@ public class Globals : MonoBehaviour
 
     private void CreateParamReference()
     {
+        //TODO: Remake with SOs
         ParamReference = new Dictionary<StatParam, ParameterInfo>()
         {
             {StatParam.AbilityPower, new ParameterInfo("Ability Power", "AP") },
