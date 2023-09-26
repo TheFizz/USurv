@@ -30,7 +30,7 @@ AvatarMask:
   - m_Path: Character/MCH-torso.parent/torso/MCH-spine.001/spine_fk.001/MCH-spine/spine_fk/tweak_spine
     m_Weight: 1
   - m_Path: Character/MCH-torso.parent/torso/MCH-spine.001/spine_fk.001/MCH-spine/spine_fk/tweak_spine/ORG-spine
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Character/MCH-torso.parent/torso/MCH-spine.001/spine_fk.001/MCH-spine/spine_fk/tweak_spine/ORG-spine/DEF-thigh.L
     m_Weight: 0
   - m_Path: Character/MCH-torso.parent/torso/MCH-spine.001/spine_fk.001/MCH-spine/spine_fk/tweak_spine/ORG-spine/DEF-thigh.L/DEF-thigh.L.001
@@ -196,9 +196,9 @@ AvatarMask:
   - m_Path: Character/MCH-torso.parent/torso/MCH-spine.002/spine_fk.002/MCH-spine.003/spine_fk.003/tweak_spine.003/ORG-spine.003/ORG-shoulder.R/DEF-upper_arm.R/DEF-upper_arm.R.001/DEF-forearm.R/DEF-forearm.R.001/DEF-hand.R/ORG-palm.04.R/DEF-palm.04.R
     m_Weight: 1
   - m_Path: Character/root
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Character/root/DEF-spine
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Character/root/DEF-spine/DEF-spine.001
     m_Weight: 1
   - m_Path: Character/root/DEF-spine/DEF-spine.001/DEF-spine.002
@@ -208,6 +208,6 @@ AvatarMask:
   - m_Path: Character/root/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003/DEF-spine.004
     m_Weight: 1
   - m_Path: Character/root/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003/DEF-spine.004/DEF-spine.005
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Character/root/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003/DEF-spine.004/DEF-spine.005/DEF-head
-    m_Weight: 1
+    m_Weight: 0
