@@ -194,9 +194,13 @@ public abstract class WeaponBase : MonoBehaviour
     }
     private void HandleAbilityCooldown()
     {
+
+        var cd = WeaponAbility.AbilityCooldown;
+        var cdr = WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value;
+
         if (_abilityState == AbilityState.Cooldown)
         {
-            OnAbilityFillChanged?.Invoke(_abilityCooldown / WeaponAbility.AbilityCooldown);
+            OnAbilityFillChanged?.Invoke(_abilityCooldown / (cd - (cd * (cdr / 100))));
 
             if (_abilityCooldown > 0)
                 _abilityCooldown -= Time.deltaTime;
