@@ -13,25 +13,25 @@ AvatarMask:
     m_Weight: 1
   - m_Path: Kama
     m_Weight: 0
-  - m_Path: Kama/root
-    m_Weight: 0
-  - m_Path: Kama/root/MCH_Range
+  - m_Path: Kama/MCH_Pivot
     m_Weight: 1
-  - m_Path: Kama/root/MCH_Range/DEF_Blade_1
+  - m_Path: Kama/MCH_Pivot/MCH_Range
+    m_Weight: 1
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Blade_1
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Blade_2
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Blade_2
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Blade_3
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Blade_3
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Blade_Base
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Blade_Base
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Blade_Tip
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Blade_Tip
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Lower_Handle
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Lower_Handle
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Middle_Handle
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Middle_Handle
     m_Weight: 0
-  - m_Path: Kama/root/MCH_Range/DEF_Upper_Handle
+  - m_Path: Kama/MCH_Pivot/MCH_Range/DEF_Upper_Handle
     m_Weight: 0
   - m_Path: Kama_Mesh
     m_Weight: 0
