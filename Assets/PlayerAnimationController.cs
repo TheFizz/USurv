@@ -13,7 +13,7 @@ public class PlayerAnimationController : MonoBehaviour
     Animator _wpnAnim;
     private Transform _source;
     private float _animRatio = 0.43f;
-    private float _angVel = 200f;
+    [SerializeField] private float _angVel = 200f;
     bool isRight = false;
     // Start is called before the first frame update
     void Awake()
@@ -44,8 +44,8 @@ public class PlayerAnimationController : MonoBehaviour
             flipDeg = 180;
         }
 
-        var fromRot = new Vector3(0, cone / (2 * dirMult), flipDeg);
-        var toRot = new Vector3(0, cone / (-2 * dirMult), flipDeg);
+        var fromRot = new Vector3(0, (cone+10) / (2 * dirMult), flipDeg);
+        var toRot = new Vector3(0, (cone+10 )/ (-2 * dirMult), flipDeg);
 
         _wpnObj.SetActive(true);
         _anim.SetTrigger("Attack");
