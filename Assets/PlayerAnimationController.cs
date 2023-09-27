@@ -44,8 +44,8 @@ public class PlayerAnimationController : MonoBehaviour
             flipDeg = 180;
         }
 
-        var fromRot = new Vector3(0, (cone+10) / (2 * dirMult), flipDeg);
-        var toRot = new Vector3(0, (cone+10 )/ (-2 * dirMult), flipDeg);
+        var fromRot = new Vector3(0, (cone+30) / (2 * dirMult), flipDeg);
+        var toRot = new Vector3(0, (cone )/ (-2 * dirMult), flipDeg);
 
         _wpnObj.SetActive(true);
         _anim.SetTrigger("Attack");
