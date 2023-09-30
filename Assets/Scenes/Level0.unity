@@ -3478,7 +3478,7 @@ MonoBehaviour:
     m_Bits: 64
   debugSpeedText: {fileID: 0}
   lockPosition: 0
-  lockRotation: 1
+  lockRotation: 0
 --- !u!54 &776415902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3601,8 +3601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa749b1e27471b242aba5d0207e8b06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wpnPf: {fileID: 919132149155446097, guid: 30be47fba9537874c929624ff6ddfb93, type: 3}
-  _angVel: 1
+  WeaponEase: 0
+  _wpnPf: {fileID: 6186137364130715969, guid: 34068370d790f354caed132a3e5aa58a, type: 3}
+  _angVel: 200
 --- !u!1 &785799326
 GameObject:
   m_ObjectHideFlags: 0

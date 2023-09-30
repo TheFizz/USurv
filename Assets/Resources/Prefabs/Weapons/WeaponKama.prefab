@@ -54,4 +54,4 @@ MonoBehaviour:
   UIRect: {fileID: 0}
   UIWeaponIcon: {fileID: 0}
   WeaponLevel: 0
-  _damageCone: {fileID: 1696153241883360416, guid: 49697a97c8942b34987bcf216963cdae, type: 3}
+  _damageCone: {fileID: 4914937731850679169, guid: 3bbdda60efd76024a903d454f5aad361, type: 3}
