@@ -11,15 +11,17 @@ public class ProjectileBehaviour : MonoBehaviour
     private float _attackDamage;
     private float _critChance;
     private float _critMult;
-    public void Setup(float projectileSpeed, int pierceCount, float maxDistance, float attackDamage, float critChance, float critMult, Vector3 sourcePoint)
+    public void Setup(WeaponBaseRanged weapon, Transform source)
     {
-        _projectileSpeed = projectileSpeed;
-        _pierceCount = pierceCount;
-        _maxDistance = maxDistance;
-        _attackDamage = attackDamage;
-        _sourcePoint = sourcePoint;
-        _critChance = critChance;
-        _critMult = critMult;
+        WeaponRangedSO weaponData = (WeaponRangedSO)weapon.WeaponData;
+
+        _projectileSpeed = weaponData.GetStat(StatParam.ProjectileSpeed).Value;
+        _pierceCount = Mathf.RoundToInt(weaponData.GetStat(StatParam.PierceCount).Value);
+        _maxDistance = weaponData.GetStat(StatParam.AttackRange).Value;
+        _attackDamage = weaponData.GetStat(StatParam.AttackDamage).Value;
+        _sourcePoint = source.position;
+        _critChance = weaponData.GetStat(StatParam.CritChancePerc).Value;
+        _critMult = weaponData.GetStat(StatParam.CritMultiplierPerc).Value;
     }
 
     // Update is called once per frame

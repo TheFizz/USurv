@@ -14,6 +14,7 @@ public class PlayerAnimationController : MonoBehaviour
     private Transform _source;
     private float _animRatio = 0.43f;
     [SerializeField] private float _angVel = 200f;
+    [SerializeField] private bool weaponAnimation = true;
     bool isRight = false;
     // Start is called before the first frame update
     void Awake()
@@ -25,6 +26,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         _source = Globals.PSystems.AttackSource.transform;
         _wpnObj = Instantiate(_wpnPf, _source.position, Quaternion.identity, Globals.PlayerTransform);
+        _wpnObj.SetActive(false);
         _wpnModel = _wpnObj.transform.GetChild(0);
         _wpnAnim = _wpnObj.GetComponentInChildren<Animator>();
 
@@ -34,7 +36,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void OnAttack(float range, float cone)
     {
-        DOTween.Kill(_wpnObj.transform);
+        _anim.SetTrigger("Attack");
+        if (!weaponAnimation)
+            return;
 
         int dirMult = 1;
         int flipDeg = 0;
@@ -44,11 +48,11 @@ public class PlayerAnimationController : MonoBehaviour
             flipDeg = 180;
         }
 
-        var fromRot = new Vector3(0, (cone+30) / (2 * dirMult), flipDeg);
-        var toRot = new Vector3(0, (cone )/ (-2 * dirMult), flipDeg);
+        var fromRot = new Vector3(0, (cone + 30) / (2 * dirMult), flipDeg);
+        var toRot = new Vector3(0, (cone) / (-2 * dirMult), flipDeg);
 
+        DOTween.Kill(_wpnObj.transform);
         _wpnObj.SetActive(true);
-        _anim.SetTrigger("Attack");
         _wpnObj.transform.localEulerAngles = fromRot;
         _wpnModel.position = _source.position + (_wpnObj.transform.forward * range);
         _wpnObj.transform.DOLocalRotate(toRot, _angVel).SetSpeedBased(true).SetEase(WeaponEase).OnComplete(() => _wpnObj.SetActive(false));

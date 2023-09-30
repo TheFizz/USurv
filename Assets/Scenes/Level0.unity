@@ -3604,6 +3604,7 @@ MonoBehaviour:
   WeaponEase: 0
   _wpnPf: {fileID: 6186137364130715969, guid: 34068370d790f354caed132a3e5aa58a, type: 3}
   _angVel: 200
+  weaponAnimation: 0
 --- !u!1 &785799326
 GameObject:
   m_ObjectHideFlags: 0

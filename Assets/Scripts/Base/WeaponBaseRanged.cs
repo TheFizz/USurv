@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class WeaponBaseRanged : WeaponBase
 {
+    private float coneTreshold = 9;
     protected override void Attack()
     {
         if (HeatStatus == HeatStatus.Overheated || HeatStatus == HeatStatus.Cooling)
@@ -22,21 +23,32 @@ public abstract class WeaponBaseRanged : WeaponBase
             return;
         }
 
-        WeaponRangedSO wd = (WeaponRangedSO)WeaponData;
+        WeaponRangedSO weaponData = (WeaponRangedSO)WeaponData;
 
+        var sourceAngles = Source.rotation.eulerAngles;
+        var projectile = Instantiate(weaponData.Projectile, Source.position, Quaternion.Euler(sourceAngles));
+        projectile.GetComponent<ProjectileBehaviour>().Setup(this, Source);
 
-        var projectile = (GameObject)Instantiate(wd.Projectile, Source.position, Source.rotation);
-        var movScript = projectile.GetComponent<ProjectileBehaviour>();
+        float cone = weaponData.GetStat(StatParam.AttackCone).Value;
+        float projectileTiers = (cone - (cone % coneTreshold)) / coneTreshold;
+        float degDev = 0;
+        for (int i = 0; i < projectileTiers; i++)
+        {
+            degDev += coneTreshold / 2;
+            for (int j = 0; j < 2; j++)
+            {
+                var mult = 1;
+                if (j == 1)
+                    mult = -1;
 
-        movScript.Setup(
-            wd.GetStat(StatParam.ProjectileSpeed).Value,
-            Mathf.RoundToInt(wd.GetStat(StatParam.PierceCount).Value),
-            wd.GetStat(StatParam.AttackRange).Value,
-            WeaponData.GetStat(StatParam.AttackDamage).Value,
-            WeaponData.GetStat(StatParam.CritChancePerc).Value,
-            WeaponData.GetStat(StatParam.CritMultiplierPerc).Value,
-            Source.position
-            );
+                var tmpAngles = sourceAngles;
+                tmpAngles.y += degDev * mult;
+
+                projectile = Instantiate(weaponData.Projectile, Source.position, Quaternion.Euler(tmpAngles));
+                projectile.GetComponent<ProjectileBehaviour>().Setup(this, Source);
+            }
+        }
+
         AddHeat(1);
     }
 }
