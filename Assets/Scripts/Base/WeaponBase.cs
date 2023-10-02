@@ -137,6 +137,8 @@ public abstract class WeaponBase : MonoBehaviour
     }
     public virtual void StartAttack()
     {
+        if (Source == null)
+            Source = Globals.PlayerTransform.Find("AttackSource").gameObject.transform;
         Source.rotation = Source.parent.rotation;
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }

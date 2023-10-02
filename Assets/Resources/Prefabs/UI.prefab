@@ -1220,7 +1220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa2df5e84265be49928496d8ea9e506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameUI: {fileID: 5207174289687076055}
 --- !u!114 &1080070192523476545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,6 +1279,7 @@ MonoBehaviour:
   RoomGoal: {fileID: 5233962584382179441}
   RoomKills: {fileID: 7234114769652687066}
   GameUI: {fileID: 5207174289687076055}
+  DeathUI: {fileID: 942243167262572896}
 --- !u!1 &1946006725993736570
 GameObject:
   m_ObjectHideFlags: 0

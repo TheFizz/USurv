@@ -70,4 +70,9 @@ public class Globals : MonoBehaviour
     }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
 
+    public static void Destroy()
+    {
+        PlayerSystems.instantiated = false;
+        Destroy(me.gameObject);
+    }
 }

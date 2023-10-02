@@ -34,7 +34,6 @@ public class InteractionUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-
         Globals.PInteractionManager.OnInteraction -= OnInteraction;
     }
 }

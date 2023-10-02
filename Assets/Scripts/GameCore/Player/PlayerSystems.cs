@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
-    static bool instantiated = false;
+    public static bool instantiated = false;
 
     public event LevelUpHandler OnLevelUp;
     public event XpChangedHandler OnXpChanged;
@@ -74,9 +74,18 @@ public class PlayerSystems : MonoBehaviour
         Globals.PAnimationController.SetSource(source);
     }
 
-    private void Start()
+    internal void UnSubscribeInteracted()
+    {
+        Globals.PInteractionManager.OnInteracted -= OnInteracted;
+    }
+
+    public void SubscribeInteracted()
     {
         Globals.PInteractionManager.OnInteracted += OnInteracted;
+    }
+
+    private void Start()
+    {
         _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
         _weapons[ACTIVE].StartAttack();
         OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);

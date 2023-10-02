@@ -20,6 +20,10 @@ public class PlayerInteractionManager : MonoBehaviour
         Globals.PInteractionManager = this;
         _myTransform = GetComponent<Transform>();
     }
+    private void Start()
+    {
+        Globals.PSystems.SubscribeInteracted();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -62,5 +66,9 @@ public class PlayerInteractionManager : MonoBehaviour
             return;
 
         OnInteraction?.Invoke(_options, _wi?.RewardName);
+    }
+    private void OnDestroy()
+    {
+        Globals.PSystems.UnSubscribeInteracted();
     }
 }

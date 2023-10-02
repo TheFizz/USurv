@@ -28,9 +28,12 @@ public class RoomManager : MonoBehaviour
     public GameObject PlayerPrefab;
     public GameObject UIPrefab;
     public GameObject GameUI;
+    public GameObject DeathUI;
+    public GameObject DeathScreenPrefab;
 
     void Awake()
     {
+
         Globals.Room = this;
         Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
         Instantiate(UIPrefab, Vector3.zero, Quaternion.identity);
@@ -38,6 +41,9 @@ public class RoomManager : MonoBehaviour
     }
     private void Start()
     {
+        Time.timeScale = 1;
+        Globals.InputHandler.SetInputEnabled(true);
+
         OnRoomStart?.Invoke(0);
         _killGoal = Random.Range(200, 400);
         _killGoal = 10;
@@ -83,11 +89,20 @@ public class RoomManager : MonoBehaviour
 
     public void PlayerDeath()
     {
-        _endScreen.Play();
+        var ds = Instantiate(DeathScreenPrefab, new Vector3(0, -100, 0), Quaternion.identity);
+        ds.GetComponent<EndScreen>().Play();
     }
     public void ReloadScene()
     {
         Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1;
+        Destroy(Globals.PSystems.gameObject);
+        Globals.Destroy();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void QuitGame()

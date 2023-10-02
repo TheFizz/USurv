@@ -11,13 +11,9 @@ public class EndScreen : MonoBehaviour
 
     public GameObject top, mid, bot;
     public GameObject trail;
-    //public GameObject GameUI;
-    public GameObject DeathUI;
     public Light Light;
-    public TextMeshProUGUI DeathText;
 
     public TextAsset DeathLines;
-    private TrailRenderer tr;
 
     private List<Vector3> _cutPoints = new List<Vector3>()
     {
@@ -47,6 +43,8 @@ public class EndScreen : MonoBehaviour
 
     void MoveCam()
     {
+        var DeathText = Globals.Room.DeathUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        camPivot = Globals.MainCamera.transform.parent.gameObject;
         var lines = DeathLines.text.Split('\n');
         var line = lines[Random.Range(0, lines.Length)];
         //line = lines[8];
@@ -56,7 +54,7 @@ public class EndScreen : MonoBehaviour
         camPivot.transform.position = new Vector3(0, -100, 0);
         camPivot.transform.rotation = Quaternion.Euler(0, 0, 0);
         Globals.MainCamera.orthographicSize = 0.45f; // Pure magic. 
-        Light.intensity = 0;
+        //Light.intensity = 0;
         Animate();
     }
     void Animate()
@@ -77,7 +75,7 @@ public class EndScreen : MonoBehaviour
                 {
                     trailSeq.Kill(true);
                     Destroy(trail);
-                    DeathUI.SetActive(true);
+                    Globals.Room.DeathUI.SetActive(true);
                 }
                 );
         trailSeq.Play();
