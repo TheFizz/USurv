@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WeaponUI : MonoBehaviour
 {
-    public GameObject GameUI;
+    //public GameObject GameUI;
     private List<Vector2> SlotPositionsOld = new List<Vector2>()
     {
         new Vector2(-185,100),//150,150 Size
@@ -41,7 +41,17 @@ public class WeaponUI : MonoBehaviour
 
     private float _animTime = 0.3f;
 
-    void Awake()
+    private void Awake()
+    {
+        Globals.Room.OnRoomStart += OnRoomStart;
+    }
+
+    private void OnRoomStart(int obj)
+    {
+        SetIcons(Globals.PSystems.GetWeapons());
+    }
+
+    void Start()
     {
         Globals.PSystems.OnWeaponIconAction += OnWeaponIconAction;
     }
@@ -52,8 +62,6 @@ public class WeaponUI : MonoBehaviour
         {
             if (swap)
                 SwapAll(weapons);
-            else
-                SetIcons(weapons);
         }
         if (idxA >= 0 && idxB >= 0)
         {
@@ -100,10 +108,15 @@ public class WeaponUI : MonoBehaviour
     {
         for (int i = 0; i < weaponQueue.Count; i++)
         {
-            weaponQueue[i].UIObject.transform.SetParent(GameUI.transform, false);
+            weaponQueue[i].UIObject.transform.SetParent(Globals.Room.GameUI.transform, false);
             weaponQueue[i].UIObject.transform.SetAsFirstSibling();
             weaponQueue[i].UIRect.anchoredPosition = SlotPositions[i];
             weaponQueue[i].UIRect.localScale = SlotSizes[i];
         }
+    }
+    private void OnDestroy()
+    {
+        Globals.Room.OnRoomStart -= OnRoomStart;
+        Globals.PSystems.OnWeaponIconAction -= OnWeaponIconAction;
     }
 }

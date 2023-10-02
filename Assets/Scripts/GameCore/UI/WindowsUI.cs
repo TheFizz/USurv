@@ -35,9 +35,9 @@ public class WindowsUI : MonoBehaviour
     {
         Time.timeScale = 0;
         Globals.InputHandler.SetInputEnabled(false);
-        RoomManager.Instance.PlayerInMenu = true;
+        Globals.Room.PlayerInMenu = true;
 
-        var window = Instantiate(prefab, GameUI.transform);
+        var window = Instantiate(prefab, Globals.Room.GameUI.transform);
 
         var rect = window.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0, 80);
@@ -47,9 +47,14 @@ public class WindowsUI : MonoBehaviour
     {
         Time.timeScale = 1;
         Globals.InputHandler.SetInputEnabled(true);
-        RoomManager.Instance.PlayerInMenu = false;
+        Globals.Room.PlayerInMenu = false;
 
         source.OnWindowClose -= OnWindowClose;
         Destroy(source.transform.gameObject);
+    }
+    private void OnDestroy()
+    {
+        Globals.PSystems.OnLevelUp -= OnLevelUp;
+        Globals.PSystems.OnWeaponPickup -= OnWeaponPickup;
     }
 }

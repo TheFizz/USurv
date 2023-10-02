@@ -112,7 +112,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         Instantiate(DropOnDeath, pos, Quaternion.identity);
         Globals.EnemyPool.Remove(ID);
         Destroy(gameObject);
-        RoomManager.Instance.KillCount++;
+        Globals.Room.KillIncrease(1);
     }
     public void Kill()
     {

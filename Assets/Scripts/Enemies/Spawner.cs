@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour
     private float _curveMultiplier = 1;
     private float _time;
     public GameObject _enemyPrefab;
-    public GameObject _player;
+    public Transform _player;
     [SerializeField] private float _secondsToSpawn = 0.5f;
     [SerializeField] private int _spawnLimit = 200;
     List<GameObject> _spawnedEnemies = new List<GameObject>();
@@ -34,6 +34,7 @@ public class Spawner : MonoBehaviour
     }
     void Start()
     {
+        _player = Globals.PlayerTransform;
         InvokeRepeating("Spawn", 1, _secondsToSpawn);
     }
     void Spawn()
@@ -49,7 +50,7 @@ public class Spawner : MonoBehaviour
             var z = Random.Range(-45, 45);
             spawnPoint = new Vector3(x, y, z);
 
-            if (Vector3.Distance(_player.transform.position, spawnPoint) > 10f)
+            if (Vector3.Distance(_player.position, spawnPoint) > 10f)
             {
                 pointFound = true;
                 foreach (var obj in _spawnedEnemies)

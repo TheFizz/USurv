@@ -22,9 +22,8 @@ public class PlayerAnimationController : MonoBehaviour
         Globals.PAnimationController = this;
         _anim = GetComponentInChildren<Animator>();
     }
-    private void Start()
+    private void Activate()
     {
-        _source = Globals.PSystems.AttackSource.transform;
         _wpnObj = Instantiate(_wpnPf, _source.position, Quaternion.identity, Globals.PlayerTransform);
         _wpnObj.SetActive(false);
         _wpnModel = _wpnObj.transform.GetChild(0);
@@ -67,5 +66,16 @@ public class PlayerAnimationController : MonoBehaviour
         _anim.SetFloat("Horizontal", HAnim);
         _anim.SetFloat("Vertical", VAnim);
         _anim.SetFloat("Speed", speed * _animRatio);
+    }
+
+    internal void SetSource(Transform source)
+    {
+        _source = source;
+        Activate();
+    }
+    private void OnDestroy()
+    {
+        Globals.PSystems.OnAttack -= OnAttack;
+        Globals.PMovementController.OnMove -= OnMove;
     }
 }

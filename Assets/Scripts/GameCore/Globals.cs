@@ -20,6 +20,7 @@ public class Globals : MonoBehaviour
     public static Spawner Spawner { get; set; }
     public static PlayerAnimationController PAnimationController { get; set; }
     public static PlayerMovementController PMovementController { get; set; }
+    public static RoomManager Room { get; set; }
 
     public static float BaseCritMultiplierPerc = 200f;
 
@@ -29,13 +30,12 @@ public class Globals : MonoBehaviour
         CreateParamReference();
         if (me != null && me != this)
         {
-            Debug.LogError("There is more than one instance of Globals!");
+            Debug.Log("There is more than one instance of Globals!");
             Destroy(gameObject);
             return;
         }
-
-        MainCamera = Camera.main;
         me = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void CreateParamReference()

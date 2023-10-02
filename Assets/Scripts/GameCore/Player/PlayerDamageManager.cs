@@ -26,7 +26,10 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
     void Start()
     {
         MaxHealth = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
-        CurrentHealth = MaxHealth;
+        if (Globals.PSystems.CurHealth > 0)
+            CurrentHealth = Globals.PSystems.CurHealth;
+        else
+            CurrentHealth = MaxHealth;
         OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
     }
     void Update()
@@ -36,6 +39,7 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
         if (MaxHealth > pHealth)
         {
             CurrentHealth += MaxHealth - pHealth;
+            Globals.PSystems.CurHealth = CurrentHealth;
             OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
         }
     }
@@ -58,15 +62,16 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
             }
         }
         CurrentHealth -= damageAmount;
+        Globals.PSystems.CurHealth = CurrentHealth;
         if (CurrentHealth <= 0 && !_isDead)
         {
             _isDead = true;
             CurrentHealth = 0;
+            Globals.PSystems.CurHealth = CurrentHealth;
             Die();
         }
         OnHpChanged?.Invoke(CurrentHealth);
     }
-
     public void Die()
     {
         _invulnerable = true;

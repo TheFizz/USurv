@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -20,6 +18,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     private void Start()
     {
+        Globals.PSystems.SetSource(Globals.PlayerTransform.Find("AttackSource").gameObject.transform);
         _RB = GetComponent<Rigidbody>();
     }
     public void Update()

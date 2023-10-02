@@ -6,11 +6,11 @@ using UnityEngine;
 public class DebugUI : MonoBehaviour
 {
 
-    public TextMeshProUGUI DebugWeapon;
-    public TextMeshProUGUI DebugAbility;
-    public TextMeshProUGUI DebugPlayer;
+    [SerializeField] private TextMeshProUGUI DebugWeapon;
+    [SerializeField] private TextMeshProUGUI DebugAbility;
+    [SerializeField] private TextMeshProUGUI DebugPlayer;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         Globals.PSystems.OnDebugText += OnDebugText;
     }
@@ -46,5 +46,9 @@ public class DebugUI : MonoBehaviour
     public void WriteAbility(string text)
     {
         DebugAbility.text = text;
+    }
+    private void OnDestroy()
+    {
+        Globals.PSystems.OnDebugText -= OnDebugText;
     }
 }

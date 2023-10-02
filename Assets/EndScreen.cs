@@ -11,7 +11,7 @@ public class EndScreen : MonoBehaviour
 
     public GameObject top, mid, bot;
     public GameObject trail;
-    public GameObject GameUI;
+    //public GameObject GameUI;
     public GameObject DeathUI;
     public Light Light;
     public TextMeshProUGUI DeathText;
@@ -50,7 +50,7 @@ public class EndScreen : MonoBehaviour
         var lines = DeathLines.text.Split('\n');
         var line = lines[Random.Range(0, lines.Length)];
         //line = lines[8];
-        GameUI.SetActive(false);
+        Globals.Room.GameUI.SetActive(false);
         DeathText.text = line;
         camPivot.GetComponent<CameraFollow>().enabled = false;
         camPivot.transform.position = new Vector3(0, -100, 0);

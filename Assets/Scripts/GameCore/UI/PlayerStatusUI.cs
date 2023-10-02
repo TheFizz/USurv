@@ -20,10 +20,6 @@ public class PlayerStatusUI : MonoBehaviour
 
     private void Awake()
     {
-        Globals.PDamageManager.OnHpChanged += OnHpChanged;
-        Globals.PSystems.OnXpChanged += OnXpChanged;
-        Globals.PSystems.OnLevelUp += OnLevelUp;
-
         _hpSlider = HpBar.GetComponent<Slider>();
         _xpSlider = XpBar.GetComponent<Slider>();
         _hpText = HpBar.GetComponentInChildren<TextMeshProUGUI>();
@@ -31,6 +27,15 @@ public class PlayerStatusUI : MonoBehaviour
         _levelText = xpComp.Find(c => c.name == "LevelText");
         _curXpText = xpComp.Find(c => c.name == "CurXpText");
         _maxXpText = xpComp.Find(c => c.name == "MaxXpText");
+
+        Globals.PDamageManager.OnHpChanged += OnHpChanged;
+    }
+    private void Start()
+    {
+        Globals.PSystems.OnXpChanged += OnXpChanged;
+        Globals.PSystems.OnLevelUp += OnLevelUp;
+
+        Globals.PSystems.ForceInvokeStatus();
     }
     private void OnXpChanged(float newCurrentXp)
     {
@@ -73,5 +78,11 @@ public class PlayerStatusUI : MonoBehaviour
         _xpSlider.value = value;
         if (_curXpText != null)
             _curXpText.text = value.ToString();
+    }
+    private void OnDestroy()
+    {
+        Globals.PSystems.OnXpChanged -= OnXpChanged;
+        Globals.PSystems.OnLevelUp -= OnLevelUp;
+        Globals.PDamageManager.OnHpChanged -= OnHpChanged;
     }
 }

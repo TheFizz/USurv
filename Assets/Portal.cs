@@ -8,6 +8,6 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (Globals.IsInLayerMask(other.transform.gameObject.layer, _targetLayer))
-            RoomManager.Instance.ReloadScene();
+            Globals.Room.ReloadScene();
     }
 }

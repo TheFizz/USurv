@@ -27,7 +27,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             foreach (var option in _options)
             {
-                if (Input.GetKeyDown(option.Item1) && RoomManager.Instance.PlayerInMenu == false)
+                if (Input.GetKeyDown(option.Item1) && Globals.Room.PlayerInMenu == false)
                 {
                     OnInteracted?.Invoke(option.Item2, _wi.RewardName);
                     Destroy(_wi.transform.gameObject);

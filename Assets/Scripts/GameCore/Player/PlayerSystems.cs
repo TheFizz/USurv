@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
+    static bool instantiated = false;
 
     public event LevelUpHandler OnLevelUp;
     public event XpChangedHandler OnXpChanged;
@@ -28,7 +29,6 @@ public class PlayerSystems : MonoBehaviour
     [SerializeField] private PlayerStatsSO _defaultPlayerData;
 
     [SerializeField] private LayerMask _enemyLayer;
-    [SerializeField] public GameObject AttackSource;
 
     [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
     [HideInInspector] private List<WeaponBase> _weapons = new List<WeaponBase>(new WeaponBase[3]);
@@ -37,37 +37,63 @@ public class PlayerSystems : MonoBehaviour
     private int _upgradesPerLevel = 3;
     private int _currentLevel = 1;
 
+    [HideInInspector] public float CurHealth = -1;
+
     private List<StatModifier> _globalMods = new List<StatModifier>();
 
     // Start is called before the first frame update
     private void Awake()
     {
+        if (instantiated)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        if (!instantiated)
+            instantiated = true;
+
         Globals.PSystems = this;
         InstantiateSOs();
         ValidateModsAndAssignSource();
-    }
-    private void Start()
-    {
-        Globals.PInteractionManager.OnInteracted += OnInteracted;
 
         for (int i = 0; i < _weaponQueue.Length; i++)
         {
-            var go = Instantiate(_weaponQueue[i]);
+            var go = Instantiate(_weaponQueue[i], gameObject.transform);
             _weapons[i] = go.GetComponent<WeaponBase>();
             _weapons[i].SwappedTo(i);
         }
-        OnWeaponIconAction?.Invoke(_weapons);
+    }
+    public void SetSource(Transform source)
+    {
+        SetWeaponsSource(source);
+        SetAnimSource(source);
+    }
 
-        SetWeaponsSource();
+    private void SetAnimSource(Transform source)
+    {
+        Globals.PAnimationController.SetSource(source);
+    }
+
+    private void Start()
+    {
+        Globals.PInteractionManager.OnInteracted += OnInteracted;
         _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
         _weapons[ACTIVE].StartAttack();
+        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
+    }
+    public List<WeaponBase> GetWeapons()
+    {
+        return _weapons;
+    }
+    public void ForceInvokeStatus()
+    {
         OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
     }
 
     internal void AddWeaponUpgrade(WeaponBase weapon, int level)
     {
         weapon.UpgradeToLevel(level);
-        RoomManager.Instance.RewardTaken = true;
+        Globals.Room.RewardTaken = true;
         if (weapon == _weapons[PASSIVE])
         {
             _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
@@ -197,15 +223,14 @@ public class PlayerSystems : MonoBehaviour
     }
     public void PlayerDeath()
     {
-        RoomManager.Instance.PlayerDeath();
+        Globals.Room.PlayerDeath();
     }
 
-    #region Weapons
-    private void SetWeaponsSource()
+    private void SetWeaponsSource(Transform source)
     {
         foreach (var weapon in _weapons)
         {
-            weapon.SetSource(AttackSource.transform);
+            weapon.SetSource(source);
         }
     }
     private void SwapRotate()
@@ -273,5 +298,4 @@ public class PlayerSystems : MonoBehaviour
             _weapons[ABILITY].WeaponData.WeaponName,
         };
     }
-    #endregion
 }

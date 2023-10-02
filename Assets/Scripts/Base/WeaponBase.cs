@@ -17,9 +17,8 @@ public abstract class WeaponBase : MonoBehaviour
     [HideInInspector] public WeaponBaseSO WeaponData;
     [HideInInspector] public AbilityBase WeaponAbility;
 
-    [HideInInspector] public GameObject UIObject;
-    [HideInInspector] public Image UIImage;
-    [HideInInspector] public Image UIOverlay;
+    private GameObject _uiObj;
+    [HideInInspector] public GameObject UIObject { get => GetUIObject(); }
     [HideInInspector] public RectTransform UIRect;
 
     [HideInInspector] public WeaponIcon UIWeaponIcon;
@@ -43,16 +42,25 @@ public abstract class WeaponBase : MonoBehaviour
     {
         InstantiateSOs();
         ValidateModsAndAssignSource();
+
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
-        _abilityState = AbilityState.Ready;
-        UIObject = Instantiate(WeaponData.UIWeaponIcon);
-        UIWeaponIcon = UIObject.GetComponent<WeaponIcon>();
-        UIWeaponIcon.SetPartner(this);
-
-        UIObject.name = WeaponData.WeaponName + "Icon";
-        UIRect = UIObject.GetComponent<RectTransform>();
     }
+
+    private GameObject GetUIObject()
+    {
+        if (_uiObj != null)
+            return _uiObj;
+
+        _abilityState = AbilityState.Ready;
+        _uiObj = Instantiate(WeaponData.UIWeaponIcon);
+        _uiObj.GetComponent<WeaponIcon>().SetPartner(this);
+        _uiObj.name = WeaponData.WeaponName + "Icon";
+        UIRect = UIObject.GetComponent<RectTransform>();
+
+        return _uiObj;
+    }
+
     private void ValidateModsAndAssignSource()
     {
         foreach (var mod in WeaponData.PassiveModifiers)

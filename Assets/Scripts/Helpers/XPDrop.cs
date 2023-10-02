@@ -65,7 +65,7 @@ public class XPDrop : MonoBehaviour
     {
         if (_target == null)
             return;
-        if (RoomManager.Instance.PlayerInMenu == true)
+        if (Globals.Room.PlayerInMenu == true)
             return;
 
         _speed = Mathf.Lerp(_speed, _maxSpeed, _stepInc);

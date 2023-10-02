@@ -32,4 +32,9 @@ public class InteractionUI : MonoBehaviour
             pf.transform.SetParent(InteractionContainer.transform, false);
         }
     }
+    private void OnDestroy()
+    {
+
+        Globals.PInteractionManager.OnInteraction -= OnInteraction;
+    }
 }

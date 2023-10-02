@@ -1,19 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class RoomManager : MonoBehaviour
 {
 
-    public TextMeshProUGUI TollText, GoalText;
+    public event Action<float> OnGoalChanged;
+    public event Action<float> OnKillsChanged;
+    public event Action<int> OnRoomStart;
 
-    public static RoomManager Instance;
+    public TextMeshProUGUI TollText, GoalText;
     public bool PlayerInMenu = false;
 
-    public int WinCondition;
-    public int KillCount = 0;
+    private int _killGoal;
+    private int _killCount = 0;
     public LevelState State = LevelState.Active;
 
     private EndScreen _endScreen;
@@ -21,33 +25,36 @@ public class RoomManager : MonoBehaviour
     public GameObject Reward;
     public GameObject Portal;
     public bool RewardTaken = false;
+    public GameObject PlayerPrefab;
+    public GameObject UIPrefab;
+    public GameObject GameUI;
+
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogError("There is more than one instance of Game!");
-            Destroy(gameObject);
-            return;
-        }
-        WinCondition = Random.Range(200, 400);
-        //WinCondition = 10;
-        GoalText.text = WinCondition.ToString();
+        Globals.Room = this;
+        Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
+        Instantiate(UIPrefab, Vector3.zero, Quaternion.identity);
         _endScreen = GetComponent<EndScreen>();
-        Instance = this;
+    }
+    private void Start()
+    {
+        OnRoomStart?.Invoke(0);
+        _killGoal = Random.Range(200, 400);
+        _killGoal = 10;
+        OnGoalChanged?.Invoke(_killGoal);
+        OnKillsChanged?.Invoke(_killCount);
     }
     public void Update()
     {
-        TollText.text = KillCount.ToString();
-
-        if (Instance.UnlimitedPlay)
+        if (UnlimitedPlay)
         {
             GoalText.text = "∞";
             return;
         }
 
-        if (State == LevelState.Active && KillCount >= WinCondition)
+        if (State == LevelState.Active && _killCount >= _killGoal)
         {
-            KillCount = WinCondition;
+            _killCount = _killGoal;
             NextLevel();
         }
         if (State == LevelState.EndingXP && Globals.XPDropsPool.Count < 1)
@@ -97,6 +104,11 @@ public class RoomManager : MonoBehaviour
     {
         Globals.Spawner.StopSpawn();
         StartCoroutine(KillEnemies());
+    }
+    public void KillIncrease(int amount)
+    {
+        _killCount += amount;
+        OnKillsChanged?.Invoke(_killCount);
     }
 
     IEnumerator KillEnemies()

@@ -39,4 +39,10 @@ public class WeaponIcon : MonoBehaviour
         else
             _weaponSprite.color = _cooledColor;
     }
+    private void OnDestroy()
+    {
+        _weapon.OnAbilityFillChanged -= OnAbilityFillChanged;
+        _weapon.OnHeatFillChanged -= OnHeatFillChanged;
+        _weapon.OnWeaponOverheated -= OnWeaponOverheated;
+    }
 }
