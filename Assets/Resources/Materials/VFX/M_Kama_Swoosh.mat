@@ -46,15 +46,15 @@ Material:
     - _Blur_Ammount: 50
     - _Brightness: 2
     - _Cone: 45
-    - _Fill: 2
+    - _Fill: 2.5
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius_Cutout: 1
+    - _Radius_Cutout: 0.5
     - _Scroll_Speed: 2.5
     - _Shaprness: 10
-    - _Sharpness: 2
+    - _Sharpness: 4
     - _Smoothstep_1: 0
     - _Smoothstep_2: 0.4
     - _Trail_Sharpness: 0

@@ -45,17 +45,17 @@ Material:
     - _Alpha_Clip: 0.5
     - _Blur_Ammount: 100
     - _Brightness: 5
-    - _Cone: 55
+    - _Cone: 45
     - _Fill: 2
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius_Cutout: 4.5
+    - _Radius_Cutout: 3.5
     - _Scroll_Speed: 3
     - _Shaprness: 1
-    - _Sharpness: 4
-    - _Trail_Sharpness: 0
+    - _Sharpness: 3.5
+    - _Trail_Sharpness: 2
     - _Transparency: 0
     m_Colors:
     - _Cone_Color: {r: 0, g: 1, b: 0.8477471, a: 1}

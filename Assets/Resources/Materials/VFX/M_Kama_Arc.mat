@@ -41,20 +41,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.3
-    - _Alpha_Clip: 0.1
-    - _Blur_Ammount: 50
+    - _Alpha: 0.25
+    - _Alpha_Clip: 0
+    - _Blur_Ammount: 100
     - _Brightness: 2
     - _Cone: 45
-    - _Fill: 2.5
+    - _Fill: 5
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius_Cutout: 0.25
+    - _Radius_Cutout: 1.63
     - _Scroll_Speed: 3
     - _Shaprness: 0
-    - _Sharpness: 1.5
+    - _Sharpness: 0.5
     - _Smoothstep_1: 0
     - _Smoothstep_2: 1
     - _Trail_Sharpness: 10
