@@ -13,9 +13,11 @@ public class PlayerAnimationController : MonoBehaviour
     Animator _wpnAnim;
     private Transform _source;
     private float _animRatio = 0.43f;
-    [SerializeField] private float _angVel = 200f;
+    [SerializeField] private float _angVel = 0.1f; //200f;
     [SerializeField] private bool weaponAnimation = true;
-    bool isRight = false;
+
+    [HideInInspector] public bool IsRight = false;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,7 +43,7 @@ public class PlayerAnimationController : MonoBehaviour
 
         int dirMult = 1;
         int flipDeg = 0;
-        if (isRight)
+        if (IsRight)
         {
             dirMult = -1;
             flipDeg = 180;
@@ -54,9 +56,10 @@ public class PlayerAnimationController : MonoBehaviour
         _wpnObj.SetActive(true);
         _wpnObj.transform.localEulerAngles = fromRot;
         _wpnModel.position = _source.position + (_wpnObj.transform.forward * range);
-        _wpnObj.transform.DOLocalRotate(toRot, _angVel).SetSpeedBased(true).SetEase(WeaponEase).OnComplete(() => _wpnObj.SetActive(false));
+        //_wpnObj.transform.DOLocalRotate(toRot, _angVel).SetSpeedBased(true).SetEase(WeaponEase).OnComplete(() => _wpnObj.SetActive(false));
+        _wpnObj.transform.DOLocalRotate(toRot, _angVel).SetEase(WeaponEase).OnComplete(() => _wpnObj.SetActive(false));
 
-        isRight = !isRight;
+        IsRight = !IsRight;
     }
     private void OnMove(Vector3 moveDirection, float speed)
     {

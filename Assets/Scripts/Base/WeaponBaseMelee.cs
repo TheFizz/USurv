@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public abstract class WeaponBaseMelee : WeaponBase
 {
     [SerializeField] private GameObject _damageCone;
+    private bool isRight = false;
 
     protected override void Awake()
     {
@@ -20,6 +21,7 @@ public abstract class WeaponBaseMelee : WeaponBase
             return;
 
         base.Attack();
+
         bool hasHit = false;
         var forward = Source.forward;
         var coneCos = Mathf.Cos((WeaponData.GetStat(StatParam.AttackCone).Value / 2) * Mathf.Deg2Rad);
@@ -80,13 +82,22 @@ public abstract class WeaponBaseMelee : WeaponBase
     }
     private void ShowGraphics()
     {
-        var cone = Instantiate(_damageCone, Source.position, Source.rotation, Source);
-        /*
-        var coneSize = WeaponData.GetStat(StatParam.AttackCone).Value;
-        var range = WeaponData.GetStat(StatParam.AttackRange).Value;
-        var swoosher = Globals.Swoosher.BuildSwoosher(Globals.PlayerTransform, Source, range, coneSize);
-        swoosher.transform.DOLocalRotate(new Vector3(0, coneSize / 2, 0), WeaponData.AttackSpeed).SetEase(Ease.Linear).SetAutoKill(true).OnComplete(()=>Destroy(swoosher));
-        */
+        isRight = Globals.PAnimationController.IsRight;
+
+        var z = 180;
+        if (isRight)
+            z = 0;
+
+        var sourceAngles = Source.rotation.eulerAngles;
+        var tmpAngles = sourceAngles;
+        tmpAngles.z = z;
+
+        var cone = Instantiate(_damageCone, Source.position, Quaternion.Euler(tmpAngles), Source);
+        var coneControl = cone.GetComponent<VFXConeControl>();
+        coneControl.enabled = false;
+        coneControl.Radius = WeaponData.GetStat(StatParam.AttackRange).Value;
+        coneControl.Angle = WeaponData.GetStat(StatParam.AttackCone).Value;
+        coneControl.enabled = true;
     }
 
     private List<Vector3> GetSectorCirclePoints(Vector3 enemyPos, float enemyRadius, Vector3 sourcePos, Vector3 forward, float angle, float distance)

@@ -46,7 +46,7 @@ public class RoomManager : MonoBehaviour
 
         OnRoomStart?.Invoke(0);
         _killGoal = Random.Range(200, 400);
-        _killGoal = 10;
+        //_killGoal = 10;
         OnGoalChanged?.Invoke(_killGoal);
         OnKillsChanged?.Invoke(_killCount);
     }

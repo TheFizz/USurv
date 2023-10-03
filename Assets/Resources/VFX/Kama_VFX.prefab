@@ -4898,6 +4898,7 @@ GameObject:
   - component: {fileID: 4469233112532217811}
   - component: {fileID: 647334864615234699}
   - component: {fileID: 73486866884482843}
+  - component: {fileID: -6401927305065034392}
   m_Layer: 0
   m_Name: Kama_VFX
   m_TagString: Untagged
@@ -4941,8 +4942,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: af57504109e654244ab198da7ab98877, type: 2}
   - {fileID: 2100000, guid: 22dca9e94b890524a856ff338f458cef, type: 2}
   - {fileID: 2100000, guid: 2dcc44b302ea989419fb00496cc98187, type: 2}
-  radius: 5
-  angle: 45
+  Radius: 5
+  Angle: 45
 --- !u!199 &647334864615234699
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -9832,6 +9833,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &-6401927305065034392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787093121822878480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9701100789c732b469a5ed23828d6be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ttl: 0.2
 --- !u!1 &5096811730123330733
 GameObject:
   m_ObjectHideFlags: 0

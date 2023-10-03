@@ -183,6 +183,8 @@ public class PlayerSystems : MonoBehaviour
 
     internal void OnWeaponAttack(float range, float cone)
     {
+        if (_weapons[ACTIVE].WeaponData.WeaponName != "Kama")
+            return;
         OnAttack?.Invoke(range, cone);
     }
 

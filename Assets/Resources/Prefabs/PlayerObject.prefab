@@ -197,8 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponEase: 0
   _wpnPf: {fileID: 6186137364130715969, guid: 34068370d790f354caed132a3e5aa58a, type: 3}
-  _angVel: 200
-  weaponAnimation: 0
+  _angVel: 0.3
+  weaponAnimation: 1
 --- !u!1001 &2567446780966926848
 PrefabInstance:
   m_ObjectHideFlags: 0
