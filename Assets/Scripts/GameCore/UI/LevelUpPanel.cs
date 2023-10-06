@@ -23,13 +23,13 @@ public class LevelUpPanel : MonoBehaviour
         _upgradeText.text = _mod.ToStringWithBreaks();
         _buttonText.text = "Get!";
         _levelText.text = $"Level {_upgrade.UpgradeNumber + 1}";
-        _image.sprite = Globals.ParamReference[_mod.Param].Image;
+        _image.sprite = Game.ParamReference[_mod.Param].Image;
         _button.onClick.AddListener(ApplyUpgrade);
     }
     private void ApplyUpgrade()
     {
         _upgrade.UpgradeNumber++;
-        Globals.PSystems.AddGlobalMod(_mod);
+        Game.PSystems.AddGlobalMod(_mod);
         _parent.CloseWindow();
     }
 }

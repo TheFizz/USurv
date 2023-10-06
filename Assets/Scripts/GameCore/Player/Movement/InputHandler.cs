@@ -6,20 +6,20 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
 
-    public SwapMode swapMode = SwapMode.TwoKey;
-    public Vector3 MousePosition { get; set; }
+    [HideInInspector] public SwapMode swapMode = SwapMode.TwoKey;
+    [HideInInspector] public Vector3 MousePosition { get; set; }
     private bool _inputEnabled = true;
 
     // Start is called before the first frame update
-    public bool SwapWeapon = false;
-    public bool UseAbility = false;
+    [HideInInspector] public bool SwapWeapon = false;
+    [HideInInspector] public bool UseAbility = false;
 
 
-    public bool Swap01 = false;
-    public bool Swap12 = false;
+    [HideInInspector] public bool Swap01 = false;
+    [HideInInspector] public bool Swap12 = false;
 
-    public float Horizontal;
-    public float Vertical;
+    [HideInInspector] public float Horizontal;
+    [HideInInspector] public float Vertical;
     private float _moveAmount;
 
     private PlayerControls _inputActions;
@@ -27,7 +27,7 @@ public class InputHandler : MonoBehaviour
 
     public void OnEnable()
     {
-        Globals.InputHandler = this;
+        Game.InputHandler = this;
 
         if (_inputActions == null)
         {

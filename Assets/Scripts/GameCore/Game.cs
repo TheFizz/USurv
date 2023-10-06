@@ -1,26 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
-public class Globals : MonoBehaviour
+public class Game : MonoBehaviour
 {
 
     public const string PARAMICONLOC = "UI/Sprites/Parameters";
 
-    private static Globals me;
+    public event Action<Game> OnLevelReady;
+
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _uiPrefab;
+    [SerializeField] private GameObject _gameUiPrefab;
+    [SerializeField] public GameObject DeathUiPrefab;
+    [SerializeField] private PlayerStatsSO _defaultPlayerStats;
+    [SerializeField] private GlobalUpgradePathSO _defaultUpgradePath;
+    [SerializeField] private LayerMask _enemyLayer;
+
+    public static Game Instance;
     public static InputHandler InputHandler { get; set; }
     public static PlayerSystems PSystems { get; set; }
-    public static PlayerDamageManager PDamageManager { get; set; }
-    public static PlayerInteractionManager PInteractionManager { get; set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; set; } = new Dictionary<string, XPDrop>();
     public static Dictionary<string, NewEnemyBase> EnemyPool { get; set; } = new Dictionary<string, NewEnemyBase>();
-    public static Transform PlayerTransform { get; set; }
     public static Camera MainCamera { get; set; }
     public static Spawner Spawner { get; set; }
-    public static PlayerAnimationController PAnimationController { get; set; }
-    public static PlayerMovementController PMovementController { get; set; }
-    public static RoomManager Room { get; set; }
+    public static Room Room { get; set; }
+    public static GameObject UI { get; set; }
+    public static GameObject GameUI { get; set; }
 
     public static float BaseCritMultiplierPerc = 200f;
 
@@ -28,14 +37,57 @@ public class Globals : MonoBehaviour
     void Awake()
     {
         CreateParamReference();
-        if (me != null && me != this)
+        if (Instance != null && Instance != this)
         {
             Debug.Log("There is more than one instance of Globals!");
             Destroy(gameObject);
             return;
         }
-        me = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+        CreatePlayerSystems();
+        SceneSwitcher.Instance.OnSceneLoaded += OnSceneLoaded;
+    }
+    private void CreatePlayerSystems()
+    {
+        PSystems = gameObject.AddComponent<PlayerSystems>();
+        PSystems.Initialize(_playerPrefab, _defaultPlayerStats, _defaultUpgradePath, _enemyLayer);
+        PSystems.OnPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnSceneLoaded(string scene)
+    {
+        if (scene == "BootScene")
+            return;
+        BuildUI();
+        CreateRoom();
+    }
+
+    private void BuildUI()
+    {
+        UI = Instantiate(_uiPrefab, Vector3.zero, Quaternion.identity);
+        GameUI = Instantiate(_gameUiPrefab, UI.transform.GetComponentInChildren<Canvas>().transform);
+    }
+
+    private void CreateRoom()
+    {
+        var room = Resources.Load("Prefabs/Room") as GameObject;
+        Room = Instantiate(room).GetComponent<Room>();
+        Room.OnRoomCreated += OnRoomCreated;
+    }
+
+    private void OnRoomCreated(GameObject camera)
+    {
+        MainCamera = Camera.main;
+        PSystems.SpawnPlayer();
+    }
+    private void OnPlayerSpawned(GameObject playerObj)
+    {
+        var cameraPivot = MainCamera.gameObject.transform.parent;
+        cameraPivot.GetComponent<CameraFollow>().CenterPoint = PSystems.AttackSource;
+        PSystems.StopAttack();
+        PSystems.StartAttack();
+        OnLevelReady?.Invoke(this);
     }
 
     private void CreateParamReference()
@@ -69,10 +121,15 @@ public class Globals : MonoBehaviour
         return $"{a.ToString("x").ToUpperInvariant()}{b.ToString("x").ToUpperInvariant()}";
     }
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
-
-    public static void Destroy()
+    public void Destroy()
     {
-        PlayerSystems.instantiated = false;
-        Destroy(me.gameObject);
+        //PlayerSystems.instantiated = false;
+        Destroy(Instance.gameObject);
+    }
+    private void OnDestroy()
+    {
+        SceneSwitcher.Instance.OnSceneLoaded -= OnSceneLoaded;
+        Room.OnRoomCreated -= OnRoomCreated;
+        PSystems.OnPlayerSpawned -= OnPlayerSpawned;
     }
 }

@@ -44,7 +44,7 @@ public class ProjectileBehaviour : MonoBehaviour
         float dmg = _attackDamage;
         if (roll < chance)
         {
-            dmg *= (_critMult + Globals.BaseCritMultiplierPerc) / 100;
+            dmg *= (_critMult + Game.BaseCritMultiplierPerc) / 100;
             isCrit = true;
         }
 

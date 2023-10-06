@@ -18,6 +18,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     [HideInInspector] public string ID;
     private Rigidbody _RB;
     private Vector3 _target;
+    public Transform MainTarget;
     private Color _baseColor;
     private Renderer _renderer;
     [SerializeField] private GameObject _damageText;
@@ -28,13 +29,13 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
-        ID = Globals.GenerateId();
+        ID = Game.GenerateId();
         gameObject.name = $"Enemy<{ID}>";
         _RB = GetComponent<Rigidbody>();
         _baseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponentInChildren<Renderer>();
         _baseColor = _renderer.material.color;
-        Globals.EnemyPool.Add(ID, this);
+        Game.EnemyPool.Add(ID, this);
     }
     void Update()
     {
@@ -43,7 +44,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var distanceToPlayer = Vector3.Distance(transform.position, _target);
         if (!_ailments.ContainsKey(AilmentType.Fear) && !_ailments.ContainsKey(AilmentType.Knockback))
         {
-            _target = Globals.PlayerTransform.position;
+            _target = MainTarget.position;
         }
         if (distanceToPlayer > 1.5)
             if (_canMove)
@@ -90,7 +91,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     public void Damage(float damageAmount, bool isCrit)
     {
-        Vector3 cameraAngle = Globals.MainCamera.transform.eulerAngles;
+        Vector3 cameraAngle = Game.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
 
@@ -110,9 +111,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var pos = gameObject.transform.position;
         pos.y = 1f;
         Instantiate(DropOnDeath, pos, Quaternion.identity);
-        Globals.EnemyPool.Remove(ID);
+        Game.EnemyPool.Remove(ID);
         Destroy(gameObject);
-        Globals.Room.KillIncrease(1);
+        Game.Room.KillIncrease(1);
     }
     public void Kill()
     {
@@ -155,9 +156,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     private void OnCollisionStay(Collision collision)
     {
-        if (!Globals.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
+        if (!Game.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
             return;
-        Globals.PDamageManager.Damage(EnemyData.AttackDamage, ID);
+        Game.PSystems.DamageManager.Damage(EnemyData.AttackDamage, ID);
     }
 
 }

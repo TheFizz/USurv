@@ -43,19 +43,15 @@ public class WeaponUI : MonoBehaviour
 
     private void Awake()
     {
-        Globals.Room.OnRoomStart += OnRoomStart;
+        Game.Instance.OnLevelReady += OnLevelReady;
     }
 
-    private void OnRoomStart(int obj)
+    private void OnLevelReady(Game obj)
     {
-        SetIcons(Globals.PSystems.GetWeapons());
+        Game.Instance.OnLevelReady -= OnLevelReady;
+        Game.PSystems.OnWeaponIconAction += OnWeaponIconAction;
+        SetIcons(Game.PSystems.GetWeapons());
     }
-
-    void Start()
-    {
-        Globals.PSystems.OnWeaponIconAction += OnWeaponIconAction;
-    }
-
     private void OnWeaponIconAction(List<WeaponBase> weapons, bool swap = false, int idxA = -1, int idxB = -1)
     {
         if (idxA < 0 && idxB < 0)
@@ -108,7 +104,7 @@ public class WeaponUI : MonoBehaviour
     {
         for (int i = 0; i < weaponQueue.Count; i++)
         {
-            weaponQueue[i].UIObject.transform.SetParent(Globals.Room.GameUI.transform, false);
+            weaponQueue[i].UIObject.transform.SetParent(Game.GameUI.transform, false);
             weaponQueue[i].UIObject.transform.SetAsFirstSibling();
             weaponQueue[i].UIRect.anchoredPosition = SlotPositions[i];
             weaponQueue[i].UIRect.localScale = SlotSizes[i];
@@ -116,7 +112,7 @@ public class WeaponUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.Room.OnRoomStart -= OnRoomStart;
-        Globals.PSystems.OnWeaponIconAction -= OnWeaponIconAction;
+        Game.Instance.OnLevelReady -= OnLevelReady;
+        Game.PSystems.OnWeaponIconAction -= OnWeaponIconAction;
     }
 }

@@ -11,8 +11,8 @@ public class WindowsUI : MonoBehaviour
 
     private void Start()
     {
-        Globals.PSystems.OnLevelUp += OnLevelUp;
-        Globals.PSystems.OnWeaponPickup += OnWeaponPickup;
+        Game.PSystems.OnLevelUp += OnLevelUp;
+        Game.PSystems.OnWeaponPickup += OnWeaponPickup;
     }
 
     private void OnLevelUp(float newCurrentXp, float newMaxXP, int level, List<GlobalUpgrade> upgrades)
@@ -34,10 +34,10 @@ public class WindowsUI : MonoBehaviour
     ModalWindow CreateWindow(GameObject prefab)
     {
         Time.timeScale = 0;
-        Globals.InputHandler.SetInputEnabled(false);
-        Globals.Room.PlayerInMenu = true;
+        Game.InputHandler.SetInputEnabled(false);
+        Game.Room.PlayerInMenu = true;
 
-        var window = Instantiate(prefab, Globals.Room.GameUI.transform);
+        var window = Instantiate(prefab, Game.GameUI.transform);
 
         var rect = window.GetComponent<RectTransform>();
         rect.anchoredPosition = new Vector2(0, 80);
@@ -46,15 +46,15 @@ public class WindowsUI : MonoBehaviour
     private void OnWindowClose(ModalWindow source)
     {
         Time.timeScale = 1;
-        Globals.InputHandler.SetInputEnabled(true);
-        Globals.Room.PlayerInMenu = false;
+        Game.InputHandler.SetInputEnabled(true);
+        Game.Room.PlayerInMenu = false;
 
         source.OnWindowClose -= OnWindowClose;
         Destroy(source.transform.gameObject);
     }
     private void OnDestroy()
     {
-        Globals.PSystems.OnLevelUp -= OnLevelUp;
-        Globals.PSystems.OnWeaponPickup -= OnWeaponPickup;
+        Game.PSystems.OnLevelUp -= OnLevelUp;
+        Game.PSystems.OnWeaponPickup -= OnWeaponPickup;
     }
 }

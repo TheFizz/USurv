@@ -38,7 +38,7 @@ public class UpgradePanel : MonoBehaviour
     }
     private void ApplyUpgrade()
     {
-        Globals.PSystems.AddWeaponUpgrade(_weapon, _weapon.WeaponLevel + 1);
+        Game.PSystems.AddWeaponUpgrade(_weapon, _weapon.WeaponLevel + 1);
         _parent.CloseWindow();
     }
 }

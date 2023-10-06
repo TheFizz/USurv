@@ -15,14 +15,10 @@ public class PlayerInteractionManager : MonoBehaviour
     bool _interactionShown;
     private List<Tuple<KeyCode, InteractionType>> _options;
 
-    private void Awake()
-    {
-        Globals.PInteractionManager = this;
-        _myTransform = GetComponent<Transform>();
-    }
     private void Start()
     {
-        Globals.PSystems.SubscribeInteracted();
+        _myTransform = GetComponent<Transform>();
+        Game.PSystems.SubscribeInteracted();
     }
     // Update is called once per frame
     void Update()
@@ -31,7 +27,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             foreach (var option in _options)
             {
-                if (Input.GetKeyDown(option.Item1) && Globals.Room.PlayerInMenu == false)
+                if (Input.GetKeyDown(option.Item1) && Game.Room.PlayerInMenu == false)
                 {
                     OnInteracted?.Invoke(option.Item2, _wi.RewardName);
                     Destroy(_wi.transform.gameObject);
@@ -45,7 +41,7 @@ public class PlayerInteractionManager : MonoBehaviour
             var interaction = hitInteractions[0].GetComponent<WeaponInteraction>();
             _wi = interaction;
             _options = new List<Tuple<KeyCode, InteractionType>>(interaction.Options);
-            var weapons = Globals.PSystems.GetWeaponNames();
+            var weapons = Game.PSystems.GetWeaponNames();
             if (weapons.Contains(interaction.RewardName))
                 _options.RemoveAt(0);
             ShowInteraction(true);
@@ -69,6 +65,6 @@ public class PlayerInteractionManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.PSystems.UnSubscribeInteracted();
+        Game.PSystems.UnSubscribeInteracted();
     }
 }

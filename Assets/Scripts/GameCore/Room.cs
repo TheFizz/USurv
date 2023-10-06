@@ -6,12 +6,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class RoomManager : MonoBehaviour
+public class Room : MonoBehaviour
 {
 
     public event Action<float> OnGoalChanged;
     public event Action<float> OnKillsChanged;
-    public event Action<int> OnRoomStart;
+    public event Action<GameObject> OnRoomCreated;
 
     public TextMeshProUGUI TollText, GoalText;
     public bool PlayerInMenu = false;
@@ -31,24 +31,30 @@ public class RoomManager : MonoBehaviour
     public GameObject DeathUI;
     public GameObject DeathScreenPrefab;
 
+    internal float GetCurrentKills()
+    {
+        return _killCount;
+    }
+
+    internal float GetCurrentGoal()
+    {
+        return _killGoal;
+    }
+
     void Awake()
     {
-
-        Globals.Room = this;
-        Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
-        Instantiate(UIPrefab, Vector3.zero, Quaternion.identity);
         _endScreen = GetComponent<EndScreen>();
     }
     private void Start()
     {
         Time.timeScale = 1;
-        Globals.InputHandler.SetInputEnabled(true);
+        Game.InputHandler.SetInputEnabled(true);
 
-        OnRoomStart?.Invoke(0);
-        _killGoal = Random.Range(200, 400);
-        //_killGoal = 10;
+        _killGoal = Random.Range(50, 100);
         OnGoalChanged?.Invoke(_killGoal);
         OnKillsChanged?.Invoke(_killCount);
+
+        OnRoomCreated?.Invoke(null);
     }
     public void Update()
     {
@@ -63,7 +69,7 @@ public class RoomManager : MonoBehaviour
             _killCount = _killGoal;
             NextLevel();
         }
-        if (State == LevelState.EndingXP && Globals.XPDropsPool.Count < 1)
+        if (State == LevelState.EndingXP && Game.XPDropsPool.Count < 1)
         {
             SpawnReward();
             State = LevelState.RewardSpawned;
@@ -101,8 +107,8 @@ public class RoomManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
-        Destroy(Globals.PSystems.gameObject);
-        Globals.Destroy();
+        Destroy(Game.PSystems.gameObject);
+        Game.Instance.Destroy();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void QuitGame()
@@ -117,7 +123,8 @@ public class RoomManager : MonoBehaviour
 
     public void NextLevel()
     {
-        Globals.Spawner.StopSpawn();
+        Game.Spawner.StopSpawn();
+        Game.PSystems.StopAttack();
         StartCoroutine(KillEnemies());
     }
     public void KillIncrease(int amount)
@@ -130,19 +137,19 @@ public class RoomManager : MonoBehaviour
     {
         State = LevelState.EndingEnemy;
         yield return new WaitForSeconds(.2f);
-        foreach (var enemy in Globals.EnemyPool.Values)
+        foreach (var enemy in Game.EnemyPool.Values)
         {
             enemy.Kill();
         }
-        Globals.EnemyPool.Clear();
+        Game.EnemyPool.Clear();
         StartCoroutine(CollectXP());
     }
     IEnumerator CollectXP()
     {
         yield return new WaitForSeconds(.2f);
-        foreach (var xp in Globals.XPDropsPool.Values)
+        foreach (var xp in Game.XPDropsPool.Values)
         {
-            xp.Attract(Globals.PlayerTransform);
+            xp.Attract(Game.PSystems.PlayerObject.transform);
         }
         State = LevelState.EndingXP;
     }

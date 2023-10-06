@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndScreen : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EndScreen : MonoBehaviour
     public Light Light;
 
     public TextAsset DeathLines;
+    private GameObject deathUI;
 
     private List<Vector3> _cutPoints = new List<Vector3>()
     {
@@ -43,17 +45,18 @@ public class EndScreen : MonoBehaviour
 
     void MoveCam()
     {
-        var DeathText = Globals.Room.DeathUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        camPivot = Globals.MainCamera.transform.parent.gameObject;
+        deathUI = Instantiate(Game.Instance.DeathUiPrefab, Game.GameUI.transform.parent);
+        var DeathText = deathUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        camPivot = Game.MainCamera.transform.parent.gameObject;
         var lines = DeathLines.text.Split('\n');
         var line = lines[Random.Range(0, lines.Length)];
         //line = lines[8];
-        Globals.Room.GameUI.SetActive(false);
+        Game.GameUI.SetActive(false);
         DeathText.text = line;
         camPivot.GetComponent<CameraFollow>().enabled = false;
         camPivot.transform.position = new Vector3(0, -100, 0);
         camPivot.transform.rotation = Quaternion.Euler(0, 0, 0);
-        Globals.MainCamera.orthographicSize = 0.45f; // Pure magic. 
+        Game.MainCamera.orthographicSize = 0.45f; // Pure magic. 
         //Light.intensity = 0;
         Animate();
     }
@@ -75,15 +78,26 @@ public class EndScreen : MonoBehaviour
                 {
                     trailSeq.Kill(true);
                     Destroy(trail);
-                    Globals.Room.DeathUI.SetActive(true);
+                    deathUI.SetActive(true);
+                    End();
                 }
                 );
         trailSeq.Play();
 
     }
+
+    private void End()
+    {
+
+        var buttons = new List<Button>(deathUI.GetComponentsInChildren<Button>());
+        buttons.Find(b => b.name == "RetryBTN").onClick.AddListener(() => SceneSwitcher.Instance.RestartGame());
+        buttons.Find(b => b.name == "QuitBTN").onClick.AddListener(() => Game.Room.QuitGame());
+
+    }
+
     void StopGame()
     {
         Time.timeScale = 0;
-        Globals.InputHandler.SetInputEnabled(false);
+        Game.InputHandler.SetInputEnabled(false);
     }
 }

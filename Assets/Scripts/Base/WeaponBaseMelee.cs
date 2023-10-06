@@ -33,7 +33,7 @@ public abstract class WeaponBaseMelee : WeaponBase
         foreach (var hitEnemy in hitEnemies)
         {
             var capsule = ((CapsuleCollider)hitEnemy);
-            var maxVectorValue = Globals.GetLargestValue(capsule.gameObject.transform.localScale, true);
+            var maxVectorValue = Game.GetLargestValue(capsule.gameObject.transform.localScale, true);
             var realColRadius = capsule.radius * maxVectorValue;
 
 
@@ -73,7 +73,7 @@ public abstract class WeaponBaseMelee : WeaponBase
             float dmg = WeaponData.GetStat(StatParam.AttackDamage).Value;
             if (roll < chance)
             {
-                dmg *= (WeaponData.GetStat(StatParam.CritMultiplierPerc).Value + Globals.BaseCritMultiplierPerc) / 100;
+                dmg *= (WeaponData.GetStat(StatParam.CritMultiplierPerc).Value + Game.BaseCritMultiplierPerc) / 100;
                 isCrit = true;
             }
             enemy.Damage(dmg, isCrit);
@@ -82,7 +82,7 @@ public abstract class WeaponBaseMelee : WeaponBase
     }
     private void ShowGraphics()
     {
-        isRight = Globals.PAnimationController.IsRight;
+        isRight = Game.PSystems.AnimationController.IsRight;
 
         var z = 180;
         if (isRight)

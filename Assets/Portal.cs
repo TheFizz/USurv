@@ -7,7 +7,7 @@ public class Portal : MonoBehaviour
     [SerializeField] LayerMask _targetLayer;
     private void OnTriggerEnter(Collider other)
     {
-        if (Globals.IsInLayerMask(other.transform.gameObject.layer, _targetLayer))
-            Globals.Room.ReloadScene();
+        if (Game.IsInLayerMask(other.transform.gameObject.layer, _targetLayer))
+            Game.Room.ReloadScene();
     }
 }

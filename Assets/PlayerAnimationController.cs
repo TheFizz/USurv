@@ -21,18 +21,17 @@ public class PlayerAnimationController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Globals.PAnimationController = this;
         _anim = GetComponentInChildren<Animator>();
     }
     private void Activate()
     {
-        _wpnObj = Instantiate(_wpnPf, _source.position, Quaternion.identity, Globals.PlayerTransform);
+        _wpnObj = Instantiate(_wpnPf, _source.position, Quaternion.identity, Game.PSystems.PlayerObject.transform);
         _wpnObj.SetActive(false);
         _wpnModel = _wpnObj.transform.GetChild(0);
         _wpnAnim = _wpnObj.GetComponentInChildren<Animator>();
 
-        Globals.PSystems.OnAttack += OnAttack;
-        Globals.PMovementController.OnMove += OnMove;
+        Game.PSystems.OnAttack += OnAttack;
+        Game.PSystems.MovementController.OnMove += OnMove;
     }
 
     private void OnAttack(float range, float cone)
@@ -63,8 +62,8 @@ public class PlayerAnimationController : MonoBehaviour
     }
     private void OnMove(Vector3 moveDirection, float speed)
     {
-        var VAnim = Vector3.Dot(Globals.PlayerTransform.forward, moveDirection.normalized);
-        var HAnim = Vector3.Dot(Globals.PlayerTransform.right, moveDirection.normalized);
+        var VAnim = Vector3.Dot(Game.PSystems.PlayerObject.transform.forward, moveDirection.normalized);
+        var HAnim = Vector3.Dot(Game.PSystems.PlayerObject.transform.right, moveDirection.normalized);
 
         _anim.SetFloat("Horizontal", HAnim);
         _anim.SetFloat("Vertical", VAnim);
@@ -78,7 +77,8 @@ public class PlayerAnimationController : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.PSystems.OnAttack -= OnAttack;
-        Globals.PMovementController.OnMove -= OnMove;
+        Game.PSystems.OnAttack -= OnAttack;
+        Game.PSystems.MovementController.OnMove -= OnMove;
+        DOTween.Kill(_wpnObj.transform);
     }
 }

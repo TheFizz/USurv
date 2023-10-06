@@ -12,7 +12,7 @@ public class DebugUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Globals.PSystems.OnDebugText += OnDebugText;
+        Game.PSystems.OnDebugText += OnDebugText;
     }
 
     private void OnDebugText(string text, string destination)
@@ -49,6 +49,6 @@ public class DebugUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.PSystems.OnDebugText -= OnDebugText;
+        Game.PSystems.OnDebugText -= OnDebugText;
     }
 }

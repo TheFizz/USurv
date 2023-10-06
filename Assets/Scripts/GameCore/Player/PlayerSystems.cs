@@ -9,7 +9,13 @@ using Random = UnityEngine.Random;
 
 public class PlayerSystems : MonoBehaviour
 {
-    public static bool instantiated = false;
+    const int ACTIVE = 0;
+    const int PASSIVE = 1;
+    const int ABILITY = 2;
+
+    public static PlayerSystems Instance;
+
+    public event Action<GameObject> OnPlayerSpawned;
 
     public event LevelUpHandler OnLevelUp;
     public event XpChangedHandler OnXpChanged;
@@ -18,20 +24,26 @@ public class PlayerSystems : MonoBehaviour
     public event DebugTextHandler OnDebugText;
     public event Action<float, float> OnAttack;
 
-    const int ACTIVE = 0;
-    const int PASSIVE = 1;
-    const int ABILITY = 2;
-
-    [HideInInspector] public GlobalUpgradePathSO GlobalUpgradePath;
-    [SerializeField] private GlobalUpgradePathSO _defaultGlobalUpgradePath;
+    private GameObject _playerPrefab;
 
     [HideInInspector] public PlayerStatsSO PlayerData;
     [SerializeField] private PlayerStatsSO _defaultPlayerData;
 
+    [HideInInspector] public GlobalUpgradePathSO GlobalUpgradePath;
+    [SerializeField] private GlobalUpgradePathSO _defaultGlobalUpgradePath;
+
     [SerializeField] private LayerMask _enemyLayer;
 
-    [SerializeField] private GameObject[] _weaponQueue = new GameObject[3];
-    [HideInInspector] private List<WeaponBase> _weapons = new List<WeaponBase>(new WeaponBase[3]);
+    [SerializeField] private List<GameObject> _defaultWeapons = new List<GameObject>();
+    [HideInInspector] public List<WeaponBase> PlayerWeapons = new List<WeaponBase>(new WeaponBase[3]);
+
+
+    public PlayerDamageManager DamageManager { get; private set; }
+    public PlayerInteractionManager InteractionManager { get; private set; }
+    public PlayerAnimationController AnimationController { get; private set; }
+    public PlayerMovementController MovementController { get; private set; }
+    public GameObject PlayerObject { get; private set; }
+    public Transform AttackSource { get; private set; }
 
     private float _currentXP = 0;
     private int _upgradesPerLevel = 3;
@@ -39,28 +51,75 @@ public class PlayerSystems : MonoBehaviour
 
     [HideInInspector] public float CurHealth = -1;
 
-    private List<StatModifier> _globalMods = new List<StatModifier>();
+    private List<StatModifier> _activeGlobalMods = new List<StatModifier>();
 
     // Start is called before the first frame update
     private void Awake()
     {
-        if (instantiated)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        if (!instantiated)
-            instantiated = true;
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
-        Globals.PSystems = this;
-        InstantiateSOs();
-        ValidateModsAndAssignSource();
+    public void SpawnPlayer()
+    {
+        PlayerObject = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
+        AttackSource = PlayerObject.transform.Find("AttackSource").transform;
+        DamageManager = PlayerObject.GetComponent<PlayerDamageManager>();
+        InteractionManager = PlayerObject.GetComponent<PlayerInteractionManager>();
+        AnimationController = PlayerObject.GetComponent<PlayerAnimationController>();
+        MovementController = PlayerObject.GetComponent<PlayerMovementController>();
+        AnimationController.SetSource(AttackSource);
+        OnPlayerSpawned?.Invoke(PlayerObject);
+    }
 
-        for (int i = 0; i < _weaponQueue.Length; i++)
+    public void Initialize(GameObject playerPrefab, PlayerStatsSO dPlayerData, GlobalUpgradePathSO dUpgradePath, LayerMask enemyLayer)
+    {
+        //TODO: PlayerSys factory
+        _playerPrefab = playerPrefab;
+        _defaultPlayerData = dPlayerData;
+        _defaultGlobalUpgradePath = dUpgradePath;
+        _enemyLayer = enemyLayer;
+
+        var defaultWeaponNames = new List<string> { "Kama", "Bow", "Spear" };
+        foreach (var name in defaultWeaponNames)
         {
-            var go = Instantiate(_weaponQueue[i], gameObject.transform);
-            _weapons[i] = go.GetComponent<WeaponBase>();
-            _weapons[i].SwappedTo(i);
+            _defaultWeapons.Add(Resources.Load($"Prefabs/Weapons/Weapon{name}") as GameObject);
+        }
+        InstantiateData();
+        SetupUpgradeMods();
+        InstantiateWeapons();
+    }
+
+    public void InstantiateWeapons()
+    {
+        for (int i = 0; i < _defaultWeapons.Count; i++)
+        {
+            var go = Instantiate(_defaultWeapons[i], gameObject.transform);
+            PlayerWeapons[i] = go.GetComponent<WeaponBase>();
+            PlayerWeapons[i].SwappedTo(i);
+        }
+    }
+
+    private void InstantiateData()
+    {
+        PlayerData = Instantiate(_defaultPlayerData);
+        GlobalUpgradePath = Instantiate(_defaultGlobalUpgradePath);
+    }
+    private void SetupUpgradeMods()
+    {
+        foreach (var upgrade in GlobalUpgradePath.Upgrades)
+        {
+            foreach (var mod in upgrade.Modifiers)
+            {
+                mod.Source = this;
+                mod.Param = upgrade.UpgradeParam;
+                mod.ValidateOrder();
+            }
         }
     }
     public void SetSource(Transform source)
@@ -68,31 +127,38 @@ public class PlayerSystems : MonoBehaviour
         SetWeaponsSource(source);
         SetAnimSource(source);
     }
-
     private void SetAnimSource(Transform source)
     {
-        Globals.PAnimationController.SetSource(source);
+        AnimationController.SetSource(source);
     }
 
     internal void UnSubscribeInteracted()
     {
-        Globals.PInteractionManager.OnInteracted -= OnInteracted;
+        InteractionManager.OnInteracted -= OnInteracted;
     }
 
     public void SubscribeInteracted()
     {
-        Globals.PInteractionManager.OnInteracted += OnInteracted;
+        InteractionManager.OnInteracted += OnInteracted;
     }
 
     private void Start()
     {
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-        _weapons[ACTIVE].StartAttack();
         OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
+    }
+    public void StartAttack()
+    {
+        PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        PlayerWeapons[ACTIVE].StartAttack();
+    }
+    public void StopAttack()
+    {
+        PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        PlayerWeapons[ACTIVE].StopAttack();
     }
     public List<WeaponBase> GetWeapons()
     {
-        return _weapons;
+        return PlayerWeapons;
     }
     public void ForceInvokeStatus()
     {
@@ -102,51 +168,46 @@ public class PlayerSystems : MonoBehaviour
     internal void AddWeaponUpgrade(WeaponBase weapon, int level)
     {
         weapon.UpgradeToLevel(level);
-        Globals.Room.RewardTaken = true;
-        if (weapon == _weapons[PASSIVE])
+        Game.Room.RewardTaken = true;
+        if (weapon == PlayerWeapons[PASSIVE])
         {
-            _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
-            _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-            _weapons[ACTIVE].RestartAttack();
+            PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+            PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+            PlayerWeapons[ACTIVE].RestartAttack();
         }
     }
 
     private void OnInteracted(InteractionType type, string auxName)
     {
-        OnWeaponPickup?.Invoke(_weapons, type, auxName);
+        OnWeaponPickup?.Invoke(PlayerWeapons, type, auxName);
     }
 
-    private void InstantiateSOs()
-    {
-        PlayerData = Instantiate(_defaultPlayerData);
-        GlobalUpgradePath = Instantiate(_defaultGlobalUpgradePath);
-    }
     private void Update()
     {
         ShowDebug();
 
-        if (Globals.InputHandler.SwapWeapon)
+        if (Game.InputHandler.SwapWeapon)
             SwapRotate();
 
-        if (Globals.InputHandler.Swap01)
+        if (Game.InputHandler.Swap01)
             SwapSlots(0, 1);
 
-        if (Globals.InputHandler.Swap12)
+        if (Game.InputHandler.Swap12)
             SwapSlots(1, 2);
 
-        if (Globals.InputHandler.UseAbility)
-            _weapons[ABILITY].UseAbility();
+        if (Game.InputHandler.UseAbility)
+            PlayerWeapons[ABILITY].UseAbility();
     }
 
     private void ShowDebug()
     {
-        var cd = _weapons[ABILITY].WeaponAbility.AbilityCooldown;
-        var cdr = _weapons[ABILITY].WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value;
+        var cd = PlayerWeapons[ABILITY].WeaponAbility.AbilityCooldown;
+        var cdr = PlayerWeapons[ABILITY].WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value;
 
-        string text = _weapons[ABILITY].WeaponAbility.AbilityName + "\n";
+        string text = PlayerWeapons[ABILITY].WeaponAbility.AbilityName + "\n";
         text += $"Base CD: {cd}\n";
         text += $"Modded CD: {cd - (cd * (cdr / 100))}\n";
-        foreach (var stat in _weapons[ABILITY].WeaponAbility.Stats)
+        foreach (var stat in PlayerWeapons[ABILITY].WeaponAbility.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";
             foreach (var mod in stat.StatModifiers)
@@ -168,8 +229,8 @@ public class PlayerSystems : MonoBehaviour
         OnDebugText?.Invoke(text, "PLAYER");
 
 
-        text = _weapons[ACTIVE].WeaponData.WeaponName + "\n";
-        foreach (var stat in _weapons[ACTIVE].WeaponData.Stats)
+        text = PlayerWeapons[ACTIVE].WeaponData.WeaponName + "\n";
+        foreach (var stat in PlayerWeapons[ACTIVE].WeaponData.Stats)
         {
             text += $"{stat.Parameter}: {stat.Value}\n";
             foreach (var mod in stat.StatModifiers)
@@ -183,7 +244,7 @@ public class PlayerSystems : MonoBehaviour
 
     internal void OnWeaponAttack(float range, float cone)
     {
-        if (_weapons[ACTIVE].WeaponData.WeaponName != "Kama")
+        if (PlayerWeapons[ACTIVE].WeaponData.WeaponName != "Kama")
             return;
         OnAttack?.Invoke(range, cone);
     }
@@ -224,79 +285,67 @@ public class PlayerSystems : MonoBehaviour
     }
     public void AddGlobalMod(StatModifier mod)
     {
-        _globalMods.Add(mod);
-        foreach (var wpn in _weapons)
+        _activeGlobalMods.Add(mod);
+        foreach (var wpn in PlayerWeapons)
         {
             wpn.ApplyModifiers(new List<StatModifier>() { mod });
         }
-        _weapons[ACTIVE].RestartAttack();
+        PlayerWeapons[ACTIVE].RestartAttack();
         PlayerData.GetStat(mod.Param)?.AddModifier(mod);
     }
     public void PlayerDeath()
     {
-        Globals.Room.PlayerDeath();
+        Game.Room.PlayerDeath();
     }
 
     private void SetWeaponsSource(Transform source)
     {
-        foreach (var weapon in _weapons)
+        foreach (var weapon in PlayerWeapons)
         {
             weapon.SetSource(source);
         }
     }
     private void SwapRotate()
     {
-        _weapons[ACTIVE].StopAttack();
-        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
+        PlayerWeapons[ACTIVE].StopAttack();
+        PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
 
-        OnWeaponIconAction?.Invoke(_weapons, true);
+        OnWeaponIconAction?.Invoke(PlayerWeapons, true);
 
-        var first = _weapons[0];
-        for (int i = 0; i < _weapons.Count - 1; i++)
+        var first = PlayerWeapons[0];
+        for (int i = 0; i < PlayerWeapons.Count - 1; i++)
         {
-            _weapons[i + 1].SwappedTo(i);
-            _weapons[i] = _weapons[i + 1];
+            PlayerWeapons[i + 1].SwappedTo(i);
+            PlayerWeapons[i] = PlayerWeapons[i + 1];
 
         }
-        first.SwappedTo(_weapons.Count - 1);
-        _weapons[_weapons.Count - 1] = first;
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
-        _weapons[ACTIVE].StartAttack();
+        first.SwappedTo(PlayerWeapons.Count - 1);
+        PlayerWeapons[PlayerWeapons.Count - 1] = first;
+        PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        PlayerWeapons[ACTIVE].StartAttack();
     }
     private void SwapSlots(int idxA, int idxB)
     {
         if (idxA == 0 || idxB == 0)
         {
-            _weapons[ACTIVE].StopAttack();
+            PlayerWeapons[ACTIVE].StopAttack();
         }
-        _weapons[ACTIVE].ClearSourcedModifiers(_weapons[PASSIVE]);
+        PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
 
-        var tmp = _weapons[idxA];
+        var tmp = PlayerWeapons[idxA];
 
-        _weapons[idxB].SwappedTo(idxA);
-        _weapons[idxA] = _weapons[idxB];
+        PlayerWeapons[idxB].SwappedTo(idxA);
+        PlayerWeapons[idxA] = PlayerWeapons[idxB];
 
         tmp.SwappedTo(idxB);
-        _weapons[idxB] = tmp;
+        PlayerWeapons[idxB] = tmp;
 
 
-        OnWeaponIconAction?.Invoke(_weapons, true, idxA, idxB);
-        _weapons[ACTIVE].ApplyModifiers(_weapons[PASSIVE].WeaponData.PassiveModifiers);
+        OnWeaponIconAction?.Invoke(PlayerWeapons, true, idxA, idxB);
+        PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
         if (idxA == 0 || idxB == 0)
         {
-            _weapons[ACTIVE].StartAttack();
-        }
-    }
-    private void ValidateModsAndAssignSource()
-    {
-        foreach (var upgrade in GlobalUpgradePath.Upgrades)
-        {
-            foreach (var mod in upgrade.Modifiers)
-            {
-                mod.Source = this;
-                mod.Param = upgrade.UpgradeParam;
-                mod.ValidateOrder();
-            }
+            PlayerWeapons[ACTIVE].StartAttack();
         }
     }
 
@@ -304,9 +353,12 @@ public class PlayerSystems : MonoBehaviour
     {
         return new List<string>
         {
-            _weapons[ACTIVE].WeaponData.WeaponName,
-            _weapons[PASSIVE].WeaponData.WeaponName,
-            _weapons[ABILITY].WeaponData.WeaponName,
+            PlayerWeapons[ACTIVE].WeaponData.WeaponName,
+            PlayerWeapons[PASSIVE].WeaponData.WeaponName,
+            PlayerWeapons[ABILITY].WeaponData.WeaponName,
         };
+    }
+    private void OnDestroy()
+    {
     }
 }

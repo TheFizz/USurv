@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4169381862781756904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8200857029566555798}
+  - component: {fileID: 7521142961164136493}
+  m_Layer: 0
+  m_Name: Room
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8200857029566555798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169381862781756904}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7521142961164136493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169381862781756904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5a2ab84a0b6242aacc896183d3cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TollText: {fileID: 0}
+  GoalText: {fileID: 0}
+  PlayerInMenu: 0
+  State: 0
+  UnlimitedPlay: 0
+  Reward: {fileID: 5651589707143657426, guid: 049aacf89f2e9624e8a3949c20fdce07, type: 3}
+  Portal: {fileID: 7970321444402832342, guid: 2cb93df837c100840a85c012bc291254, type: 3}
+  RewardTaken: 0
+  PlayerPrefab: {fileID: 8288485286177499647, guid: 056fafcf7d999464e96e0fff8ce345e4, type: 3}
+  UIPrefab: {fileID: 1654977852458647986, guid: beabeb693c86ac2449cbbcad9f09be30, type: 3}
+  GameUI: {fileID: 0}
+  DeathUI: {fileID: 0}
+  DeathScreenPrefab: {fileID: 8124041879716940178, guid: f492001f7c20aac4c93c45d4991bc44e, type: 3}
+  CameraPrefab: {fileID: 6898063664750597337, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}

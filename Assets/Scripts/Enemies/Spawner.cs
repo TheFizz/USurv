@@ -30,12 +30,15 @@ public class Spawner : MonoBehaviour
     }
     private void Awake()
     {
-        Globals.Spawner = this;
+        Game.Instance.OnLevelReady += OnLevelReady;
+        Game.Spawner = this;
     }
-    void Start()
+
+    private void OnLevelReady(Game obj)
     {
-        _player = Globals.PlayerTransform;
+        _player = Game.PSystems.PlayerObject.transform;
         InvokeRepeating("Spawn", 1, _secondsToSpawn);
+        Game.Instance.OnLevelReady -= OnLevelReady;
     }
     void Spawn()
     {
@@ -70,6 +73,7 @@ public class Spawner : MonoBehaviour
         {
             var go = Instantiate(_enemyPrefab, spawnPoint, Quaternion.identity, gameObject.transform);
             var enemy = go.GetComponent<NewEnemyBase>();
+            enemy.MainTarget = Game.PSystems.PlayerObject.transform;
             var hpVal = _curveMultiplier + (HpCurve.Evaluate(_time) * _curveMultiplier);
             var hpDev = HpDevCurve.Evaluate(_time);
 
@@ -94,4 +98,5 @@ public class Spawner : MonoBehaviour
     {
         CancelInvoke();
     }
+
 }

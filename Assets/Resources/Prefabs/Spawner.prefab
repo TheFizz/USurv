@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9150097732807427218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175662821248433129}
+  - component: {fileID: 5158322415415765532}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1175662821248433129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150097732807427218}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5158322415415765532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150097732807427218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5f14d9708407d40824140d00e3c55c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.059810784
+    - serializedVersion: 3
+      time: 30.944468
+      value: 0.5655575
+      inSlope: -0.022455225
+      outSlope: -0.022455225
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.17089522
+      outWeight: 0.09130123
+    - serializedVersion: 3
+      time: 72.64408
+      value: 1.2170806
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03938539
+      outWeight: 0.30596069
+    - serializedVersion: 3
+      time: 95.79426
+      value: 1.226917
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 120
+      value: 3
+      inSlope: 0.08915832
+      outSlope: 0.08915832
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.036415163
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  HpDevCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0.009288293
+      outSlope: 0.009288293
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 24.14614
+      value: 0.7242764
+      inSlope: -0.011163849
+      outSlope: -0.011163849
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5942741
+      outWeight: 0.104225084
+    - serializedVersion: 3
+      time: 75.463066
+      value: 0.8037971
+      inSlope: -0.0074034915
+      outSlope: -0.0074034915
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.10400183
+    - serializedVersion: 3
+      time: 120
+      value: 1
+      inSlope: 0.004405397
+      outSlope: 0.004405397
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enemyPrefab: {fileID: 8187575255379672180, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
+  _player: {fileID: 0}
+  _secondsToSpawn: 0.5
+  _spawnLimit: 200
+  debug: {fileID: 0}

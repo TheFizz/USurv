@@ -9,10 +9,17 @@ public class InteractionUI : MonoBehaviour
     public GameObject InteractionContainer;
     public GameObject InteractionText;
 
-    private void Start()
+    private void Awake()
     {
-        Globals.PInteractionManager.OnInteraction += OnInteraction;
+        Game.Instance.OnLevelReady += OnLevelReady;
     }
+
+    private void OnLevelReady(Game obj)
+    {
+        Game.Instance.OnLevelReady -= OnLevelReady;
+        Game.PSystems.InteractionManager.OnInteraction += OnInteraction;
+    }
+
     public void OnInteraction(List<Tuple<KeyCode, InteractionType>> options, string name = null)
     {
         if (options == null)
@@ -34,6 +41,6 @@ public class InteractionUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.PInteractionManager.OnInteraction -= OnInteraction;
+        Game.PSystems.InteractionManager.OnInteraction -= OnInteraction;
     }
 }

@@ -19,15 +19,11 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
 
 
     private List<string> _recentAttackers = new List<string>();
-    void Awake()
-    {
-        Globals.PDamageManager = this;
-    }
     void Start()
     {
-        MaxHealth = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
-        if (Globals.PSystems.CurHealth > 0)
-            CurrentHealth = Globals.PSystems.CurHealth;
+        MaxHealth = Game.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
+        if (Game.PSystems.CurHealth > 0)
+            CurrentHealth = Game.PSystems.CurHealth;
         else
             CurrentHealth = MaxHealth;
         OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
@@ -35,11 +31,11 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
     void Update()
     {
         var pHealth = MaxHealth;
-        MaxHealth = Globals.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
+        MaxHealth = Game.PSystems.PlayerData.GetStat(StatParam.PlayerMaxHealth).Value;
         if (MaxHealth > pHealth)
         {
             CurrentHealth += MaxHealth - pHealth;
-            Globals.PSystems.CurHealth = CurrentHealth;
+            Game.PSystems.CurHealth = CurrentHealth;
             OnHpChanged?.Invoke(CurrentHealth, MaxHealth);
         }
     }
@@ -62,12 +58,12 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
             }
         }
         CurrentHealth -= damageAmount;
-        Globals.PSystems.CurHealth = CurrentHealth;
+        Game.PSystems.CurHealth = CurrentHealth;
         if (CurrentHealth <= 0 && !_isDead)
         {
             _isDead = true;
             CurrentHealth = 0;
-            Globals.PSystems.CurHealth = CurrentHealth;
+            Game.PSystems.CurHealth = CurrentHealth;
             Die();
         }
         OnHpChanged?.Invoke(CurrentHealth);
@@ -75,7 +71,7 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
     public void Die()
     {
         _invulnerable = true;
-        Globals.PSystems.PlayerDeath();
+        Game.PSystems.PlayerDeath();
     }
 
     IEnumerator PreInv(float time)

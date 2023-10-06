@@ -9,20 +9,21 @@ public class RoomUI : MonoBehaviour
 
     public TextMeshProUGUI RoomGoal;
     public TextMeshProUGUI RoomKills;
-    public GameObject GameUI;
-    public GameObject DeathUI;
 
     // Start is called before the first frame update
     void Awake()
     {
-        Globals.Room.OnGoalChanged += OnGoalChanged;
-        Globals.Room.OnKillsChanged += OnKillsChanged;
-        Globals.Room.GameUI = GameUI;
-        Globals.Room.DeathUI = DeathUI;
+        Game.Instance.OnLevelReady += OnLevelReady;
+    }
 
-        var buttons = new List<Button>(DeathUI.GetComponentsInChildren<Button>());
-        buttons.Find(b => b.name == "RetryBTN").onClick.AddListener(() => Globals.Room.RestartGame());
-        buttons.Find(b => b.name == "QuitBTN").onClick.AddListener(() => Globals.Room.QuitGame());
+    private void OnLevelReady(Game game)
+    {
+        Game.Instance.OnLevelReady -= OnLevelReady;
+
+        Game.Room.OnGoalChanged += OnGoalChanged;
+        Game.Room.OnKillsChanged += OnKillsChanged;
+        OnKillsChanged(Game.Room.GetCurrentKills());
+        OnGoalChanged(Game.Room.GetCurrentGoal());
     }
 
     private void OnKillsChanged(float value)
@@ -34,16 +35,9 @@ public class RoomUI : MonoBehaviour
     {
         RoomGoal.text = value.ToString();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     private void OnDestroy()
     {
-
-        Globals.Room.OnGoalChanged -= OnGoalChanged;
-        Globals.Room.OnKillsChanged -= OnKillsChanged;
+        Game.Room.OnGoalChanged -= OnGoalChanged;
+        Game.Room.OnKillsChanged -= OnKillsChanged;
     }
 }

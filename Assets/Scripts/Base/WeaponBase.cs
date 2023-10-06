@@ -132,13 +132,13 @@ public abstract class WeaponBase : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        Globals.PSystems.OnWeaponAttack(WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.GetStat(StatParam.AttackCone).Value);
+        Game.PSystems.OnWeaponAttack(WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.GetStat(StatParam.AttackCone).Value);
         AlignAttackVector();
     }
     public virtual void StartAttack()
     {
         if (Source == null)
-            Source = Globals.PlayerTransform.Find("AttackSource").gameObject.transform;
+            Source = Game.PSystems.AttackSource;
         Source.rotation = Source.parent.rotation;
         InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
     }
@@ -175,7 +175,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (!WeaponData.AimAssist)
             return;
-        Ray ray = Globals.MainCamera.ScreenPointToRay(Globals.InputHandler.MousePosition);
+        Ray ray = Game.MainCamera.ScreenPointToRay(Game.InputHandler.MousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitinfo, layerMask: WeaponData.EnemyLayer, maxDistance: 300f))
         {
             var targetLook = hitinfo.collider.transform.position;

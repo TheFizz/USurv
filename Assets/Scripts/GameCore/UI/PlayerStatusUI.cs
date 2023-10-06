@@ -28,15 +28,18 @@ public class PlayerStatusUI : MonoBehaviour
         _curXpText = xpComp.Find(c => c.name == "CurXpText");
         _maxXpText = xpComp.Find(c => c.name == "MaxXpText");
 
-        Globals.PDamageManager.OnHpChanged += OnHpChanged;
+        Game.Instance.OnLevelReady += OnLevelReady;
     }
-    private void Start()
-    {
-        Globals.PSystems.OnXpChanged += OnXpChanged;
-        Globals.PSystems.OnLevelUp += OnLevelUp;
 
-        Globals.PSystems.ForceInvokeStatus();
+    private void OnLevelReady(Game obj)
+    {
+        Game.Instance.OnLevelReady -= OnLevelReady;
+        Game.PSystems.DamageManager.OnHpChanged += OnHpChanged;
+        Game.PSystems.OnXpChanged += OnXpChanged;
+        Game.PSystems.OnLevelUp += OnLevelUp;
+        Game.PSystems.ForceInvokeStatus();
     }
+
     private void OnXpChanged(float newCurrentXp)
     {
         SetXPValue(newCurrentXp);
@@ -81,8 +84,8 @@ public class PlayerStatusUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Globals.PSystems.OnXpChanged -= OnXpChanged;
-        Globals.PSystems.OnLevelUp -= OnLevelUp;
-        Globals.PDamageManager.OnHpChanged -= OnHpChanged;
+        Game.PSystems.DamageManager.OnHpChanged -= OnHpChanged;
+        Game.PSystems.OnXpChanged -= OnXpChanged;
+        Game.PSystems.OnLevelUp -= OnLevelUp;
     }
 }

@@ -40,9 +40,9 @@ public class XPDrop : MonoBehaviour
     private void Awake()
     {
         _myTransform = transform;
-        ID = Globals.GenerateId();
+        ID = Game.GenerateId();
         gameObject.name = $"XPDrop<{ID}>";
-        Globals.XPDropsPool.Add(ID, this);
+        Game.XPDropsPool.Add(ID, this);
 
         _mat = GetComponentInChildren<MeshRenderer>().material;
         XpValue = Random.Range(0.5f, 1.5f);
@@ -65,7 +65,7 @@ public class XPDrop : MonoBehaviour
     {
         if (_target == null)
             return;
-        if (Globals.Room.PlayerInMenu == true)
+        if (Game.Room.PlayerInMenu == true)
             return;
 
         _speed = Mathf.Lerp(_speed, _maxSpeed, _stepInc);

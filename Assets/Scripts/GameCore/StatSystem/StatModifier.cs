@@ -49,10 +49,10 @@ public class StatModifier
     }
     private string StringifyParameter()
     {
-        if (!Globals.ParamReference.ContainsKey(Param))
+        if (!Game.ParamReference.ContainsKey(Param))
             return Param.ToString();
 
-        var pRef = Globals.ParamReference[Param];
+        var pRef = Game.ParamReference[Param];
         return pRef.Name;
     }
     public override string ToString()
@@ -73,10 +73,10 @@ public class StatModifier
     }
     public Sprite GetSprite()
     {
-        if (!Globals.ParamReference.ContainsKey(Param))
+        if (!Game.ParamReference.ContainsKey(Param))
             return null;
 
-        var pRef = Globals.ParamReference[Param];
+        var pRef = Game.ParamReference[Param];
         return pRef.Image;
     }
     public void CombineWith(StatModifier stat)

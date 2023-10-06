@@ -14,7 +14,7 @@ public class ParameterInfo
     {
         Name = name;
         ShortName = shortName;
-        var path = Globals.PARAMICONLOC + "/" + shortName;
+        var path = Game.PARAMICONLOC + "/" + shortName;
         Image = Resources.Load<Sprite>(path);
     }
 }
