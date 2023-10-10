@@ -16,7 +16,7 @@ public class AbiltyFear : AbilityBase
         foreach (var hitEnemy in hitEnemies)
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-            enemy.ReceiveAilment(AilmentType.Fear, 3);
+            //enemy.AddEffect(AilmentType.Fear, 3);
         }
     }
 }

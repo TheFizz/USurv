@@ -12,6 +12,8 @@ public class Game : MonoBehaviour
 
     public event Action<Game> OnLevelReady;
 
+    public List<EffectSO> GameEffects = new List<EffectSO>();
+
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _uiPrefab;
     [SerializeField] private GameObject _gameUiPrefab;

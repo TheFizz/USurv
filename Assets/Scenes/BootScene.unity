@@ -427,6 +427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c32e297e68213648aa73ee7a932aeb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameEffects:
+  - {fileID: 11400000, guid: 10a563fdd17525540b9029c897458f66, type: 2}
   _playerPrefab: {fileID: 8288485286177499647, guid: 056fafcf7d999464e96e0fff8ce345e4, type: 3}
   _uiPrefab: {fileID: 1654977852458647986, guid: beabeb693c86ac2449cbbcad9f09be30, type: 3}
   _gameUiPrefab: {fileID: 8690783069517833984, guid: 26c5ac7d3b78b9947b6a66f69f490744, type: 3}
