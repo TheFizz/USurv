@@ -94,6 +94,9 @@ public abstract class WeaponBaseMelee : WeaponBase
 
         var cone = Instantiate(_damageCone, Source.position, Quaternion.Euler(tmpAngles), Source);
         var coneControl = cone.GetComponent<VFXConeControl>();
+        if (coneControl == null)
+            return;
+
         coneControl.enabled = false;
         coneControl.Radius = WeaponData.GetStat(StatParam.AttackRange).Value;
         coneControl.Angle = WeaponData.GetStat(StatParam.AttackCone).Value;

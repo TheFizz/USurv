@@ -57,9 +57,9 @@ Material:
     - _Inside_Glow: 15
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Rim_Power: 0.35
+    - _Rim_Power: 0.5
     - _Scroll_Speed: 0.5
     m_Colors:
-    - _Inside_Color: {r: 0, g: 0.8207547, b: 0.6352498, a: 1}
+    - _Inside_Color: {r: 0, g: 0, b: 0, a: 1}
     - _Rim_Color: {r: 0.004716992, g: 1, b: 0.8308339, a: 1}
   m_BuildTextureStacks: []

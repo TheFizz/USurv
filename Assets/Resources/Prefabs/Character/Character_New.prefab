@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1852281759563963957, guid: d2ce7e4fbfc268346b9309ec30fc9009, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 810271261977846866, guid: d2ce7e4fbfc268346b9309ec30fc9009, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 53113d808845ecd48a9b40bfb0225be8, type: 2}
     - target: {fileID: 919132149155446097, guid: d2ce7e4fbfc268346b9309ec30fc9009, type: 3}
       propertyPath: m_Name
       value: Character_Rigged
@@ -194,6 +202,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 206607b745619d14aa16acafbb0e358d, type: 3}
       propertyPath: m_Name
       value: Mask_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 206607b745619d14aa16acafbb0e358d, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

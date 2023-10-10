@@ -34,7 +34,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _RB = GetComponent<Rigidbody>();
         _baseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponentInChildren<Renderer>();
-        _baseColor = _renderer.material.color;
+        _baseColor = _renderer.material.GetColor("_Overlay");
         Game.EnemyPool.Add(ID, this);
     }
     void Update()
@@ -70,7 +70,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
                     if (type == AilmentType.Fear)
                     {
-                        _renderer.material.color = _baseColor;
+                        _renderer.material.SetColor("_Overlay",_baseColor);
                     }
                 }
                 else
@@ -138,7 +138,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
         if (type == AilmentType.Fear)
         {
-            _renderer.material.color = Color.blue;
+            _renderer.material.SetColor("_Overlay", Color.blue);
             _target = (transform.forward * -1) * 100;
         }
         if (type == AilmentType.Knockback)
@@ -149,10 +149,10 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     IEnumerator ShowDamage()
     {
-        var tmpColor = _renderer.material.color;
-        _renderer.material.color = Color.red;
+        var tmpColor = _renderer.material.GetColor("_Overlay");
+        _renderer.material.SetColor("_Overlay", Color.red);
         yield return new WaitForSeconds(0.1f);
-        _renderer.material.color = tmpColor;
+        _renderer.material.SetColor("_Overlay", tmpColor);
     }
     private void OnCollisionStay(Collision collision)
     {
