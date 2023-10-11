@@ -8,6 +8,8 @@ public abstract class TimedEffect
     protected int EffectStacks;
     protected float ProcTime;
     private float _timeToProc;
+    private int _procTotal;
+    private int _procCount;
     public EffectSO EffectData { get; }
     public bool IsFinished;
 
@@ -20,31 +22,45 @@ public abstract class TimedEffect
     {
         Duration -= delta;
         _timeToProc -= delta;
-        if (_timeToProc <= 0)
-        {
-            Proc();
-            _timeToProc = ProcTime;
-        }
+        var p = Duration / ProcTime;
         if (Duration <= 0)
         {
             End();
             IsFinished = true;
+        }
+        else if (_timeToProc <= 0)
+        {
+            Proc();
+            _timeToProc = ProcTime + _timeToProc;
+            _procCount++;
         }
     }
 
     public void Activate()
     {
         ProcTime = EffectData.ProcTime;
-        _timeToProc = ProcTime;
+
         if (EffectData.IsEffectStacked || Duration <= 0)
         {
-            ApplyEffect();
-            EffectStacks++;
+            if (EffectStacks < EffectData.MaxStacks)
+            {
+                ApplyEffect();
+                EffectStacks++;
+            }
         }
 
-        if (EffectData.IsDurationStacked || Duration <= 0)
+        if (Duration <= 0)
+            Duration = EffectData.Duration;
+        else
         {
-            Duration += EffectData.Duration;
+            if (EffectData.IsDurationStacked)
+                if (EffectStacks < EffectData.MaxStacks)
+                {
+                    Duration += EffectData.Duration;
+                    EffectStacks++;
+                }
+            if (EffectData.IsDurationRenewed)
+                Duration = EffectData.Duration;
         }
     }
     protected abstract void ApplyEffect();

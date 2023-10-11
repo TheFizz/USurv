@@ -6,7 +6,8 @@ public class TimedSlowEffect : TimedEffect
 {
     NewEnemyBase _enemy;
     float _speedDelta;
-    public TimedSlowEffect(EffectSO Effect, NewEnemyBase enemy) : base(Effect, enemy)
+    bool isApplied = false;
+    public TimedSlowEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
     {
         _enemy = enemy;
     }
@@ -14,14 +15,16 @@ public class TimedSlowEffect : TimedEffect
     protected override void ApplyEffect()
     {
         SlowEffectSO slowEffect = (SlowEffectSO)EffectData;
-        _speedDelta = (_enemy.BaseSpeed * (slowEffect.SlowAmountPerc / 100));
+        if (!isApplied)
+            _speedDelta = (_enemy.BaseSpeed * (slowEffect.SlowAmountPerc / 100));
         _enemy.BaseSpeed -= _speedDelta;
+        isApplied = true;
     }
 
     public override void End()
     {
-        SlowEffectSO slowEffect = (SlowEffectSO)EffectData;
+        _enemy.BaseSpeed += (_speedDelta * EffectStacks);
         EffectStacks = 0;
-        _enemy.BaseSpeed += _speedDelta;
+        isApplied = false;
     }
 }

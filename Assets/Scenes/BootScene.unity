@@ -429,6 +429,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameEffects:
   - {fileID: 11400000, guid: 10a563fdd17525540b9029c897458f66, type: 2}
+  - {fileID: 11400000, guid: 0318da57d5da9e347a39d3a7104dd5b7, type: 2}
+  - {fileID: 11400000, guid: 80c2fe6bfeb1be34da5a1f753e01e6d0, type: 2}
+  - {fileID: 11400000, guid: 70e18d82014f05547a6cf90fdb6591cc, type: 2}
+  - {fileID: 11400000, guid: 1ed040995a08673419d46ab58e3376f3, type: 2}
+  - {fileID: 11400000, guid: 8eec9a6e51ab65e41ba104569c8a943b, type: 2}
+  - {fileID: 11400000, guid: 28f93b8bbee9c684383918afacaf8592, type: 2}
   _playerPrefab: {fileID: 8288485286177499647, guid: 056fafcf7d999464e96e0fff8ce345e4, type: 3}
   _uiPrefab: {fileID: 1654977852458647986, guid: beabeb693c86ac2449cbbcad9f09be30, type: 3}
   _gameUiPrefab: {fileID: 8690783069517833984, guid: 26c5ac7d3b78b9947b6a66f69f490744, type: 3}

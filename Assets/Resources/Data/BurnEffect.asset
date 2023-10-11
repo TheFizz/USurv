@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3377c8703200af94086d9abe2b1ea6ad, type: 3}
-  m_Name: SlowEffect
+  m_Script: {fileID: 11500000, guid: 2369b230ef277114bbbc5f98e305646e, type: 3}
+  m_Name: BurnEffect
   m_EditorClassIdentifier: 
   MaxStacks: 5
   Duration: 2
-  IsDurationStacked: 0
-  IsDurationRenewed: 1
-  IsEffectStacked: 1
+  IsDurationStacked: 1
+  IsDurationRenewed: 0
+  IsEffectStacked: 0
   ProcTime: 0.5
-  SlowAmountPerc: 5
+  DamagePerProc: 1

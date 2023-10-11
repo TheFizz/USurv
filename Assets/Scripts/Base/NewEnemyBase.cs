@@ -23,11 +23,14 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public Transform MainTarget;
     private Color _baseColor;
     private Renderer _renderer;
+    private bool _isStunned = false;
     [SerializeField] private GameObject _damageText;
 
     private readonly Dictionary<EffectSO, TimedEffect> _effects = new Dictionary<EffectSO, TimedEffect>();
 
     public float BaseSpeed;
+    public float RecvDamageAmp = 1f;
+    public float DamageMult = 1f;
 
     void Start()
     {
@@ -77,15 +80,17 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     public void Damage(float damageAmount, bool isCrit)
     {
+        var damage = damageAmount * RecvDamageAmp;
+
         Vector3 cameraAngle = Game.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
 
 
-        damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damageAmount), isCrit);
+        damageText.GetComponent<DamageText>().Setup(Mathf.RoundToInt(damage), isCrit);
 
         if (!_invulnerable)
-            CurrentHealth -= damageAmount;
+            CurrentHealth -= damage;
         if (CurrentHealth <= 0f)
         {
             Die();
@@ -122,6 +127,19 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             effect.Activate();
         }
     }
+    public void Stun(float duration)
+    {
+        StartCoroutine(StunCR(duration));
+    }
+    IEnumerator StunCR(float duration)
+    {
+        _isStunned = true;
+        _canMove = false;
+        _RB.velocity = Vector3.zero;
+        yield return new WaitForSeconds(duration);
+        _isStunned = false;
+        _canMove = true;
+    }
     IEnumerator ShowDamage()
     {
         var tmpColor = _renderer.material.GetColor("_Overlay");
@@ -133,7 +151,10 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     {
         if (!Game.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
             return;
-        Game.PSystems.DamageManager.Damage(EnemyData.AttackDamage, ID);
+        if (_isStunned)
+            return;
+        var damage = EnemyData.AttackDamage * DamageMult;
+        Game.PSystems.DamageManager.Damage(damage, ID);
     }
     [CustomEditor(typeof(NewEnemyBase))]
     public class NewEnemyBaseEditor : Editor
@@ -144,6 +165,30 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             if (GUILayout.Button("Apply Slow"))
             {
                 neb.AddEffect(Game.Instance.GameEffects[0].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Burn"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[1].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Shatter"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[2].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Cripple"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[3].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Prayer"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[4].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Bleed"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[5].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Stun"))
+            {
+                neb.AddEffect(Game.Instance.GameEffects[6].InitializeEffect(neb));
             }
             DrawDefaultInspector();
         }
