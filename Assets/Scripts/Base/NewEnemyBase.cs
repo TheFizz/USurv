@@ -31,6 +31,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public float BaseSpeed;
     public float RecvDamageAmp = 1f;
     public float DamageMult = 1f;
+    public Vector3 ForceVector = Vector3.zero;
+
+    public EffectSO tmpforce;
 
     void Start()
     {
@@ -53,7 +56,14 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             if (_canMove)
                 MoveTo(_target);
     }
-
+    public float GetMass()
+    {
+        return _RB.mass;
+    }
+    public void SetMass(float mass)
+    {
+        _RB.mass = mass;
+    }
     public void SetHp(float min, float max)
     {
         MaxHealth = Random.Range(min, max);
@@ -73,7 +83,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public void MoveTo(Vector3 target)
     {
         var direction = (target - transform.position).normalized;
-        _RB.velocity = direction * BaseSpeed;
+        _RB.velocity = (direction * BaseSpeed) + ForceVector;
         var targetLook = target;
         targetLook.y = transform.position.y;
         transform.LookAt(targetLook);
@@ -189,6 +199,10 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             if (GUILayout.Button("Apply Stun"))
             {
                 neb.AddEffect(Game.Instance.GameEffects[6].InitializeEffect(neb));
+            }
+            if (GUILayout.Button("Apply Knockback"))
+            {
+                neb.AddEffect(neb.tmpforce.InitializeEffect(neb, new ForceData(Vector3.zero, 15, 0)));
             }
             DrawDefaultInspector();
         }

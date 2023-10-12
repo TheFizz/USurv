@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShatterEffectSO : EffectSO
 {
     public float RecvDamageAmpPerc;
-    public override TimedEffect InitializeEffect(NewEnemyBase enemy)
+    public override TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null)
     {
         return new TimedShatterEffect(this, enemy);
     }

@@ -77,6 +77,10 @@ public abstract class WeaponBaseMelee : WeaponBase
                 isCrit = true;
             }
             enemy.Damage(dmg, isCrit);
+
+            var knockback = ((WeaponMeleeSO)WeaponData).KnockbackEffect;
+            var force = WeaponData.GetStat(StatParam.WeaponKnockbackForce).Value;
+            enemy.AddEffect(knockback.InitializeEffect(enemy, new ForceData(Game.PSystems.PlayerObject.transform.position, force, 0)));
         }
 
     }

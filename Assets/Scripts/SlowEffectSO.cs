@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlowEffectSO : EffectSO
 {
     public float SlowAmountPerc;
-    public override TimedEffect InitializeEffect(NewEnemyBase enemy)
+    public override TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null)
     {
         return new TimedSlowEffect(this, enemy);
     }

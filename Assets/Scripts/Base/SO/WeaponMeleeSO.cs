@@ -5,4 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Melee", menuName = "Weapons/Melee")]
 public class WeaponMeleeSO : WeaponBaseSO
 {
+    [Header("Melee Fields")]
+    public EffectSO KnockbackEffect;
 }

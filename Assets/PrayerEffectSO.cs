@@ -6,7 +6,7 @@ using UnityEngine;
 public class PrayerEffectSO : EffectSO
 {
     public float DamagePerStack;
-    public override TimedEffect InitializeEffect(NewEnemyBase enemy)
+    public override TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null)
     {
         return new TimedPrayerEffect(this, enemy);
     }

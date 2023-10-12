@@ -32,6 +32,8 @@ MonoBehaviour:
     Parameter: 8
   - BaseValue: 0
     Parameter: 9
+  - BaseValue: 15
+    Parameter: 14
   PassiveModifiers:
   - Value: 15
     Type: 100
@@ -138,3 +140,4 @@ MonoBehaviour:
       Type: 200
       Param: 11
       Order: 0
+  KnockbackEffect: {fileID: 11400000, guid: dcf04fa107d04f242abd00968c91a360, type: 2}

@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effects/CrippleEffect")]
-public class CrippleEffectSO : EffectSO
+[CreateAssetMenu(menuName = "Effects/ForceEffect")]
+public class ForceEffectSO : EffectSO
 {
-    public float DamageMultiplierPerc;
     public override TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null)
     {
-        return new TimedCrippleEffect(this, enemy);
+        return new TimedForceEffect(this, enemy, (ForceData)auxData);
     }
 }

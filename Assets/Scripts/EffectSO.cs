@@ -11,6 +11,6 @@ public abstract class EffectSO : ScriptableObject
     public bool IsEffectStacked;
     public float ProcTime = 0.5f;
 
-    public abstract TimedEffect InitializeEffect(NewEnemyBase enemy);
+    public abstract TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null);
 
 }

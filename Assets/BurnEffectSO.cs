@@ -6,7 +6,7 @@ using UnityEngine;
 public class BurnEffectSO : EffectSO
 {
     public float DamagePerProc;
-    public override TimedEffect InitializeEffect(NewEnemyBase enemy)
+    public override TimedEffect InitializeEffect(NewEnemyBase enemy, object auxData = null)
     {
         return new TimedBurnEffect(this, enemy);
     }

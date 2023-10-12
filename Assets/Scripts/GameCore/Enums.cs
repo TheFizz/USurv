@@ -39,7 +39,8 @@ public enum StatParam
     AbilityPower = 10,
     AbilityRange = 11,
     PickupRange = 12,
-    CooldownReductionPerc=13
+    CooldownReductionPerc=13,
+    WeaponKnockbackForce = 14
 }
 
 public enum AilmentType
