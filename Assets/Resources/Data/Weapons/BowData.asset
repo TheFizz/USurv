@@ -122,4 +122,4 @@ MonoBehaviour:
       Type: 200
       Param: 10
       Order: 0
-  Projectile: {fileID: 9013098812807109335, guid: a27eae26e893818468b1b9030f306909, type: 3}
+  Projectile: {fileID: 6991231756540139383, guid: 0f23e6a0571a6c74d992921ed7571d66, type: 3}
