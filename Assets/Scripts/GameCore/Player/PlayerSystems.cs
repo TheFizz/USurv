@@ -73,7 +73,8 @@ public class PlayerSystems : MonoBehaviour
         InteractionManager = PlayerObject.GetComponent<PlayerInteractionManager>();
         AnimationController = PlayerObject.GetComponent<PlayerAnimationController>();
         MovementController = PlayerObject.GetComponent<PlayerMovementController>();
-        AnimationController.SetSource(AttackSource);
+        //AnimationController.SetSource(AttackSource);
+        SetSource(AttackSource);
         OnPlayerSpawned?.Invoke(PlayerObject);
     }
 

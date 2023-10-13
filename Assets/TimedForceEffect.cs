@@ -15,7 +15,6 @@ public class TimedForceEffect : TimedEffect
 
     protected override void ApplyEffect()
     {
-
         var mass = _enemy.GetMass();
         var newMass = mass * (1f + (_forceData.MassIncreasePerc / 100));
         _massDelta = newMass - mass;

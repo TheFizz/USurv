@@ -8,9 +8,7 @@ public class ForceData
     private readonly float _forceStrength;
     private readonly float _massIncreasePerc;
     public Vector3 ForceSource => _forceSource;
-
     public float ForceStrength => _forceStrength;
-
     public float MassIncreasePerc => _massIncreasePerc;
 
     public ForceData(Vector3 forceSource, float forceStrength, float massIncreasePerc)
