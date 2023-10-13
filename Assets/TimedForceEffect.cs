@@ -26,7 +26,6 @@ public class TimedForceEffect : TimedEffect
         var enemyPosFloored = new Vector3(enemyPos.x, 0, enemyPos.z);
         Vector3 dirSrcToEnemy = (enemyPosFloored - sourceFloored).normalized;
         _enemy.ForceVector = dirSrcToEnemy * _forceData.ForceStrength;
-
     }
 
     public override void End()

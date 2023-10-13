@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -8,12 +9,14 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private Animator _charAnimator;
     [SerializeField] private LayerMask _mouseHitMask;
     private Rigidbody _RB;
+    private Collider _collider;
     public TextMeshProUGUI debugSpeedText;
 
     public bool lockPosition = false, lockRotation = false;
     private void Start()
     {
         _RB = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
     }
     public void Update()
     {
@@ -54,6 +57,19 @@ public class PlayerMovementController : MonoBehaviour
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, Vector3.up);
         _RB.velocity = projectedVelocity;
-
+    }
+    public void ForceMoveGhost(Vector3 force, float time)
+    {
+        StartCoroutine(ForceMoveGhostCR(force, time));
+    }
+    IEnumerator ForceMoveGhostCR(Vector3 force, float time)
+    {
+        lockPosition = true;
+        _collider.enabled = false;
+        _RB.velocity = force;
+        yield return new WaitForSeconds(time);
+        _RB.velocity = Vector3.zero;
+        _collider.enabled = true;
+        lockPosition = false;
     }
 }

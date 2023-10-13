@@ -52,6 +52,7 @@ public enum AilmentType
 public enum AbilityState
 {
     Ready,
+    Active,
     Cooldown
 }
 public enum HeatStatus

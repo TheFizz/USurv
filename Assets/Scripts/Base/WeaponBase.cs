@@ -121,10 +121,7 @@ public abstract class WeaponBase : MonoBehaviour
     public virtual void UseAbility()
     {
         if (_abilityState != AbilityState.Ready)
-        {
-            Debug.Log("Ability not ready (" + _abilityCooldown + ")");
             return;
-        }
         WeaponAbility.Use(Source);
         _abilityState = AbilityState.Cooldown;
         var cd = WeaponAbility.AbilityCooldown;
@@ -204,7 +201,6 @@ public abstract class WeaponBase : MonoBehaviour
     }
     private void HandleAbilityCooldown()
     {
-
         var cd = WeaponAbility.AbilityCooldown;
         var cdr = WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value;
 
