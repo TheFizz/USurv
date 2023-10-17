@@ -48,10 +48,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3538309848995172162, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0939fd39ac37242438be5e8b9a92dccb, type: 2}
     - target: {fileID: 919132149155446097, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}
       propertyPath: m_Name
-      value: Torii_Portal
+      value: ToriiPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 1173451108577727693, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476111715386199565, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c03af44278e1aa42957306b7c1018db, type: 2}
+    - target: {fileID: 5170029203881000502, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6fe14d6187a03344481da738e25a67d2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8949329677130882981, guid: f643e2ee8db823846a96aace4b7d8cd2, type: 3}

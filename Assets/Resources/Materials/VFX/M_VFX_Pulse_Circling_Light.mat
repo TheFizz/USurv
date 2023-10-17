@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6474424891039273509
+--- !u!114 &-37498500271984060
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Portal_Inside
-  m_Shader: {fileID: -6465566751694194690, guid: c6b0f8672f90db64eba57a65b39742d8, type: 3}
+  m_Name: M_VFX_Pulse_Circling_Light
+  m_Shader: {fileID: -6465566751694194690, guid: f5478b2d2691545418c08edcbea0457f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -36,6 +36,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: e4046cd512337fc40884f9993ba649db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -50,17 +54,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Brightness: 4
-    - _Clipping: 0.65
-    - _Edge_Power: 1
-    - _Noise_Scale: 150
-    - _Power_Back: 1
-    - _Power_Front: 10
+    - _Alpha: 1
+    - _Alpha_Clip: 0.1
+    - _Blur_Ammount: 50
+    - _Cone: 45
+    - _Fill: 1.5
+    - _Inner_Radius_Sharpness: 1
+    - _Outer_Radius_Sharpness: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: -0.2
-    - _Thing: 15
+    - _Radius_Cutout: 1.5
+    - _Scroll_Speed: -750
+    - _Sharpness: 1
+    - _Trail_Sharpness: 0
+    - _Use_Vertex_Color: 0
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.6971648, a: 0}
-    - _Color_Back: {r: 0.1462264, g: 1, b: 0.89405733, a: 0}
+    - _Cone_Color_1: {r: 0, g: 0.08398199, b: 1, a: 0}
+    - _Cone_Color_2: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
