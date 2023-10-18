@@ -13,13 +13,13 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     [HideInInspector] public float CurrentHealth { get; set; }
     [HideInInspector] public float MaxHealth { get; set; }
 
-    [SerializeField] private bool _canMove = true;
+    [SerializeField] protected bool _canMove = true;
     [SerializeField] private bool _invulnerable = false;
     [SerializeField] private Transform _damageTextAnchor;
 
     [HideInInspector] public string ID;
-    private Rigidbody _RB;
-    private Vector3 _target;
+    protected Rigidbody _RB;
+    protected Vector3 _target;
     public Transform MainTarget;
     private Color _baseColor;
     private Renderer _renderer;
@@ -46,7 +46,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _baseColor = _renderer.material.GetColor("_Overlay");
         Game.EnemyPool.Add(ID, this);
     }
-    void Update()
+    public virtual void Update()
     {
         HandleEffects();
 
@@ -55,6 +55,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         if (distanceToPlayer > 1.5)
             if (_canMove)
                 MoveTo(_target);
+        LookAt(_target);
     }
     public float GetMass()
     {
@@ -69,7 +70,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         MaxHealth = Random.Range(min, max);
         CurrentHealth = MaxHealth;
     }
-    private void HandleEffects()
+    protected void HandleEffects()
     {
         foreach (var effect in _effects.Values.ToList())
         {
@@ -85,8 +86,11 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var direction = (target - transform.position).normalized;
         _RB.velocity = (direction * BaseSpeed) + ForceVector;
         var targetLook = target;
-        targetLook.y = transform.position.y;
-        transform.LookAt(targetLook);
+    }
+    public void LookAt(Vector3 target)
+    {
+        target.y = transform.position.y;
+        transform.LookAt(target);
     }
     public void Damage(float damageAmount, bool isCrit)
     {
