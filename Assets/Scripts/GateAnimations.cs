@@ -6,8 +6,10 @@ public class GateAnimations : MonoBehaviour
 {
     public Animator GateAnimator;
     public GameObject PortalPrefab;
+    private GameObject portalObj;
     public bool isPortalSpawned = false;
-
+    private bool SeqFinished = false;
+    private bool crStarted = false;
     private Animator portalAnim;
     public float activationDelay = 0.5f;
     // Start is called before the first frame update
@@ -21,7 +23,7 @@ public class GateAnimations : MonoBehaviour
     {
         var info = GateAnimator.GetCurrentAnimatorClipInfo(0);
         var name = info[0].clip.name;
-        if (name == "Torii_Armature|Torii_Base_No_Portal" && !isPortalSpawned)
+        if (name == "Gate_Open" && !isPortalSpawned && !SeqFinished)
             SpawnPortal();
         if (portalAnim == null)
             return;
@@ -29,12 +31,14 @@ public class GateAnimations : MonoBehaviour
         info = portalAnim.GetCurrentAnimatorClipInfo(0);
         name = info[0].clip.name;
         Debug.Log(name);
-        if (isPortalSpawned && name == "Torii_Armature|Torii_Base_Portal")
+        if (isPortalSpawned && name == "Portal_Open")
             StartCoroutine(PlayerActivationCR(activationDelay));
-        if (isPortalSpawned && name == "Torii_Armature|Portal_Closing")
+        if (isPortalSpawned && name == "Portal_Closed")
         {
             PlayerSystems.Instance.SetPlayerLocked(false);
             isPortalSpawned = false;
+            SeqFinished = true;
+            Destroy(portalObj);
         }
     }
 
@@ -42,14 +46,18 @@ public class GateAnimations : MonoBehaviour
     {
         Debug.Log("Spawned portal");
         isPortalSpawned = true;
-        var portal = Instantiate(PortalPrefab, transform.position, Quaternion.identity);
-        portalAnim = portal.GetComponentInChildren<Animator>();
+        portalObj = Instantiate(PortalPrefab, transform.position, Quaternion.identity);
+        portalAnim = portalObj.GetComponentInChildren<Animator>();
     }
     IEnumerator PlayerActivationCR(float delay)
     {
-        yield return new WaitForSeconds(delay);
-        PlayerSystems.Instance.SetPlayerActive(true);
-        DespawnPortal();
+        if (!crStarted)
+        {
+            yield return new WaitForSeconds(delay);
+            PlayerSystems.Instance.SetPlayerActive(true);
+            DespawnPortal();
+        }
+        crStarted = true;
     }
 
     private void DespawnPortal()

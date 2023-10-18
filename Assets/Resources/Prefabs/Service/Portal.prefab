@@ -169,8 +169,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 3
+      scalar: -2
+      minScalar: -3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -664,13 +664,13 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 6
+    type: 14
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
-    m_Position: {x: 0, y: -2.25, z: 0}
+    m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1.1, y: 1.05, z: 1.5}
     placementMode: 0
@@ -734,7 +734,7 @@ ParticleSystem:
           m_RotationOrder: 4
     m_Mesh: {fileID: 1003902259710015233, guid: a94002de2c063f14da5bfa9e233c8ba0, type: 3}
     m_MeshRenderer: {fileID: 0}
-    m_SkinnedMeshRenderer: {fileID: 0}
+    m_SkinnedMeshRenderer: {fileID: 6237134487470729692}
     m_Sprite: {fileID: 0}
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
@@ -4995,6 +4995,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4504437052572788663}
   m_SourcePrefab: {fileID: 100100000, guid: a94002de2c063f14da5bfa9e233c8ba0, type: 3}
+--- !u!137 &6237134487470729692 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3476111715386199565, guid: a94002de2c063f14da5bfa9e233c8ba0, type: 3}
+  m_PrefabInstance: {fileID: 7400366319157962705}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7005868774575407162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a94002de2c063f14da5bfa9e233c8ba0, type: 3}

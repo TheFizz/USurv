@@ -97,14 +97,14 @@ public abstract class WeaponBaseMelee : WeaponBase
         tmpAngles.z = z;
 
         var cone = Instantiate(_damageCone, Source.position, Quaternion.Euler(tmpAngles), Source);
-        var coneControl = cone.GetComponent<VFXConeControl>();
+        var coneControl = cone.GetComponent<IConeControl>();
         if (coneControl == null)
             return;
 
-        coneControl.enabled = false;
+        cone.SetActive(false);
         coneControl.Radius = WeaponData.GetStat(StatParam.AttackRange).Value;
         coneControl.Angle = WeaponData.GetStat(StatParam.AttackCone).Value;
-        coneControl.enabled = true;
+        cone.SetActive(true);
     }
 
     private List<Vector3> GetSectorCirclePoints(Vector3 enemyPos, float enemyRadius, Vector3 sourcePos, Vector3 forward, float angle, float distance)
