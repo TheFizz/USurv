@@ -67,15 +67,29 @@ public class PlayerSystems : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        PlayerObject = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
+        var gate = FindObjectOfType<GateAnimations>();
+        var spawnPoint = gate.transform.position;
+        spawnPoint.z += 3;
+        PlayerObject = Instantiate(_playerPrefab, spawnPoint, Quaternion.identity);
         AttackSource = PlayerObject.transform.Find("AttackSource").transform;
         DamageManager = PlayerObject.GetComponent<PlayerDamageManager>();
         InteractionManager = PlayerObject.GetComponent<PlayerInteractionManager>();
         AnimationController = PlayerObject.GetComponent<PlayerAnimationController>();
         MovementController = PlayerObject.GetComponent<PlayerMovementController>();
-        //AnimationController.SetSource(AttackSource);
         SetSource(AttackSource);
+        SetPlayerActive(false);
+        SetPlayerLocked(true);
         OnPlayerSpawned?.Invoke(PlayerObject);
+    }
+    public void SetPlayerActive(bool active)
+    {
+        PlayerObject.SetActive(active);
+    }
+
+    public void SetPlayerLocked(bool locked)
+    {
+        MovementController.lockPosition = locked;
+        MovementController.lockRotation = locked;
     }
 
     public void Initialize(GameObject playerPrefab, PlayerStatsSO dPlayerData, GlobalUpgradePathSO dUpgradePath, LayerMask enemyLayer)
