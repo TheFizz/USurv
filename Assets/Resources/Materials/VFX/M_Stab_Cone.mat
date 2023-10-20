@@ -44,7 +44,7 @@ Material:
     - _Alpha: 0.5
     - _Alpha_Clip: 0.1
     - _Blur_Ammount: 50
-    - _Cone: 15
+    - _Cone: 17.25
     - _Fill: 5
     - _QueueControl: 0
     - _QueueOffset: 0

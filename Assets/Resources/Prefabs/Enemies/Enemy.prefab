@@ -135,7 +135,13 @@ MonoBehaviour:
   _invulnerable: 0
   _damageTextAnchor: {fileID: 5181587534091408390}
   ID: 
+  MainTarget: {fileID: 0}
   _damageText: {fileID: 5344042329446152507, guid: d0744fbf6ca1c30429fcc83ab47916df, type: 3}
+  BaseSpeed: 0
+  RecvDamageAmp: 1
+  DamageMult: 1
+  ForceVector: {x: 0, y: 0, z: 0}
+  tmpforce: {fileID: 0}
 --- !u!1001 &7692749213480706127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,7 +220,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7350801992138349854}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 84ebe3c1c79efa741a2ad19b396daef2, type: 3}
   m_Controller: {fileID: 9100000, guid: f4545a853916ff8469095cdeaeef8aab, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
