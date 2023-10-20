@@ -44,7 +44,7 @@ Material:
     - _Alpha: 0.5
     - _Alpha_Clip: 0.1
     - _Blur_Ammount: 50
-    - _Cone: 25
+    - _Cone: 15
     - _Fill: 5
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -53,7 +53,7 @@ Material:
     - _Sharpness: 1
     - _Trail_Sharpness: 0
     m_Colors:
-    - _Cone_Color_1: {r: 0, g: 0, b: 0, a: 0}
+    - _Cone_Color_1: {r: 1, g: 1, b: 1, a: 0}
     - _Cone_Color_2: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1221449314959737482

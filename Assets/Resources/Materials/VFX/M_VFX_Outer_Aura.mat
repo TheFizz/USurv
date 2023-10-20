@@ -48,7 +48,7 @@ Material:
     m_Floats:
     - _AlphaClip: 1
     - _AlphaToMask: 0
-    - _Alpha_Clip: 0.191
+    - _Alpha_Clip: 0
     - _Blend: 0
     - _CastShadows: 0
     - _Cull: 0
@@ -59,7 +59,7 @@ Material:
     - _Scroll_Speed: 0.5
     - _SrcBlend: 5
     - _Surface: 1
-    - _Transparency: 25
+    - _Transparency: 50
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0

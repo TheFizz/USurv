@@ -52,7 +52,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius_Cutout: 0
-    - _Scroll_Speed: 4
+    - _Scroll_Speed: 15
     - _Shaprness: 10
     - _Sharpness: 5.7
     - _Smoothstep_1: 0
