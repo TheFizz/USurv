@@ -32,7 +32,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public float RecvDamageAmp = 1f;
     public float DamageMult = 1f;
     public Vector3 ForceVector = Vector3.zero;
-
+    bool isDying = false;
     public EffectSO tmpforce;
 
     void Start()
@@ -113,6 +113,9 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     }
     public void Die()
     {
+        if (isDying)
+            return;
+        isDying = true;
         var pos = gameObject.transform.position;
         pos.y = 1f;
         Instantiate(DropOnDeath, pos, Quaternion.identity);
@@ -159,7 +162,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         var tmpColor = _renderer.material.GetColor("_Overlay");
         _renderer.material.SetColor("_Overlay", Color.red);
         yield return new WaitForSeconds(0.1f);
-        _renderer.material.SetColor("_Overlay", tmpColor);
+        _renderer.material.SetColor("_Overlay", _baseColor);
     }
     private void OnCollisionStay(Collision collision)
     {

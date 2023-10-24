@@ -38,6 +38,10 @@ public abstract class WeaponBase : MonoBehaviour
     private float _heatRate = 8;
     private int _myPosition;
 
+    Coroutine attack;
+
+    public List<TrinketSO> PassiveTrinkets;
+
     protected virtual void Awake()
     {
         InstantiateSOs();
@@ -127,28 +131,48 @@ public abstract class WeaponBase : MonoBehaviour
         var cd = WeaponAbility.AbilityCooldown;
         _abilityCooldown = cd - (cd * (WeaponAbility.GetStat(StatParam.CooldownReductionPerc).Value / 100));
     }
+    public void AttackAfterDelay(float delay, List<TrinketSO> trinkets = null)
+    {
+        StartCoroutine(AttackAfterDelayCR(delay, trinkets));
+    }
+    IEnumerator AttackAfterDelayCR(float delay, List<TrinketSO> trinkets)
+    {
+        yield return new WaitForSeconds(delay);
+        Attack();
+    }
     protected virtual void Attack()
     {
         Game.PSystems.OnWeaponAttack(WeaponData.GetStat(StatParam.AttackRange).Value, WeaponData.GetStat(StatParam.AttackCone).Value);
         AlignAttackVector();
+
     }
     public virtual void StartAttack()
     {
         if (Source == null)
             Source = Game.PSystems.AttackSource;
         Source.rotation = Source.parent.rotation;
-        InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
+        //InvokeRepeating("Attack", 1, WeaponData.AttackSpeed);
+        if (attack == null)
+            attack = StartCoroutine(AttackCR());
     }
-
-    public virtual void RestartAttack()
+    IEnumerator AttackCR()
     {
-        CancelInvoke();
-        InvokeRepeating("Attack", 0, WeaponData.AttackSpeed);
-    }
+        yield return new WaitForSeconds(1f);
+        while (true)
+        {
+            Attack();
+            yield return new WaitForSeconds(WeaponData.AttackSpeed);
+        }
 
+    }
     public virtual void StopAttack()
     {
-        CancelInvoke();
+        //CancelInvoke();
+        if (attack != null)
+        {
+            StopCoroutine(attack);
+            attack = null;
+        }
     }
 
     #region Private methods 

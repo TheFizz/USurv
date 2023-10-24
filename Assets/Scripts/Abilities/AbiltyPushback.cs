@@ -19,6 +19,14 @@ public class AbiltyPushback : AbilityBase
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
             enemy.AddEffect(PushbackEffect.InitializeEffect(enemy, new ForceData(source.position, forceStrength, 0)));
+            foreach (var trinket in Game.PSystems.CurrentTrinkets)
+            {
+                if (trinket is OnAbilityEffectTrinketSO)
+                {
+                    var OHTrinket = (OnAbilityEffectTrinketSO)trinket;
+                    OHTrinket.OnHitAction(enemy);
+                }
+            }
         }
     }
 }

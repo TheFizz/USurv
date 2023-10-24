@@ -88,7 +88,6 @@ public class Game : MonoBehaviour
         var cameraPivot = MainCamera.gameObject.transform.parent;
         cameraPivot.GetComponent<CameraFollow>().CenterPoint = PSystems.AttackSource;
         PSystems.StopAttack();
-        PSystems.StartAttack();
         OnLevelReady?.Invoke(this);
     }
 

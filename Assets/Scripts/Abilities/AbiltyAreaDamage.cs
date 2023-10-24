@@ -17,6 +17,15 @@ public class AbiltyAreaDamage : AbilityBase
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
             enemy.Damage(Stats.Find(x => x.Parameter == StatParam.AbilityPower).Value, false);
+
+            foreach (var trinket in Game.PSystems.CurrentTrinkets)
+            {
+                if (trinket is OnAbilityEffectTrinketSO)
+                {
+                    var OHTrinket = (OnAbilityEffectTrinketSO)trinket;
+                    OHTrinket.OnHitAction(enemy);
+                }
+            }
         }
     }
 }

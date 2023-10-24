@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed90a29e63c448f44bdb8714909bffd3, type: 3}
+  m_Name: OnAbilityBurn
+  m_EditorClassIdentifier: 
+  Name: 
+  ChancePerc: 100
+  Effect: {fileID: 11400000, guid: 8eec9a6e51ab65e41ba104569c8a943b, type: 2}

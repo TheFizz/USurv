@@ -3,6 +3,7 @@ using RobinGoodfellow.CircleGenerator;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -37,6 +38,8 @@ public class PlayerSystems : MonoBehaviour
     [SerializeField] private List<GameObject> _defaultWeapons = new List<GameObject>();
     [HideInInspector] public List<WeaponBase> PlayerWeapons = new List<WeaponBase>(new WeaponBase[3]);
 
+    public List<TrinketSO> CurrentTrinkets = null;
+    public readonly Dictionary<OnHitStackTimedTrinketSO, OnHitStackTimedTrinket> TimedTrinkets = new Dictionary<OnHitStackTimedTrinketSO, OnHitStackTimedTrinket>();
 
     public PlayerDamageManager DamageManager { get; private set; }
     public PlayerInteractionManager InteractionManager { get; private set; }
@@ -64,7 +67,29 @@ public class PlayerSystems : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    protected void HandleTimedTrinkets()
+    {
+        foreach (var trinket in TimedTrinkets.Values.ToList())
+        {
+            trinket.Tick(Time.deltaTime);
+            if (trinket.IsFinished)
+            {
+                TimedTrinkets.Remove(trinket.TrinketData);
+            }
+        }
+    }
+    public void AddTimedTrinket(OnHitStackTimedTrinket trinket)
+    {
+        if (TimedTrinkets.ContainsKey(trinket.TrinketData))
+        {
+            TimedTrinkets[trinket.TrinketData].Activate();
+        }
+        else
+        {
+            TimedTrinkets.Add(trinket.TrinketData, trinket);
+            trinket.Activate();
+        }
+    }
     public void SpawnPlayer()
     {
         var gate = FindObjectOfType<GateAnimations>();
@@ -84,6 +109,10 @@ public class PlayerSystems : MonoBehaviour
     public void SetPlayerActive(bool active)
     {
         PlayerObject.SetActive(active);
+        if (!active)
+            StopAttack();
+        if (active)
+            StartAttack();
     }
 
     public void SetPlayerLocked(bool locked)
@@ -163,12 +192,14 @@ public class PlayerSystems : MonoBehaviour
     }
     public void StartAttack()
     {
-        PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        //PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        CurrentTrinkets = PlayerWeapons[PASSIVE].PassiveTrinkets;
         PlayerWeapons[ACTIVE].StartAttack();
     }
     public void StopAttack()
     {
-        PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        //PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        CurrentTrinkets = null;
         PlayerWeapons[ACTIVE].StopAttack();
     }
     public List<WeaponBase> GetWeapons()
@@ -188,7 +219,6 @@ public class PlayerSystems : MonoBehaviour
         {
             PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
             PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
-            PlayerWeapons[ACTIVE].RestartAttack();
         }
     }
 
@@ -200,6 +230,7 @@ public class PlayerSystems : MonoBehaviour
     private void Update()
     {
         ShowDebug();
+        HandleTimedTrinkets();
 
         if (Game.InputHandler.SwapWeapon)
             SwapRotate();
@@ -305,7 +336,6 @@ public class PlayerSystems : MonoBehaviour
         {
             wpn.ApplyModifiers(new List<StatModifier>() { mod });
         }
-        PlayerWeapons[ACTIVE].RestartAttack();
         PlayerData.GetStat(mod.Param)?.AddModifier(mod);
     }
     public void PlayerDeath()
@@ -346,6 +376,7 @@ public class PlayerSystems : MonoBehaviour
             PlayerWeapons[ACTIVE].StopAttack();
         }
         PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        CurrentTrinkets = null;
 
         var tmp = PlayerWeapons[idxA];
 
@@ -358,6 +389,7 @@ public class PlayerSystems : MonoBehaviour
 
         OnWeaponIconAction?.Invoke(PlayerWeapons, true, idxA, idxB);
         PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        CurrentTrinkets = PlayerWeapons[PASSIVE].PassiveTrinkets;
         if (idxA == 0 || idxB == 0)
         {
             PlayerWeapons[ACTIVE].StartAttack();

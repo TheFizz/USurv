@@ -34,9 +34,9 @@ public class ProjectileBehaviour : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.tag != "Enemy")
             return;
-
 
         bool isCrit = false;
         int roll = Random.Range(0, 100);
@@ -50,6 +50,24 @@ public class ProjectileBehaviour : MonoBehaviour
 
         var enemy = other.GetComponent<NewEnemyBase>();
         enemy.Damage(dmg, isCrit);
+        foreach (var trinket in Game.PSystems.CurrentTrinkets)
+        {
+            if (trinket is OnHitEffectTrinketSO)
+            {
+                var OHTrinket = (OnHitEffectTrinketSO)trinket;
+                OHTrinket.OnHitAction(enemy);
+            }
+            if (trinket is OnHitAttackTrinketSO)
+            {
+                var OHTrinket = (OnHitAttackTrinketSO)trinket;
+                OHTrinket.OnHitAttack();
+            }
+            if (trinket is OnHitStackTimedTrinketSO)
+            {
+                var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
+                Game.PSystems.AddTimedTrinket(OHTrinket.Init());
+            }
+        }
         if (_pierceCount <= 0)
             Destroy(gameObject);
         _pierceCount--;

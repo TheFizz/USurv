@@ -30,7 +30,6 @@ public class GateAnimations : MonoBehaviour
 
         info = portalAnim.GetCurrentAnimatorClipInfo(0);
         name = info[0].clip.name;
-        Debug.Log(name);
         if (isPortalSpawned && name == "Portal_Open")
             StartCoroutine(PlayerActivationCR(activationDelay));
         if (isPortalSpawned && name == "Portal_Closed")
@@ -44,7 +43,6 @@ public class GateAnimations : MonoBehaviour
 
     private void SpawnPortal()
     {
-        Debug.Log("Spawned portal");
         isPortalSpawned = true;
         portalObj = Instantiate(PortalPrefab, transform.position, Quaternion.identity);
         portalAnim = portalObj.GetComponentInChildren<Animator>();
@@ -54,7 +52,7 @@ public class GateAnimations : MonoBehaviour
         if (!crStarted)
         {
             yield return new WaitForSeconds(delay);
-            PlayerSystems.Instance.SetPlayerActive(true);
+            Game.PSystems.SetPlayerActive(true);
             DespawnPortal();
         }
         crStarted = true;

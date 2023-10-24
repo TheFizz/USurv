@@ -58,7 +58,22 @@ public abstract class WeaponBaseMelee : WeaponBase
 
         }
         if (hasHit)
+        {
             AddHeat(1);
+            foreach (var trinket in Game.PSystems.CurrentTrinkets)
+            {
+                if (trinket is OnHitAttackTrinketSO)
+                {
+                    var OHTrinket = (OnHitAttackTrinketSO)trinket;
+                    OHTrinket.OnHitAttack();
+                }
+                if (trinket is OnHitStackTimedTrinketSO)
+                {
+                    var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
+                    Game.PSystems.AddTimedTrinket(OHTrinket.Init());
+                }
+            }
+        }
         DamageAll(dmgEnemies);
         ShowGraphics();
     }
@@ -81,6 +96,15 @@ public abstract class WeaponBaseMelee : WeaponBase
             var knockback = ((WeaponMeleeSO)WeaponData).KnockbackEffect;
             var force = WeaponData.GetStat(StatParam.WeaponKnockbackForce).Value;
             enemy.AddEffect(knockback.InitializeEffect(enemy, new ForceData(Game.PSystems.PlayerObject.transform.position, force, 0)));
+
+            foreach (var trinket in Game.PSystems.CurrentTrinkets)
+            {
+                if (trinket is OnHitEffectTrinketSO)
+                {
+                    var OHTrinket = (OnHitEffectTrinketSO)trinket;
+                    OHTrinket.OnHitAction(enemy);
+                }
+            }
         }
 
     }

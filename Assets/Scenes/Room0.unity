@@ -343,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: _spawnLimit
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 9150097732807427218, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: m_Name
