@@ -192,13 +192,13 @@ public class PlayerSystems : MonoBehaviour
     }
     public void StartAttack()
     {
-        //PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
         CurrentTrinkets = PlayerWeapons[PASSIVE].PassiveTrinkets;
         PlayerWeapons[ACTIVE].StartAttack();
     }
     public void StopAttack()
     {
-        //PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
         CurrentTrinkets = null;
         PlayerWeapons[ACTIVE].StopAttack();
     }
