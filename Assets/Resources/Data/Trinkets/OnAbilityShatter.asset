@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   ChancePerc: 100
-  Effect: {fileID: 11400000, guid: 8eec9a6e51ab65e41ba104569c8a943b, type: 2}
+  Effect: {fileID: 11400000, guid: 80c2fe6bfeb1be34da5a1f753e01e6d0, type: 2}
