@@ -5546,7 +5546,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -5557,7 +5557,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 0
+  m_RenderAlignment: 4
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 0
@@ -5989,7 +5989,7 @@ ParticleSystem:
     startRotationX:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -0.7853981
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -6095,7 +6095,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 2.3561945
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10333,7 +10333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8001306996217490152, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
       propertyPath: near clip plane
-      value: -36.3
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 8001306996217490152, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
       propertyPath: orthographic size
