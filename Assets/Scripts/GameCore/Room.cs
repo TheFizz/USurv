@@ -18,7 +18,7 @@ public class Room : MonoBehaviour
 
     private int _killGoal;
     private int _killCount = 0;
-    public LevelState State = LevelState.Active;
+    public RoomState State = RoomState.Active;
 
     private EndScreen _endScreen;
     public bool UnlimitedPlay;
@@ -64,20 +64,20 @@ public class Room : MonoBehaviour
             return;
         }
 
-        if (State == LevelState.Active && _killCount >= _killGoal)
+        if (State == RoomState.Active && _killCount >= _killGoal)
         {
             _killCount = _killGoal;
             NextLevel();
         }
-        if (State == LevelState.EndingXP && Game.XPDropsPool.Count < 1)
+        if (State == RoomState.EndingXP && Game.XPDropsPool.Count < 1)
         {
             SpawnReward();
-            State = LevelState.RewardSpawned;
+            State = RoomState.RewardSpawned;
         }
-        if (State == LevelState.RewardSpawned && RewardTaken)
+        if (State == RoomState.RewardSpawned && RewardTaken)
         {
             SpawnPortal();
-            State = LevelState.PortalSpawned;
+            State = RoomState.PortalSpawned;
         }
     }
 
@@ -135,7 +135,7 @@ public class Room : MonoBehaviour
 
     IEnumerator KillEnemies()
     {
-        State = LevelState.EndingEnemy;
+        State = RoomState.EndingEnemy;
         yield return new WaitForSeconds(.2f);
         foreach (var enemy in Game.EnemyPool.Values)
         {
@@ -151,6 +151,6 @@ public class Room : MonoBehaviour
         {
             xp.Attract(Game.PSystems.PlayerObject.transform);
         }
-        State = LevelState.EndingXP;
+        State = RoomState.EndingXP;
     }
 }

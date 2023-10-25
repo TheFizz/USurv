@@ -11,6 +11,9 @@ public class ProjectileBehaviour : MonoBehaviour
     private float _attackDamage;
     private float _critChance;
     private float _critMult;
+    public GameObject ArrowModel;
+    public ParticleSystem Particles;
+    private bool _canMove = true;
     public void Setup(WeaponBaseRanged weapon, Transform source)
     {
         WeaponRangedSO weaponData = (WeaponRangedSO)weapon.WeaponData;
@@ -27,10 +30,23 @@ public class ProjectileBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.forward * Time.deltaTime * _projectileSpeed;
+        if (Particles == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (_canMove)
+        {
+            transform.position += transform.forward * Time.deltaTime * _projectileSpeed;
+        }
         var curDist = Vector3.Distance(transform.position, _sourcePoint);
         if (curDist >= _maxDistance)
-            Destroy(gameObject);
+        {
+            Destroy(ArrowModel);
+            Particles?.Stop();
+            _canMove = false;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -50,26 +66,31 @@ public class ProjectileBehaviour : MonoBehaviour
 
         var enemy = other.GetComponent<NewEnemyBase>();
         enemy.Damage(dmg, isCrit);
-        foreach (var trinket in Game.PSystems.CurrentTrinkets)
-        {
-            if (trinket is OnHitEffectTrinketSO)
+        if (Game.PSystems.CurrentTrinkets != null)
+            foreach (var trinket in Game.PSystems.CurrentTrinkets)
             {
-                var OHTrinket = (OnHitEffectTrinketSO)trinket;
-                OHTrinket.OnHitAction(enemy);
+                if (trinket is OnHitEffectTrinketSO)
+                {
+                    var OHTrinket = (OnHitEffectTrinketSO)trinket;
+                    OHTrinket.OnHitAction(enemy);
+                }
+                if (trinket is OnHitAttackTrinketSO)
+                {
+                    var OHTrinket = (OnHitAttackTrinketSO)trinket;
+                    OHTrinket.OnHitAttack();
+                }
+                if (trinket is OnHitStackTimedTrinketSO)
+                {
+                    var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
+                    Game.PSystems.AddTimedTrinket(OHTrinket.Init());
+                }
             }
-            if (trinket is OnHitAttackTrinketSO)
-            {
-                var OHTrinket = (OnHitAttackTrinketSO)trinket;
-                OHTrinket.OnHitAttack();
-            }
-            if (trinket is OnHitStackTimedTrinketSO)
-            {
-                var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
-                Game.PSystems.AddTimedTrinket(OHTrinket.Init());
-            }
-        }
         if (_pierceCount <= 0)
-            Destroy(gameObject);
+        {
+            Destroy(ArrowModel);
+            Particles?.Stop();
+            _canMove = false;
+        }
         _pierceCount--;
     }
 }

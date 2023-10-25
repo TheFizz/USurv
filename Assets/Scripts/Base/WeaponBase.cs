@@ -148,6 +148,8 @@ public abstract class WeaponBase : MonoBehaviour
     }
     public virtual void StartAttack()
     {
+        if (Game.Room.State != RoomState.Active)
+            return;
         if (Source == null)
             Source = Game.PSystems.AttackSource;
         Source.rotation = Source.parent.rotation;
@@ -179,18 +181,6 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected void AddHeat(float heat)
     {
-        if (HeatStatus == HeatStatus.Overheated)
-            return;
-
-        heat *= _heatRate;
-        _curHeat += heat;
-        OnHeatFillChanged?.Invoke(_curHeat / _maxHeat);
-        if (_curHeat >= _maxHeat)
-        {
-            _curHeat = _maxHeat;
-            HeatStatus = HeatStatus.Overheated;
-            OnWeaponOverheated?.Invoke(true);
-        }
     }
     private void AlignAttackVector()
     {

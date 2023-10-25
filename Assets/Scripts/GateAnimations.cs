@@ -51,11 +51,11 @@ public class GateAnimations : MonoBehaviour
     {
         if (!crStarted)
         {
+            crStarted = true;
             yield return new WaitForSeconds(delay);
             Game.PSystems.SetPlayerActive(true);
             DespawnPortal();
         }
-        crStarted = true;
     }
 
     private void DespawnPortal()

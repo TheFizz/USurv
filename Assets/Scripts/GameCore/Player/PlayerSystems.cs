@@ -354,6 +354,7 @@ public class PlayerSystems : MonoBehaviour
     {
         PlayerWeapons[ACTIVE].StopAttack();
         PlayerWeapons[ACTIVE].ClearSourcedModifiers(PlayerWeapons[PASSIVE]);
+        CurrentTrinkets = null;
 
         OnWeaponIconAction?.Invoke(PlayerWeapons, true);
 
@@ -367,6 +368,8 @@ public class PlayerSystems : MonoBehaviour
         first.SwappedTo(PlayerWeapons.Count - 1);
         PlayerWeapons[PlayerWeapons.Count - 1] = first;
         PlayerWeapons[ACTIVE].ApplyModifiers(PlayerWeapons[PASSIVE].WeaponData.PassiveModifiers);
+        CurrentTrinkets = PlayerWeapons[PASSIVE].PassiveTrinkets;
+
         PlayerWeapons[ACTIVE].StartAttack();
     }
     private void SwapSlots(int idxA, int idxB)
