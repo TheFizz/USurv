@@ -4942,8 +4942,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: af57504109e654244ab198da7ab98877, type: 2}
   - {fileID: 2100000, guid: 22dca9e94b890524a856ff338f458cef, type: 2}
   - {fileID: 2100000, guid: 2dcc44b302ea989419fb00496cc98187, type: 2}
-  Radius: 5
-  Angle: 45
 --- !u!199 &647334864615234699
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14759,7 +14757,7 @@ Transform:
   m_GameObject: {fileID: 5200003842270308388}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

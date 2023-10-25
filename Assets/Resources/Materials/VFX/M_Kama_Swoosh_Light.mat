@@ -46,20 +46,20 @@ Material:
     - _Blur_Ammount: 25
     - _Brightness: 5
     - _Cone: 45
-    - _Fill: 7
+    - _Fill: 8
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius_Cutout: 4
+    - _Radius_Cutout: 3.5
     - _Scroll_Speed: 5
     - _Shaprness: 1
-    - _Sharpness: 7.5
+    - _Sharpness: 3.5
     - _Trail_Sharpness: 5
     - _Transparency: 0
     m_Colors:
     - _Cone_Color: {r: 0, g: 1, b: 0.8477471, a: 1}
-    - _Cone_Color_1: {r: 0, g: 0.23312998, b: 1, a: 1}
+    - _Cone_Color_1: {r: 1, g: 1, b: 1, a: 1}
     - _Cone_Color_2: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7843472691550587645

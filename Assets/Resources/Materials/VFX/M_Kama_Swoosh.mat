@@ -42,7 +42,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _Alpha_Clip: 0.5
+    - _Alpha_Clip: 0.25
     - _Blur_Ammount: 50
     - _Brightness: 2
     - _Cone: 45
@@ -54,7 +54,7 @@ Material:
     - _Radius_Cutout: 0.5
     - _Scroll_Speed: 2.5
     - _Shaprness: 10
-    - _Sharpness: 4
+    - _Sharpness: 3.5
     - _Smoothstep_1: 0
     - _Smoothstep_2: 0.4
     - _Trail_Sharpness: 0

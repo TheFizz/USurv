@@ -51,16 +51,16 @@ Material:
     m_Ints: []
     m_Floats:
     - _Brightness: 4
-    - _Clipping: 0.65
-    - _Edge_Power: 1
+    - _Clipping: 0.62
+    - _Edge_Power: 0.75
     - _Noise_Scale: 150
-    - _Power_Back: 1
-    - _Power_Front: 10
+    - _Power_Back: 1.25
+    - _Power_Front: 25
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: -0.2
     - _Thing: 15
     m_Colors:
     - _Color: {r: 0, g: 1, b: 0.6971648, a: 0}
-    - _Color_Back: {r: 0.1462264, g: 1, b: 0.89405733, a: 0}
+    - _Color_Back: {r: 0, g: 0.5566038, b: 0.48766664, a: 0}
   m_BuildTextureStacks: []

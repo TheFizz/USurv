@@ -42,25 +42,25 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _Alpha_Clip: 0.5
+    - _Alpha_Clip: 0.1
     - _Blur_Ammount: 100
     - _Brightness: 5
     - _Cone: 45
-    - _Fill: 2
+    - _Fill: 6
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius_Cutout: 3.5
-    - _Scroll_Speed: 3
+    - _Radius_Cutout: 2.5
+    - _Scroll_Speed: 5
     - _Shaprness: 1
-    - _Sharpness: 3.5
-    - _Trail_Sharpness: 2
+    - _Sharpness: 4.5
+    - _Trail_Sharpness: 5
     - _Transparency: 0
     m_Colors:
     - _Cone_Color: {r: 0, g: 1, b: 0.8477471, a: 1}
-    - _Cone_Color_1: {r: 0, g: 1, b: 0.81646943, a: 1}
-    - _Cone_Color_2: {r: 0, g: 0, b: 0, a: 0}
+    - _Cone_Color_1: {r: 0, g: 0, b: 0, a: 1}
+    - _Cone_Color_2: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7843472691550587645
 MonoBehaviour:

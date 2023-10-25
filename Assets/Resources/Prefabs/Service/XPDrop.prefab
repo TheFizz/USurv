@@ -265,7 +265,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.19607843}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4992,9 +4992,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3784005886275022036}
     m_Modifications:
+    - target: {fileID: 4750299734003067987, guid: 64458913e859781439316ea6492d862a, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.19607843
+      objectReference: {fileID: 0}
     - target: {fileID: 5297647981187305714, guid: 64458913e859781439316ea6492d862a, type: 3}
       propertyPath: m_Name
       value: Lantern_VFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744825070277807723, guid: 64458913e859781439316ea6492d862a, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.19607843
       objectReference: {fileID: 0}
     - target: {fileID: 8216334036688762072, guid: 64458913e859781439316ea6492d862a, type: 3}
       propertyPath: m_LocalPosition.x
