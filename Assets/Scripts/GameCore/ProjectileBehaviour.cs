@@ -14,10 +14,11 @@ public class ProjectileBehaviour : MonoBehaviour
     public GameObject ArrowModel;
     public ParticleSystem Particles;
     private bool _canMove = true;
+    private WeaponBaseRanged _weapon;
     public void Setup(WeaponBaseRanged weapon, Transform source)
     {
         WeaponRangedSO weaponData = (WeaponRangedSO)weapon.WeaponData;
-
+        _weapon = weapon;
         _projectileSpeed = weaponData.GetStat(StatParam.ProjectileSpeed).Value;
         _pierceCount = Mathf.RoundToInt(weaponData.GetStat(StatParam.PierceCount).Value);
         _maxDistance = weaponData.GetStat(StatParam.AttackRange).Value;
@@ -55,6 +56,7 @@ public class ProjectileBehaviour : MonoBehaviour
             return;
 
         bool isCrit = false;
+        bool disableProcs = false;
         int roll = Random.Range(0, 100);
         float chance = _critChance;
         float dmg = _attackDamage;
@@ -65,26 +67,41 @@ public class ProjectileBehaviour : MonoBehaviour
         }
 
         var enemy = other.GetComponent<NewEnemyBase>();
-        enemy.Damage(dmg, isCrit);
-        if (Game.PSystems.CurrentTrinkets != null)
-            foreach (var trinket in Game.PSystems.CurrentTrinkets)
+
+        if (enemy.Plating.PlatingType != PlatingType.None)
+        {
+            if (_weapon.Plating.PlatingType == enemy.Plating.PlatingType)
             {
-                if (trinket is OnHitEffectTrinketSO)
-                {
-                    var OHTrinket = (OnHitEffectTrinketSO)trinket;
-                    OHTrinket.OnHitAction(enemy);
-                }
-                if (trinket is OnHitAttackTrinketSO)
-                {
-                    var OHTrinket = (OnHitAttackTrinketSO)trinket;
-                    OHTrinket.OnHitAttack();
-                }
-                if (trinket is OnHitStackTimedTrinketSO)
-                {
-                    var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
-                    Game.PSystems.AddTimedTrinket(OHTrinket.Init());
-                }
+                dmg *= 1.25f;
             }
+            if (_weapon.Plating.PlatingType != enemy.Plating.PlatingType)
+            {
+                dmg *= 0.75f;
+                disableProcs = true;
+            }
+        }
+
+        enemy.Damage(dmg, isCrit);
+        if (!disableProcs)
+            if (Game.PSystems.CurrentTrinkets != null)
+                foreach (var trinket in Game.PSystems.CurrentTrinkets)
+                {
+                    if (trinket is OnHitEffectTrinketSO)
+                    {
+                        var OHTrinket = (OnHitEffectTrinketSO)trinket;
+                        OHTrinket.OnHitAction(enemy);
+                    }
+                    if (trinket is OnHitAttackTrinketSO)
+                    {
+                        var OHTrinket = (OnHitAttackTrinketSO)trinket;
+                        OHTrinket.OnHitAttack();
+                    }
+                    if (trinket is OnHitStackTimedTrinketSO)
+                    {
+                        var OHTrinket = (OnHitStackTimedTrinketSO)trinket;
+                        Game.PSystems.AddTimedTrinket(OHTrinket.Init());
+                    }
+                }
         if (_pierceCount <= 0)
         {
             Destroy(ArrowModel);

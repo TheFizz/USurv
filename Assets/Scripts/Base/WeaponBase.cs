@@ -38,6 +38,8 @@ public abstract class WeaponBase : MonoBehaviour
     private float _heatRate = 8;
     private int _myPosition;
 
+    public Plating Plating;
+
     Coroutine attack;
 
     public List<TrinketSO> PassiveTrinkets;
@@ -46,9 +48,10 @@ public abstract class WeaponBase : MonoBehaviour
     {
         InstantiateSOs();
         ValidateModsAndAssignSource();
-
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
+
+        Plating.PlatingType = PlatingType.Jade;
     }
 
     private GameObject GetUIObject()

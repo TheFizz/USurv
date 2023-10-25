@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
@@ -73,6 +75,8 @@ public class Spawner : MonoBehaviour
         {
             var go = Instantiate(_enemyPrefab, spawnPoint, Quaternion.identity, gameObject.transform);
             var enemy = go.GetComponent<NewEnemyBase>();
+            int platingIdx = Random.Range(0, Game.Instance.PlatingPresets.Platings.Count);
+            enemy.Plating = Game.Instance.PlatingPresets.Platings[platingIdx];
             enemy.MainTarget = Game.PSystems.PlayerObject.transform;
             var hpVal = _curveMultiplier + (HpCurve.Evaluate(_time) * _curveMultiplier);
             var hpDev = HpDevCurve.Evaluate(_time);

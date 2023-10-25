@@ -53,6 +53,7 @@ Material:
     - _Position: -0.23
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Smoothness: 3.26
     m_Colors:
     - _Bottom_Color: {r: 0.3962264, g: 0.33191106, b: 0.31212175, a: 1}
     - _Overlay: {r: 1, g: 1, b: 1, a: 0}

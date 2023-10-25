@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     public event Action<Game> OnLevelReady;
 
     public List<EffectSO> GameEffects = new List<EffectSO>();
+    public PlatingPresetsSO PlatingPresets;
 
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _uiPrefab;

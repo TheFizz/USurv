@@ -34,6 +34,7 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
     public Vector3 ForceVector = Vector3.zero;
     bool isDying = false;
     public EffectSO tmpforce;
+    public Plating Plating;
 
     void Start()
     {
@@ -43,8 +44,12 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         _RB = GetComponent<Rigidbody>();
         BaseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponentInChildren<Renderer>();
+
+        _renderer.material.SetColor("_Overlay", Plating.ColorScheme.colorKeys[0].color);
+
         _baseColor = _renderer.material.GetColor("_Overlay");
         Game.EnemyPool.Add(ID, this);
+
     }
     public virtual void Update()
     {

@@ -82,6 +82,7 @@ public abstract class WeaponBaseMelee : WeaponBase
     {
         foreach (var enemy in enemies)
         {
+            bool disableProcs = false;
             bool isCrit = false;
             int roll = Random.Range(0, 100);
             float chance = WeaponData.GetStat(StatParam.CritChancePerc).Value;
@@ -91,20 +92,36 @@ public abstract class WeaponBaseMelee : WeaponBase
                 dmg *= (WeaponData.GetStat(StatParam.CritMultiplierPerc).Value + Game.BaseCritMultiplierPerc) / 100;
                 isCrit = true;
             }
+
+            if (enemy.Plating.PlatingType != PlatingType.None)
+            {
+                if (Plating.PlatingType == enemy.Plating.PlatingType)
+                {
+                    dmg *= 1.25f;
+                }
+                if (Plating.PlatingType != enemy.Plating.PlatingType)
+                {
+                    dmg *= 0.75f;
+                    disableProcs = true;
+                }
+            }
+
             enemy.Damage(dmg, isCrit);
 
             var knockback = ((WeaponMeleeSO)WeaponData).KnockbackEffect;
             var force = WeaponData.GetStat(StatParam.WeaponKnockbackForce).Value;
             enemy.AddEffect(knockback.InitializeEffect(enemy, new ForceData(Game.PSystems.PlayerObject.transform.position, force, 0)));
 
-            foreach (var trinket in Game.PSystems.CurrentTrinkets)
-            {
-                if (trinket is OnHitEffectTrinketSO)
-                {
-                    var OHTrinket = (OnHitEffectTrinketSO)trinket;
-                    OHTrinket.OnHitAction(enemy);
-                }
-            }
+            if (!disableProcs)
+                if (Game.PSystems.CurrentTrinkets != null)
+                    foreach (var trinket in Game.PSystems.CurrentTrinkets)
+                    {
+                        if (trinket is OnHitEffectTrinketSO)
+                        {
+                            var OHTrinket = (OnHitEffectTrinketSO)trinket;
+                            OHTrinket.OnHitAction(enemy);
+                        }
+                    }
         }
 
     }
