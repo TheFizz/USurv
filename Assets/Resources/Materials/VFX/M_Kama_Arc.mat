@@ -45,7 +45,7 @@ Material:
     - _Alpha_Clip: 0
     - _Blur_Ammount: 100
     - _Brightness: 2
-    - _Cone: 45
+    - _Cone: 58.5
     - _Fill: 5
     - _Inner_Radius_Sharpness: 1
     - _Outer_Radius_Sharpness: 0

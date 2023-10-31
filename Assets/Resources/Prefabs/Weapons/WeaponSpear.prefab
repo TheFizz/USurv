@@ -51,5 +51,39 @@ MonoBehaviour:
   UIRect: {fileID: 0}
   UIWeaponIcon: {fileID: 0}
   WeaponLevel: 0
-  PassiveTrinkets: []
+  Plating:
+    ColorScheme:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    PlatingType: 0
+  PassiveTrinkets:
+  - {fileID: 11400000, guid: f5b53594e0687504eb2caf6bdfe1ee58, type: 2}
+  - {fileID: 11400000, guid: 2f0ade6d4d949d7449f9965c8a3d42dd, type: 2}
   _damageCone: {fileID: 7291272760448756970, guid: e8cc754a3add7d648be7369b04b166ae, type: 3}
