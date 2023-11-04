@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
+public class PlayerDamageManager : MonoBehaviour, IDamageable
 {
 
     public event HpChangedHandler OnHpChanged;
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public Vector2 HealthRange { get; set; }
+    public bool Damageable { get; set; } = true;
+    public float InDmgFactor { get; set; } = 1;
 
     private float _invTime = 0.2f;
     private float _preInvDelay = .5f;
@@ -40,7 +42,28 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
         }
     }
 
-    public void Damage(float damageAmount, string attackerID, bool overrideITime = false)
+    public void Die()
+    {
+        _invulnerable = true;
+        Game.PSystems.PlayerDeath();
+    }
+
+    IEnumerator PreInv(float time)
+    {
+        _preInv = true;
+        yield return new WaitForSeconds(time);
+        _preInv = false;
+        StartCoroutine(Inv(_invTime));
+    }
+    IEnumerator Inv(float time)
+    {
+        _invulnerable = true;
+        yield return new WaitForSeconds(time);
+        _invulnerable = false;
+        _recentAttackers.Clear();
+    }
+
+    public void Damage(float damageAmount, bool isCrit, string attackerID, bool overrideITime = false)
     {
         if (_isDead)
             return;
@@ -67,25 +90,5 @@ public class PlayerDamageManager : MonoBehaviour, IPlayerDamageable
             Die();
         }
         OnHpChanged?.Invoke(CurrentHealth);
-    }
-    public void Die()
-    {
-        _invulnerable = true;
-        Game.PSystems.PlayerDeath();
-    }
-
-    IEnumerator PreInv(float time)
-    {
-        _preInv = true;
-        yield return new WaitForSeconds(time);
-        _preInv = false;
-        StartCoroutine(Inv(_invTime));
-    }
-    IEnumerator Inv(float time)
-    {
-        _invulnerable = true;
-        yield return new WaitForSeconds(time);
-        _invulnerable = false;
-        _recentAttackers.Clear();
     }
 }

@@ -17,14 +17,7 @@ public class WeaponIcon : MonoBehaviour
     {
         _weapon = weapon;
         _weapon.OnAbilityFillChanged += OnAbilityFillChanged;
-        _weapon.OnHeatFillChanged += OnHeatFillChanged;
-        _weapon.OnWeaponOverheated += OnWeaponOverheated;
         _weaponSprite.sprite = _weapon.WeaponData.UIWeaponSprite;
-    }
-
-    private void OnHeatFillChanged(float fill)
-    {
-        _heatOL.fillAmount = fill;
     }
 
     private void OnAbilityFillChanged(float fill)
@@ -32,17 +25,8 @@ public class WeaponIcon : MonoBehaviour
         _abilityOl.fillAmount = 1 - fill;
     }
 
-    private void OnWeaponOverheated(bool state)
-    {
-        if (state)
-            _weaponSprite.color = _overheatColor;
-        else
-            _weaponSprite.color = _cooledColor;
-    }
     private void OnDestroy()
     {
         _weapon.OnAbilityFillChanged -= OnAbilityFillChanged;
-        _weapon.OnHeatFillChanged -= OnHeatFillChanged;
-        _weapon.OnWeaponOverheated -= OnWeaponOverheated;
     }
 }

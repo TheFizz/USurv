@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TimedShatterEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
+    IDamageable _target;
     private bool isApplied;
     private float _ampDelta;
 
-    public TimedShatterEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
+    public TimedShatterEffect(EffectSO EffectData, IDamageable target) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
     }
 
     protected override void ApplyEffect()
@@ -18,13 +18,13 @@ public class TimedShatterEffect : TimedEffect
         ShatterEffectSO shatterEffect = (ShatterEffectSO)EffectData;
         if (!isApplied)
             _ampDelta = shatterEffect.RecvDamageAmpPerc / 100;
-        _enemy.RecvDamageAmp += _ampDelta;
+        _target.InDmgFactor += _ampDelta;
         isApplied = true;
     }
 
     public override void End()
     {
-        _enemy.RecvDamageAmp -= (_ampDelta * EffectStacks);
+        _target.InDmgFactor -= (_ampDelta * EffectStacks);
         EffectStacks = 0;
         isApplied = false;
     }

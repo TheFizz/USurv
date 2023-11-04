@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public abstract class WeaponBase : MonoBehaviour
 {
     public event OverlayFillHandler OnAbilityFillChanged;
-    public event OverlayFillHandler OnHeatFillChanged;
-    public event WeaponOverheatHandler OnWeaponOverheated;
 
     [SerializeField] private WeaponBaseSO _defaultWeaponData;
     [SerializeField] private AbilityBase _defaultWeaponAbility;
@@ -30,12 +28,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     private float _abilityCooldown;
     private AbilityState _abilityState;
-    protected HeatStatus HeatStatus = HeatStatus.None;
 
-    private float _maxHeat = 100;
-    private float _curHeat = 0;
-    private float _cdRate = 4;
-    private float _heatRate = 8;
     private int _myPosition;
 
     public Plating Plating;
@@ -106,24 +99,11 @@ public abstract class WeaponBase : MonoBehaviour
     {
         HandleAbilityCooldown();
 
-        if (HeatStatus == HeatStatus.Overheated)
-            return;
-        _curHeat -= (Time.deltaTime * _cdRate);
-        OnHeatFillChanged?.Invoke(_curHeat / _maxHeat);
-        if (_curHeat <= 0)
-        {
-            _curHeat = 0;
-            HeatStatus = HeatStatus.None;
-            OnWeaponOverheated?.Invoke(false);
-        }
     }
 
     public void SwappedTo(int position)
     {
-        if (_myPosition == 0 && HeatStatus == HeatStatus.Overheated)
-            HeatStatus = HeatStatus.Cooling;
         _myPosition = position;
-
     }
     public virtual void UseAbility()
     {
@@ -182,9 +162,6 @@ public abstract class WeaponBase : MonoBehaviour
 
     #region Private methods 
 
-    protected void AddHeat(float heat)
-    {
-    }
     private void AlignAttackVector()
     {
         if (!WeaponData.AimAssist)

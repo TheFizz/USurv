@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TimedCrippleEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
+    IDamaging _target;
     private bool isApplied;
     private float _multDelta;
 
-    public TimedCrippleEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
+    public TimedCrippleEffect(EffectSO EffectData, IDamaging target) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
     }
 
     protected override void ApplyEffect()
@@ -18,13 +18,13 @@ public class TimedCrippleEffect : TimedEffect
         CrippleEffectSO crippleEffect = (CrippleEffectSO)EffectData;
         if (!isApplied)
             _multDelta = crippleEffect.DamageMultiplierPerc / 100;
-        _enemy.DamageMult += _multDelta;
+        _target.OutDmgFactor += _multDelta;
         isApplied = true;
     }
 
     public override void End()
     {
-        _enemy.DamageMult -= (_multDelta * EffectStacks);
+        _target.OutDmgFactor -= (_multDelta * EffectStacks);
         EffectStacks = 0;
         isApplied = false;
     }

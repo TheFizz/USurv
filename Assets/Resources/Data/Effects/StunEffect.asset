@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: StunEffect
   m_EditorClassIdentifier: 
   MaxStacks: 1
-  Duration: 1
+  Duration: 5
   IsDurationStacked: 0
   IsDurationRenewed: 0
   IsEffectStacked: 0
   ProcTime: 0.5
-  StunDuration: 1

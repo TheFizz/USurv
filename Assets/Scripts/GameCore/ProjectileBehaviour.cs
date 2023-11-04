@@ -81,7 +81,7 @@ public class ProjectileBehaviour : MonoBehaviour
             }
         }
 
-        enemy.Damage(dmg, isCrit);
+        enemy.Damage(dmg, isCrit, "PLAYER");
         if (!disableProcs)
             if (Game.PSystems.CurrentTrinkets != null)
                 foreach (var trinket in Game.PSystems.CurrentTrinkets)

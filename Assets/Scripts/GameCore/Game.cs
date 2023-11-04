@@ -25,7 +25,7 @@ public class Game : MonoBehaviour
 
     public static Game Instance;
     public static InputHandler InputHandler { get; set; }
-    public static PlayerSystems PSystems { get; set; }
+    public static Player PSystems { get; set; }
     public static Dictionary<string, XPDrop> XPDropsPool { get; set; } = new Dictionary<string, XPDrop>();
     public static Dictionary<string, NewEnemyBase> EnemyPool { get; set; } = new Dictionary<string, NewEnemyBase>();
     public static Camera MainCamera { get; set; }
@@ -53,7 +53,7 @@ public class Game : MonoBehaviour
     }
     private void CreatePlayerSystems()
     {
-        PSystems = gameObject.AddComponent<PlayerSystems>();
+        PSystems = gameObject.AddComponent<Player>();
         PSystems.Initialize(_playerPrefab, _defaultPlayerStats, _defaultUpgradePath, _enemyLayer);
         PSystems.OnPlayerSpawned += OnPlayerSpawned;
     }

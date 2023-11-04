@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class TimedForceEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
+    IForceable _target;
     ForceData _forceData;
     float _massDelta;
-    public TimedForceEffect(EffectSO EffectData, NewEnemyBase enemy, ForceData forceData) : base(EffectData, enemy)
+    public TimedForceEffect(EffectSO EffectData, IForceable target, ForceData forceData) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
         _forceData = forceData;
     }
 
     protected override void ApplyEffect()
     {
-        var mass = _enemy.GetMass();
+        var mass = _target.GetMass();
         var newMass = mass * (1f + (_forceData.MassIncreasePerc / 100));
         _massDelta = newMass - mass;
-        _enemy.SetMass(newMass);
+        _target.SetMass(newMass);
         ForceEffectSO forceEffect = (ForceEffectSO)EffectData;
         var sourceFloored = new Vector3(_forceData.ForceSource.x, 0, _forceData.ForceSource.z);
-        var enemyPos = _enemy.transform.position;
+        var enemyPos = _target.GetTransform().position;
         var enemyPosFloored = new Vector3(enemyPos.x, 0, enemyPos.z);
         Vector3 dirSrcToEnemy = (enemyPosFloored - sourceFloored).normalized;
-        _enemy.ForceVector = dirSrcToEnemy * _forceData.ForceStrength;
+        _target.ForceVector = dirSrcToEnemy * _forceData.ForceStrength;
     }
 
     public override void End()
     {
-        _enemy.ForceVector = Vector3.zero;
-        _enemy.SetMass(_enemy.GetMass() - _massDelta);
+        _target.ForceVector = Vector3.zero;
+        _target.SetMass(_target.GetMass() - _massDelta);
     }
 }

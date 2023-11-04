@@ -13,7 +13,7 @@ public abstract class TimedEffect
     public EffectSO EffectData { get; }
     public bool IsFinished;
 
-    public TimedEffect(EffectSO effectData, NewEnemyBase enemy)
+    public TimedEffect(EffectSO effectData)
     {
         EffectData = effectData;
     }

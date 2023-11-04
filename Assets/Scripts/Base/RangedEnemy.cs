@@ -16,7 +16,8 @@ public class RangedEnemy : NewEnemyBase
     public GameObject bulletPrefab;
     private float attackSpeed = 1;
     private float bulletSpeed = 15;
-    public override void Update()
+    private Vector3 _target;
+    protected override void Update()
     {
         HandleEffects();
 

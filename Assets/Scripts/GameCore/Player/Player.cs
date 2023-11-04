@@ -8,13 +8,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class PlayerSystems : MonoBehaviour
+public class Player : MonoBehaviour
 {
     const int ACTIVE = 0;
     const int PASSIVE = 1;
     const int ABILITY = 2;
 
-    public static PlayerSystems Instance;
+    private static Player _instance;
 
     public event Action<GameObject> OnPlayerSpawned;
 
@@ -59,12 +59,12 @@ public class PlayerSystems : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
     }
     protected void HandleTimedTrinkets()

@@ -6,12 +6,28 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
+public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, IDamaging, IMovingAI, IEffectable
 {
+    //IDamageable
+    public float CurrentHealth { get; set; }
+    public float MaxHealth { get; set; }
+    public bool Damageable { get; set; } = true;
+    public float InDmgFactor { get; set; } = 1f;
+
+    //IForceable
+    public Vector3 ForceVector { get; set; } = Vector3.zero;
+
+    //IDamaging
+    public float DamageAmount { get; set; }
+    public float OutDmgFactor { get; set; } = 1;
+
+    //IMovingAI
+    public Transform MainTarget { get; set; }
+    public float MoveSpeed { get; set; }
+
+    //Self
     [field: SerializeField] public EnemyBaseSO EnemyData { get; set; }
     [field: SerializeField] public GameObject DropOnDeath { get; set; }
-    [HideInInspector] public float CurrentHealth { get; set; }
-    [HideInInspector] public float MaxHealth { get; set; }
 
     [SerializeField] protected bool _canMove = true;
     [SerializeField] private bool _invulnerable = false;
@@ -19,87 +35,54 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
 
     [HideInInspector] public string ID;
     protected Rigidbody _RB;
-    protected Vector3 _target;
-    public Transform MainTarget;
     private Color _baseColor;
     private Renderer _renderer;
-    private bool _isStunned = false;
+    private bool _canAttack = true;
     [SerializeField] private GameObject _damageText;
 
     private readonly Dictionary<EffectSO, TimedEffect> _effects = new Dictionary<EffectSO, TimedEffect>();
 
-    public float BaseSpeed;
-    public float RecvDamageAmp = 1f;
-    public float DamageMult = 1f;
-    public Vector3 ForceVector = Vector3.zero;
     bool isDying = false;
-    public EffectSO tmpforce;
     public Plating Plating;
+    private Transform _myTransform;
 
+    //Unity
     void Start()
     {
-        gameObject.layer = LayerMask.NameToLayer("Enemy"); //Bad
         ID = Game.GenerateId();
         gameObject.name = $"Enemy<{ID}>";
+
+        _myTransform = transform;
         _RB = GetComponent<Rigidbody>();
-        BaseSpeed = EnemyData.MoveSpeed;
         _renderer = GetComponentInChildren<Renderer>();
-
         _renderer.material.SetColor("_Overlay", Plating.ColorScheme.colorKeys[0].color);
-
         _baseColor = _renderer.material.GetColor("_Overlay");
-        Game.EnemyPool.Add(ID, this);
 
+        MoveSpeed = EnemyData.MoveSpeed;
+        DamageAmount = EnemyData.AttackDamage;
+        Game.EnemyPool.Add(ID, this);
     }
-    public virtual void Update()
+    protected virtual void Update()
     {
         HandleEffects();
+        MoveTo(MainTarget.position);
+        LookAt(MainTarget.position);
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (!Game.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
+            return;
+        if (!_canAttack)
+            return;
+        var damage = DamageAmount * OutDmgFactor;
+        Game.PSystems.DamageManager.Damage(damage, false, ID);
+    }
 
-        var distanceToPlayer = Vector3.Distance(transform.position, _target);
-        _target = MainTarget.position;
-        if (distanceToPlayer > 1.5)
-            if (_canMove)
-                MoveTo(_target);
-        LookAt(_target);
-    }
-    public float GetMass()
+
+    //IDamageable
+    public void Damage(float damageAmount, bool isCrit, string attackerID, bool overrideITime = false)
     {
-        return _RB.mass;
-    }
-    public void SetMass(float mass)
-    {
-        _RB.mass = mass;
-    }
-    public void SetHp(float min, float max)
-    {
-        MaxHealth = Random.Range(min, max);
-        CurrentHealth = MaxHealth;
-    }
-    protected void HandleEffects()
-    {
-        foreach (var effect in _effects.Values.ToList())
-        {
-            effect.Tick(Time.deltaTime);
-            if (effect.IsFinished)
-            {
-                _effects.Remove(effect.EffectData);
-            }
-        }
-    }
-    public void MoveTo(Vector3 target)
-    {
-        var direction = (target - transform.position).normalized;
-        _RB.velocity = (direction * BaseSpeed) + ForceVector;
-        var targetLook = target;
-    }
-    public void LookAt(Vector3 target)
-    {
-        target.y = transform.position.y;
-        transform.LookAt(target);
-    }
-    public void Damage(float damageAmount, bool isCrit)
-    {
-        var damage = damageAmount * RecvDamageAmp;
+        var damage = damageAmount * InDmgFactor;
 
         Vector3 cameraAngle = Game.MainCamera.transform.eulerAngles;
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
@@ -128,15 +111,48 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         Destroy(gameObject);
         Game.Room.KillIncrease(1);
     }
-    public void Kill()
+
+
+    //IForceable
+    public float GetMass()
     {
-        if (gameObject == null)
-            return;
-        var pos = gameObject.transform.position;
-        pos.y = 1f;
-        Instantiate(DropOnDeath, pos, Quaternion.identity);
-        Destroy(gameObject);
+        return _RB.mass;
     }
+    public void SetMass(float mass)
+    {
+        _RB.mass = mass;
+    }
+    public Transform GetTransform()
+    {
+        return _myTransform;
+    }
+
+
+    //IStunnable
+    public void SetStunned(bool stunned)
+    {
+        _canMove = !stunned;
+        _canAttack = !stunned;
+        if (stunned)
+            _RB.velocity = Vector3.zero;
+    }
+
+
+    //IMovingAI
+    public void MoveTo(Vector3 target)
+    {
+        var direction = (target - _myTransform.position).normalized;
+        _RB.velocity = (direction * MoveSpeed) + ForceVector;
+        var targetLook = target;
+    }
+    public void LookAt(Vector3 target)
+    {
+        target.y = _myTransform.position.y;
+        _myTransform.LookAt(target);
+    }
+
+
+    //IEffectable
     public void AddEffect(TimedEffect effect)
     {
         if (_effects.ContainsKey(effect.EffectData))
@@ -149,18 +165,33 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             effect.Activate();
         }
     }
-    public void Stun(float duration)
+    public void HandleEffects()
     {
-        StartCoroutine(StunCR(duration));
+        foreach (var effect in _effects.Values.ToList())
+        {
+            effect.Tick(Time.deltaTime);
+            if (effect.IsFinished)
+            {
+                _effects.Remove(effect.EffectData);
+            }
+        }
     }
-    IEnumerator StunCR(float duration)
+
+
+    //Self
+    public void SetHp(float min, float max)
     {
-        _isStunned = true;
-        _canMove = false;
-        _RB.velocity = Vector3.zero;
-        yield return new WaitForSeconds(duration);
-        _isStunned = false;
-        _canMove = true;
+        MaxHealth = Random.Range(min, max);
+        CurrentHealth = MaxHealth;
+    }
+    public void Kill()
+    {
+        if (gameObject == null)
+            return;
+        var pos = gameObject.transform.position;
+        pos.y = 1f;
+        Instantiate(DropOnDeath, pos, Quaternion.identity);
+        Destroy(gameObject);
     }
     IEnumerator ShowDamage()
     {
@@ -169,15 +200,8 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
         yield return new WaitForSeconds(0.1f);
         _renderer.material.SetColor("_Overlay", _baseColor);
     }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (!Game.IsInLayerMask(collision.gameObject.layer, EnemyData.TargetLayer))
-            return;
-        if (_isStunned)
-            return;
-        var damage = EnemyData.AttackDamage * DamageMult;
-        Game.PSystems.DamageManager.Damage(damage, ID);
-    }
+
+
     [CustomEditor(typeof(NewEnemyBase))]
     public class NewEnemyBaseEditor : Editor
     {
@@ -211,10 +235,6 @@ public class NewEnemyBase : MonoBehaviour, IEnemyDamageable
             if (GUILayout.Button("Apply Stun"))
             {
                 neb.AddEffect(Game.Instance.GameEffects[6].InitializeEffect(neb));
-            }
-            if (GUILayout.Button("Apply Knockback"))
-            {
-                neb.AddEffect(neb.tmpforce.InitializeEffect(neb, new ForceData(Vector3.zero, 15, 0)));
             }
             DrawDefaultInspector();
         }

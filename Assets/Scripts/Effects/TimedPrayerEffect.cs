@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TimedPrayerEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
+    IDamageable _target;
     private bool isApplied;
     private float _ampDelta;
 
-    public TimedPrayerEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
+    public TimedPrayerEffect(EffectSO EffectData, IDamageable target) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
     }
 
     protected override void ApplyEffect()
@@ -20,6 +20,6 @@ public class TimedPrayerEffect : TimedEffect
     public override void End()
     {
         var damage = ((PrayerEffectSO)EffectData).DamagePerStack * EffectStacks;
-        _enemy.Damage(damage,false);
+        _target.Damage(damage, false, "PLAYER");
     }
 }

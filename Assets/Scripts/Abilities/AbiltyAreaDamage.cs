@@ -16,7 +16,7 @@ public class AbiltyAreaDamage : AbilityBase
         foreach (var hitEnemy in hitEnemies)
         {
             var enemy = hitEnemy.GetComponent<NewEnemyBase>();
-            enemy.Damage(Stats.Find(x => x.Parameter == StatParam.AbilityPower).Value, false);
+            enemy.Damage(Stats.Find(x => x.Parameter == StatParam.AbilityPower).Value, false, "PLAYER");
 
             foreach (var trinket in Game.PSystems.CurrentTrinkets)
             {

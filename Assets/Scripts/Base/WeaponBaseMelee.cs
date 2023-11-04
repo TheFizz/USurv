@@ -17,9 +17,6 @@ public abstract class WeaponBaseMelee : WeaponBase
     }
     protected override void Attack()
     {
-        if (HeatStatus == HeatStatus.Overheated || HeatStatus == HeatStatus.Cooling)
-            return;
-
         base.Attack();
 
         bool hasHit = false;
@@ -59,7 +56,6 @@ public abstract class WeaponBaseMelee : WeaponBase
         }
         if (hasHit)
         {
-            AddHeat(1);
             foreach (var trinket in Game.PSystems.CurrentTrinkets)
             {
                 if (trinket is OnHitAttackTrinketSO)
@@ -106,7 +102,7 @@ public abstract class WeaponBaseMelee : WeaponBase
                 }
             }
 
-            enemy.Damage(dmg, isCrit);
+            enemy.Damage(dmg, isCrit,"PLAYER");
 
             var knockback = ((WeaponMeleeSO)WeaponData).KnockbackEffect;
             var force = WeaponData.GetStat(StatParam.WeaponKnockbackForce).Value;

@@ -7,8 +7,6 @@ public abstract class WeaponBaseRanged : WeaponBase
     private float coneTreshold = 9;
     protected override void Attack()
     {
-        if (HeatStatus == HeatStatus.Overheated || HeatStatus == HeatStatus.Cooling)
-            return;
         base.Attack();
 
         if (gameObject.activeSelf == false)
@@ -49,6 +47,5 @@ public abstract class WeaponBaseRanged : WeaponBase
             }
         }
 
-        AddHeat(1);
     }
 }

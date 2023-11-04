@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TimedBurnEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
-    public TimedBurnEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
+    IDamageable _target;
+    public TimedBurnEffect(EffectSO EffectData, IDamageable target) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
     }
 
     protected override void ApplyEffect()
@@ -20,6 +20,6 @@ public class TimedBurnEffect : TimedEffect
     protected override void Proc()
     {
         BurnEffectSO burnEffect = (BurnEffectSO)EffectData;
-        _enemy.Damage(burnEffect.DamagePerProc, false);
+        _target.Damage(burnEffect.DamagePerProc, false, "PLAYER");
     }
 }

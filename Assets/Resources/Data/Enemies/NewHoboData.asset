@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dace3a3fe58dd7479f6b3064253fe33, type: 3}
   m_Name: NewHoboData
   m_EditorClassIdentifier: 
-  HealthMin: 1
-  HealthMax: 3
   MoveSpeed: 3
   AttackSpeed: 1
   AttackRange: 2

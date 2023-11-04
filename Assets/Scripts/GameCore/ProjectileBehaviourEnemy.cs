@@ -33,7 +33,7 @@ public class ProjectileBehaviourEnemy : MonoBehaviour
 
         float dmg = _attackDamage;
         var enemy = other.GetComponent<PlayerDamageManager>();
-        enemy.Damage(dmg, _id);
+        enemy.Damage(dmg, false, _id);
         Destroy(gameObject);
     }
 }

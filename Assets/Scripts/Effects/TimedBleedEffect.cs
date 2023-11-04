@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TimedBleedEffect : TimedEffect
 {
-    NewEnemyBase _enemy;
-    public TimedBleedEffect(EffectSO EffectData, NewEnemyBase enemy) : base(EffectData, enemy)
+    IDamageable _target;
+    public TimedBleedEffect(EffectSO EffectData, IDamageable target) : base(EffectData)
     {
-        _enemy = enemy;
+        _target = target;
     }
 
     protected override void ApplyEffect()
@@ -21,6 +21,6 @@ public class TimedBleedEffect : TimedEffect
     {
         BleedEffectSO bleedEffect = (BleedEffectSO)EffectData;
         var damage = bleedEffect.DamagePerStack * EffectStacks;
-        _enemy.Damage(damage, false);
+        _target.Damage(damage, false, "PLAYER");
     }
 }

@@ -34,7 +34,7 @@ public class GateAnimations : MonoBehaviour
             StartCoroutine(PlayerActivationCR(activationDelay));
         if (isPortalSpawned && name == "Portal_Closed")
         {
-            PlayerSystems.Instance.SetPlayerLocked(false);
+            Game.PSystems.SetPlayerLocked(false);
             isPortalSpawned = false;
             SeqFinished = true;
             Destroy(portalObj);
