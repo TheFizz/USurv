@@ -9,6 +9,8 @@ public class EnemyVFXAnchors : MonoBehaviour
     public Transform headAnchor;
     public Transform groundAnchor;
     public Transform chestAnchor;
+    public Transform overheadAnchor;
+
     // Start is called before the first frame update
     void Start()
     {
