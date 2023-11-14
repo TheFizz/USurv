@@ -23,6 +23,7 @@ public class Room : MonoBehaviour
     private EndScreen _endScreen;
     public bool UnlimitedPlay;
     public GameObject Reward;
+    public GameObject RewardSpot;
     public GameObject Portal;
     public bool RewardTaken = false;
     public GameObject PlayerPrefab;
@@ -51,6 +52,7 @@ public class Room : MonoBehaviour
         Game.InputHandler.SetInputEnabled(true);
 
         _killGoal = Random.Range(50, 100);
+        _killGoal = 1;
         OnGoalChanged?.Invoke(_killGoal);
         OnKillsChanged?.Invoke(_killCount);
 
@@ -89,8 +91,11 @@ public class Room : MonoBehaviour
 
     private void SpawnReward()
     {
+        FindObjectOfType<RewardGenerator>().InstantiateRewards();
+        /*
         var i = Instantiate(Reward);
         i.transform.position = new Vector3(0, 0, 5);
+        */
     }
 
     public void PlayerDeath()

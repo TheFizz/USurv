@@ -5,4 +5,5 @@ using UnityEngine;
 public class TrinketSO : ScriptableObject
 {
     public string Name;
+    public GameObject PickupObject;
 }

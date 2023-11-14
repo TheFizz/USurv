@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3d33a81ec6964bba13ebce95c7c7d, type: 3}
   m_Name: ActiveAttackTrinket
   m_EditorClassIdentifier: 
-  Name: 
+  Name: ActiveAttackTrinket
+  PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
   ChancePerc: 25
   Aux: 0

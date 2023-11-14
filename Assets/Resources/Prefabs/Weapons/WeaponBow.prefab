@@ -83,6 +83,4 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     PlatingType: 0
-  PassiveTrinkets:
-  - {fileID: 11400000, guid: bceb7481be34c5d48bb71379d13140bc, type: 2}
-  - {fileID: 11400000, guid: f5b53594e0687504eb2caf6bdfe1ee58, type: 2}
+  PassiveTrinkets: []

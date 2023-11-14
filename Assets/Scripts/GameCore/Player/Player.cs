@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
     public PlayerMovementController MovementController { get; private set; }
     public GameObject PlayerObject { get; private set; }
     public Transform AttackSource { get; private set; }
-
     private float _currentXP = 0;
     private int _upgradesPerLevel = 3;
     private int _currentLevel = 1;
@@ -231,7 +230,6 @@ public class Player : MonoBehaviour
     {
         ShowDebug();
         HandleTimedTrinkets();
-
         if (Game.InputHandler.SwapWeapon)
             SwapRotate();
 

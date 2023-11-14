@@ -1,0 +1,13 @@
+ActiveAttack
+Bleed
+Burn
+OnAbilityBleed
+OnabilityBurn
+OnAbilityPrayer
+OnabilityShatter
+OnabilitySlow
+OnHitStackTimed
+PassiveAttack
+Prayer
+Shatter
+Slow

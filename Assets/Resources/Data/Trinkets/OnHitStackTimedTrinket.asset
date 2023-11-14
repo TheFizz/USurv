@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c104f878c402864fb5e5db174667577, type: 3}
   m_Name: OnHitStackTimedTrinket
   m_EditorClassIdentifier: 
-  Name: 
+  Name: OnHitStackTimedTrinket
+  PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
   Duration: 5
   MaxStacks: 10
   StackBonus:

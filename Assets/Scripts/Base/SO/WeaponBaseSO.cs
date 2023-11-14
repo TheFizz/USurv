@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class WeaponBaseSO : ScriptableObject
 {
     [Header("Base Fields")]
+    public GameObject PickupObject;
     public GameObject UIWeaponIcon;
     public Sprite UIWeaponSprite;
     public bool AimAssist = false;

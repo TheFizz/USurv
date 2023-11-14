@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24716e24c8e26d94395078b1d847bf07, type: 3}
   m_Name: ShatterTrinket
   m_EditorClassIdentifier: 
-  Name: 
+  Name: ShatterTrinket
+  PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
   ChancePerc: 25
   Effect: {fileID: 11400000, guid: 80c2fe6bfeb1be34da5a1f753e01e6d0, type: 2}

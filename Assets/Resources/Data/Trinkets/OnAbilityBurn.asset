@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed90a29e63c448f44bdb8714909bffd3, type: 3}
   m_Name: OnAbilityBurn
   m_EditorClassIdentifier: 
-  Name: 
+  Name: OnAbilityBurn
+  PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
   ChancePerc: 100
   Effect: {fileID: 11400000, guid: 0318da57d5da9e347a39d3a7104dd5b7, type: 2}

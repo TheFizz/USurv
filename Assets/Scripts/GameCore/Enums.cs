@@ -22,7 +22,8 @@ public enum RoomState
 public enum InteractionType
 {
     Take,
-    Consume
+    Consume,
+    Pick
 }
 public enum StatParam
 {

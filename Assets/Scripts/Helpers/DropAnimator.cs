@@ -18,7 +18,7 @@ public class DropAnimator : MonoBehaviour
             rotationDegrees *= -1;
 
         _myTransform = GetComponent<Transform>();
-        _myTransform.DOMoveY(_floatTo, loopTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+        _myTransform.DOMoveY(_floatTo + transform.position.y, loopTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
         _myTransform.DOLocalRotate(new Vector3(0, rotationDegrees, 0), loopTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
     }
 

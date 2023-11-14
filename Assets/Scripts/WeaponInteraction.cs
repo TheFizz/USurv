@@ -6,19 +6,37 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class WeaponInteraction : MonoBehaviour
+public class WeaponInteraction : Interaction
 {
     [SerializeField] private TextAsset _weaponRewards;
-    [HideInInspector] public string RewardName;
-    [HideInInspector] public List<Tuple<KeyCode, InteractionType>> Options = new List<Tuple<KeyCode, InteractionType>>();
     private void Start()
     {
         var lines = _weaponRewards.text.Split(Environment.NewLine);
-        RewardName = lines[Random.Range(0, lines.Length)];
+        InteractionTitle = lines[Random.Range(0, lines.Length)];
         Options = new List<Tuple<KeyCode, InteractionType>>
         {
             new Tuple<KeyCode, InteractionType>(KeyCode.E, InteractionType.Take),
             new Tuple<KeyCode, InteractionType>(KeyCode.F, InteractionType.Consume)
         };
     }
+}
+
+public class PillarInteraction : Interaction
+{
+    public string Title;
+    private void Start()
+    {
+        InteractionTitle = Title;
+        Options = new List<Tuple<KeyCode, InteractionType>>
+        {
+            new Tuple<KeyCode, InteractionType>(KeyCode.E, InteractionType.Pick),
+        };
+    }
+}
+
+
+public class Interaction : MonoBehaviour
+{
+    [HideInInspector] public string InteractionTitle;
+    [HideInInspector] public List<Tuple<KeyCode, InteractionType>> Options = new List<Tuple<KeyCode, InteractionType>>();
 }
