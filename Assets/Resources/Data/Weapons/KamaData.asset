@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickupObject: {fileID: 5651589707143657426, guid: 049aacf89f2e9624e8a3949c20fdce07, type: 3}
   UIWeaponIcon: {fileID: 1977914615918250163, guid: a7d453f1f212d4b409b8f3394ab0f3b2, type: 3}
-  UIWeaponSprite: {fileID: 21300000, guid: 16cf4c61713b5c940a7f3da60cb03679, type: 3}
+  UIWeaponSprite: {fileID: 21300000, guid: be54e7da034fccd40b28456f1963a557, type: 3}
   AimAssist: 0
   EnemyLayer:
     serializedVersion: 2

@@ -6,25 +6,11 @@ using UnityEngine;
 public class WeaponUI : MonoBehaviour
 {
     //public GameObject GameUI;
-    private List<Vector2> SlotPositionsOld = new List<Vector2>()
-    {
-        new Vector2(-185,100),//150,150 Size
-        new Vector2(-135,200), //100,100 Size
-        new Vector2(-85,100) //100,100 Size
-    };
-
     private List<Vector2> SlotPositions = new List<Vector2>()
     {
         new Vector2(-125,20),//150,150 Size
         new Vector2(0,20), //100,100 Size
         new Vector2(125,20) //100,100 Size
-    };
-
-    private List<Vector2> SlotSizesOld = new List<Vector2>()
-    {
-        new Vector2(150,150),//150,150 Size
-        new Vector2(100,100), //100,100 Size
-        new Vector2(100,100) //100,100 Size
     };
     private List<Vector2> SlotSizes = new List<Vector2>()
     {
@@ -32,13 +18,6 @@ public class WeaponUI : MonoBehaviour
         new Vector2(.5f,.5f), //100,100 Size
         new Vector2(1,1) //100,100 Size
     };
-    private List<Color> SlotColors = new List<Color>()
-    {
-        Color.white,
-        new Color32(128,128,128,255),
-        new Color32(134,255,145,255),
-    };
-
     private float _animTime = 0.3f;
 
     private void Awake()

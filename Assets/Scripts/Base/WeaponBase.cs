@@ -43,7 +43,6 @@ public abstract class WeaponBase : MonoBehaviour
         ValidateModsAndAssignSource();
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
-
         Plating.PlatingType = PlatingType.Jade;
     }
 
