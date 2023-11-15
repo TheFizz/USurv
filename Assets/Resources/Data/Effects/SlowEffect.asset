@@ -18,4 +18,5 @@ MonoBehaviour:
   IsDurationRenewed: 1
   IsEffectStacked: 1
   ProcTime: 0.5
+  EffectPrefab: {fileID: 1513091569470477518, guid: 5f479763050e1ed4db58a4b5930c2415, type: 3}
   SlowAmountPerc: 5

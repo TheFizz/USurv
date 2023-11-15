@@ -18,4 +18,5 @@ MonoBehaviour:
   IsDurationRenewed: 0
   IsEffectStacked: 0
   ProcTime: 0.5
+  EffectPrefab: {fileID: 6294508013172393196, guid: 504a276ee2958a5499cc3e1ec3e396bc, type: 3}
   DamagePerProc: 1

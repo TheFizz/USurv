@@ -11672,6 +11672,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraOrtho
       objectReference: {fileID: 0}
+    - target: {fileID: 8001306996217490152, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
+      propertyPath: far clip plane
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8250959034018588203, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

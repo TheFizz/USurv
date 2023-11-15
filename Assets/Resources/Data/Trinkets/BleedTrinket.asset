@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BleedTrinket
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
-  ChancePerc: 25
+  ChancePerc: 95
   Effect: {fileID: 11400000, guid: 8eec9a6e51ab65e41ba104569c8a943b, type: 2}

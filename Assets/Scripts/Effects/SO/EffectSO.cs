@@ -11,6 +11,7 @@ public abstract class EffectSO : ScriptableObject
     public bool IsDurationRenewed;
     public bool IsEffectStacked;
     public float ProcTime = 0.5f;
+    public GameObject EffectPrefab;
 
     public abstract TimedEffect InitializeEffect(IEffectable enemy, object auxData = null);
 

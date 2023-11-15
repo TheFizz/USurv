@@ -65,7 +65,8 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     protected virtual void Update()
     {
         HandleEffects();
-        MoveTo(MainTarget.position);
+        if (_canMove)
+            MoveTo(MainTarget.position);
         LookAt(MainTarget.position);
     }
     private void OnCollisionStay(Collision collision)

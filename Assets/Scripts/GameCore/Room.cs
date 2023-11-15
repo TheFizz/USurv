@@ -52,7 +52,7 @@ public class Room : MonoBehaviour
         Game.InputHandler.SetInputEnabled(true);
 
         _killGoal = Random.Range(50, 100);
-        _killGoal = 1;
+        //_killGoal = 1;
         OnGoalChanged?.Invoke(_killGoal);
         OnKillsChanged?.Invoke(_killCount);
 
