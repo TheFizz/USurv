@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
     private float _curveResolution = 120f;
     private float _curveMultiplier = 1;
     private float _time;
-    public GameObject _enemyPrefab;
+    //public GameObject _enemyPrefab;
+    public List<GameObject> SpawnablePrefabs = new List<GameObject>();
     public Transform _player;
     [SerializeField] private float _secondsToSpawn = 0.5f;
     [SerializeField] private int _spawnLimit = 200;
@@ -73,7 +74,10 @@ public class Spawner : MonoBehaviour
         }
         if (pointFound)
         {
-            var go = Instantiate(_enemyPrefab, spawnPoint, Quaternion.identity, gameObject.transform);
+            var prefIdx = Random.Range(0, SpawnablePrefabs.Count);
+            var prefab = SpawnablePrefabs[prefIdx];
+
+            var go = Instantiate(prefab, spawnPoint, Quaternion.identity, gameObject.transform);
             var enemy = go.GetComponent<NewEnemyBase>();
             int platingIdx = Random.Range(0, Game.Instance.PlatingPresets.Platings.Count);
             enemy.Plating = Game.Instance.PlatingPresets.Platings[platingIdx];

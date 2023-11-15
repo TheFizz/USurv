@@ -11,7 +11,7 @@ public class WeaponInteraction : Interaction
     [SerializeField] private TextAsset _weaponRewards;
     private void Start()
     {
-        var lines = _weaponRewards.text.Split(Environment.NewLine);
+        var lines = new string[] {"Bow","Spear","Kama" };
         InteractionTitle = lines[Random.Range(0, lines.Length)];
         Options = new List<Tuple<KeyCode, InteractionType>>
         {

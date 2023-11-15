@@ -91,11 +91,12 @@ public class Room : MonoBehaviour
 
     private void SpawnReward()
     {
-        FindObjectOfType<RewardGenerator>().InstantiateRewards();
-        /*
+        //FindObjectOfType<RewardGenerator>().InstantiateRewards();
+        
         var i = Instantiate(Reward);
+        i.AddComponent<WeaponInteraction>();
         i.transform.position = new Vector3(0, 0, 5);
-        */
+        
     }
 
     public void PlayerDeath()

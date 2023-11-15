@@ -687,6 +687,14 @@ PrefabInstance:
       propertyPath: _spawnLimit
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
+      propertyPath: SpawnablePrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
+      propertyPath: SpawnablePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8187575255379672180, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
     - target: {fileID: 9150097732807427218, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: m_Name
       value: Spawner
@@ -1406,7 +1414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1285151923
 Transform:
   m_ObjectHideFlags: 0
