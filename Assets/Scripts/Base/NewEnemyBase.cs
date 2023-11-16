@@ -29,6 +29,8 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     [field: SerializeField] public EnemyBaseSO EnemyData { get; set; }
     [field: SerializeField] public GameObject DropOnDeath { get; set; }
 
+    [SerializeField] private string _platingMatMatch;
+    [SerializeField] private string _baseMatMatch;
     [SerializeField] protected bool _canMove = true;
     [SerializeField] private bool _invulnerable = false;
     [SerializeField] private Transform _damageTextAnchor;
@@ -38,6 +40,8 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     private Color _baseColor;
     private Renderer _renderer;
     private bool _canAttack = true;
+    private Material _platingMat;
+    private Material _baseMat;
     [SerializeField] private GameObject _damageText;
 
     private readonly Dictionary<EffectSO, TimedEffect> _effects = new Dictionary<EffectSO, TimedEffect>();
@@ -55,8 +59,24 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
         _myTransform = transform;
         _RB = GetComponent<Rigidbody>();
         _renderer = GetComponentInChildren<Renderer>();
-        _renderer.material.SetColor("_Overlay", Plating.ColorScheme.colorKeys[0].color);
-        _baseColor = _renderer.material.GetColor("_Overlay");
+
+        if (String.IsNullOrEmpty(_platingMatMatch))
+            _platingMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_platingMatMatch));
+        else
+            _platingMat = _renderer.material;
+        if (_platingMat == null)
+            _platingMat = _renderer.material;
+
+
+        if (String.IsNullOrEmpty(_baseMatMatch))
+            _baseMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_baseMatMatch));
+        else
+            _baseMat = _renderer.material;
+        if (_baseMat == null)
+            _baseMat = _renderer.material;
+
+        _platingMat.SetColor("_Overlay", Plating.ColorScheme.colorKeys[0].color);
+        _baseColor = _baseMat.GetColor("_Overlay");
 
         MoveSpeed = EnemyData.MoveSpeed;
         DamageAmount = EnemyData.AttackDamage;
@@ -196,10 +216,9 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     }
     IEnumerator ShowDamage()
     {
-        var tmpColor = _renderer.material.GetColor("_Overlay");
-        _renderer.material.SetColor("_Overlay", Color.red);
+        _baseMat.SetColor("_Overlay", Color.red);
         yield return new WaitForSeconds(0.1f);
-        _renderer.material.SetColor("_Overlay", _baseColor);
+        _baseMat.SetColor("_Overlay", _baseColor);
     }
 
 
