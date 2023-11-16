@@ -85,8 +85,9 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     protected virtual void Update()
     {
         HandleEffects();
-        if (_canMove)
+        if (_canMove && MainTarget!=null)
             MoveTo(MainTarget.position);
+        if(MainTarget != null)
         LookAt(MainTarget.position);
     }
     private void OnCollisionStay(Collision collision)
@@ -106,6 +107,9 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
         var damage = damageAmount * InDmgFactor;
 
         Vector3 cameraAngle = Game.MainCamera.transform.eulerAngles;
+
+        
+
         var damageText = Instantiate(_damageText, _damageTextAnchor.position, Quaternion.identity);
         damageText.transform.rotation = Quaternion.Euler(cameraAngle.x, cameraAngle.y, cameraAngle.z);
 

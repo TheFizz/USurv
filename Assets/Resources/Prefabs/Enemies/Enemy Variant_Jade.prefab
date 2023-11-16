@@ -351,6 +351,10 @@ PrefabInstance:
       value: M_Zombie
       objectReference: {fileID: 0}
     - target: {fileID: 8051892171424678898, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
+      propertyPath: _invulnerable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8051892171424678898, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
       propertyPath: _platingMatMatch
       value: M_Plating
       objectReference: {fileID: 0}
