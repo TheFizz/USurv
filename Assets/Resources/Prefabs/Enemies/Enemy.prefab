@@ -235,7 +235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2043974730378244749
 Transform:
   m_ObjectHideFlags: 0
@@ -437,8 +437,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EnemyData>k__BackingField: {fileID: 11400000, guid: 195a61de03076b54eacf45a9ddf7f7fe, type: 2}
   <DropOnDeath>k__BackingField: {fileID: 1286712164637996121, guid: 00c263d67b5c6e44e98ec3a7803eec91, type: 3}
+  _platingMatMatch: M_Zombie_Gradiented
+  _baseMatMatch: M_Plating
   _canMove: 1
-  _invulnerable: 0
+  _invulnerable: 1
   _damageTextAnchor: {fileID: 5181587534091408390}
   ID: 
   _damageText: {fileID: 5344042329446152507, guid: d0744fbf6ca1c30429fcc83ab47916df, type: 3}

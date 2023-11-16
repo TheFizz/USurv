@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.1822317, g: 0.22793715, b: 0.30735427, a: 1}
+  m_IndirectSpecularColor: {r: 0.18223192, g: 0.2279375, b: 0.3073551, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -689,15 +689,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: SpawnablePrefabs.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: SpawnablePrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 8187575255379672180, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
+      objectReference: {fileID: 1925848324074780070, guid: 2a4a397b0fad735408e2f118f441018f, type: 3}
+    - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
+      propertyPath: SpawnablePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1249202405025110382, guid: f018a23cca68668479d0a2d196698060, type: 3}
+    - target: {fileID: 5158322415415765532, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
+      propertyPath: SpawnablePrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1925848324074780070, guid: e7c59ce4fe2a9814499d91b4f701a89a, type: 3}
     - target: {fileID: 9150097732807427218, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
       propertyPath: m_Name
       value: Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150097732807427218, guid: 31a40478f17a2e3429164657c8f3a738, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11675,6 +11687,10 @@ PrefabInstance:
     - target: {fileID: 8001306996217490152, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
       propertyPath: far clip plane
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001306996217490152, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
+      propertyPath: near clip plane
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 8250959034018588203, guid: b6e7243b5ff04a2418c4917b0d332165, type: 3}
       propertyPath: m_LocalPosition.x

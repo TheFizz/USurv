@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BurnTrinket
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
-  ChancePerc: 25
+  ChancePerc: 100
   Effect: {fileID: 11400000, guid: 0318da57d5da9e347a39d3a7104dd5b7, type: 2}

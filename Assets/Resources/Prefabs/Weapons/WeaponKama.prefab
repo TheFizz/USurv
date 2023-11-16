@@ -83,5 +83,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     PlatingType: 0
-  PassiveTrinkets: []
+  PassiveTrinkets:
+  - {fileID: 11400000, guid: 52004d40fb22eb94fa051b9c84692801, type: 2}
+  - {fileID: 11400000, guid: f1c0297e2507d40419c090b8ad0b0ce4, type: 2}
   _damageCone: {fileID: 4787093121822878480, guid: 7fba21539461a1a4eb191c9673fd7115, type: 3}

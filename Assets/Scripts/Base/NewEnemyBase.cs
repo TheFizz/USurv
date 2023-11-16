@@ -61,17 +61,17 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
         _renderer = GetComponentInChildren<Renderer>();
 
         if (String.IsNullOrEmpty(_platingMatMatch))
-            _platingMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_platingMatMatch));
-        else
             _platingMat = _renderer.material;
+        else
+           _platingMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_platingMatMatch));
         if (_platingMat == null)
             _platingMat = _renderer.material;
 
 
         if (String.IsNullOrEmpty(_baseMatMatch))
-            _baseMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_baseMatMatch));
-        else
             _baseMat = _renderer.material;
+        else
+    _baseMat = _renderer.materials.FirstOrDefault(x => x.name.StartsWith(_baseMatMatch));
         if (_baseMat == null)
             _baseMat = _renderer.material;
 
