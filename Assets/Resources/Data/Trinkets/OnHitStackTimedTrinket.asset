@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: OnHitStackTimedTrinket
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
+  Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu orci
+    et nulla condimentum congue quis eget urna. Nulla laoreet nisl ac tempus finibus.
   Duration: 5
   MaxStacks: 10
   StackBonus:

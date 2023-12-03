@@ -35,6 +35,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     Coroutine attack;
 
+    public int TrinketLimit = 4;
     public List<TrinketSO> PassiveTrinkets;
 
     protected virtual void Awake()
@@ -44,6 +45,17 @@ public abstract class WeaponBase : MonoBehaviour
         gameObject.name = WeaponData.WeaponName;
         WeaponLevel = 0;
         Plating.PlatingType = PlatingType.Jade;
+
+        TrinketsMorph();
+    }
+
+    private void TrinketsMorph()
+    {
+        var newSpaces = TrinketLimit - PassiveTrinkets.Count;
+        for (int i = 0; i < newSpaces; i++)
+        {
+            PassiveTrinkets.Add(null);
+        }
     }
 
     private GameObject GetUIObject()

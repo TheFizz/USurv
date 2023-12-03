@@ -42,8 +42,19 @@ public class ModalWindow : MonoBehaviour
             panelScript.Setup(wpn, $"{actionString} {wpn.WeaponData.WeaponName}", this);
         }
     }
+    public void ShowTrinkets(List<WeaponBase> weapons, TrinketSO newTrinket)
+    {
+        _headerText.text = $"Select trinket slot";
+        foreach (var wpn in weapons)
+        {
+            var panel = Instantiate(_perkPrefab, _content);
+            var panelScript = panel.GetComponent<TrinketPanel>();
+            panelScript.Setup(wpn, this, newTrinket);
+        }
+    }
     public void CloseWindow()
     {
         OnWindowClose?.Invoke(this);
+        TooltipSystem.Hide();
     }
 }

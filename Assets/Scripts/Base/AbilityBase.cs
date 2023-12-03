@@ -9,6 +9,7 @@ public abstract class AbilityBase : ScriptableObject
     public List<Stat> Stats;
     public GameObject AbilityGraphics;
     public LayerMask TargetLayer;
+    public string Description;
     public abstract void Use(Transform source);
 
     public Stat GetStat(StatParam param)

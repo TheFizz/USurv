@@ -20,6 +20,9 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Update()
     {
+        float delta = Time.deltaTime;
+        Game.InputHandler.TickInput(delta);
+
         if (!lockPosition)
             HandleMovement();
         if (!lockRotation)
@@ -38,8 +41,6 @@ public class PlayerMovementController : MonoBehaviour
     }
     private void HandleMovement()
     {
-        float delta = Time.deltaTime;
-        Game.InputHandler.TickInput(delta);
         Vector3 moveDirection;
 
         moveDirection = Vector3.forward * Game.InputHandler.Vertical;

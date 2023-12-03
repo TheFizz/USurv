@@ -25,3 +25,4 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 512
+  Description: It's a dash, what do you expect?

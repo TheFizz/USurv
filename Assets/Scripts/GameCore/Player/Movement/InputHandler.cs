@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public SwapMode swapMode = SwapMode.TwoKey;
     [HideInInspector] public Vector3 MousePosition { get; set; }
     private bool _inputEnabled = true;
+    private bool _mouseInputEnabled = true;
 
     // Start is called before the first frame update
     [HideInInspector] public bool SwapWeapon = false;
@@ -24,6 +26,10 @@ public class InputHandler : MonoBehaviour
 
     private PlayerControls _inputActions;
     private Vector2 _movementInput;
+
+
+    public event Action<int> OnTabPress;
+    public event Action<int> OnTabRelease;
 
     public void OnEnable()
     {
@@ -49,6 +55,20 @@ public class InputHandler : MonoBehaviour
         MoveInput(delta);
         MousePosition = Input.mousePosition;
 
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            Time.timeScale = 0;
+            Game.PSystems.SetPlayerLocked(true);
+            OnTabPress?.Invoke(1);
+        }
+
+        else
+        {  
+            Time.timeScale = 1;
+            Game.PSystems.SetPlayerLocked(false);
+            OnTabRelease?.Invoke(1);
+        }
+
         if (Input.GetKeyDown("space"))
             UseAbility = true;
         else
@@ -66,6 +86,9 @@ public class InputHandler : MonoBehaviour
                 default:
                     break;
             }
+
+        if (!_mouseInputEnabled)
+            return;
 
         if (Input.GetMouseButtonDown(0))
             switch (swapMode)
@@ -106,5 +129,9 @@ public class InputHandler : MonoBehaviour
     public void SetInputEnabled(bool enabled)
     {
         _inputEnabled = enabled;
+    }
+    public void SetMouseInputEnabled(bool enabled)
+    {
+        _mouseInputEnabled = enabled;
     }
 }

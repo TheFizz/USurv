@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public event WeaponIconsHandler OnWeaponIconAction;
     public event DebugTextHandler OnDebugText;
     public event Action<float, float> OnAttack;
+    public event Action<List<WeaponBase>, TrinketSO> OnTrinketPickup;
+
 
     private GameObject _playerPrefab;
 
@@ -47,9 +49,10 @@ public class Player : MonoBehaviour
     public PlayerMovementController MovementController { get; private set; }
     public GameObject PlayerObject { get; private set; }
     public Transform AttackSource { get; private set; }
-    private float _currentXP = 0;
+
+    public float CurrentXP = 0;
     private int _upgradesPerLevel = 3;
-    private int _currentLevel = 1;
+    public int CurrentLevel = 1;
 
     [HideInInspector] public float CurHealth = -1;
 
@@ -187,7 +190,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
+        OnLevelUp?.Invoke(CurrentXP, PlayerData.XPThresholdBase, CurrentLevel);
     }
     public void StartAttack()
     {
@@ -207,7 +210,7 @@ public class Player : MonoBehaviour
     }
     public void ForceInvokeStatus()
     {
-        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel);
+        OnLevelUp?.Invoke(CurrentXP, PlayerData.XPThresholdBase, CurrentLevel);
     }
 
     internal void AddWeaponUpgrade(WeaponBase weapon, int level)
@@ -221,9 +224,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnInteracted(InteractionType type, string auxName)
+    private void OnInteracted(InteractionType type, Interaction inter)
     {
-        OnWeaponPickup?.Invoke(PlayerWeapons, type, auxName);
+        if (inter is WeaponInteraction)
+            OnWeaponPickup?.Invoke(PlayerWeapons, type, inter.InteractionTitle);
+        if (inter is TrinketInteraction)
+            OnTrinketPickup?.Invoke(PlayerWeapons, ((TrinketInteraction)inter).GetTrinket());
     }
 
     private void Update()
@@ -295,20 +301,20 @@ public class Player : MonoBehaviour
 
     public void AddXP(float xpValue)
     {
-        if (_currentXP + xpValue < PlayerData.XPThresholdBase)
+        if (CurrentXP + xpValue < PlayerData.XPThresholdBase)
         {
-            _currentXP += xpValue;
-            OnXpChanged?.Invoke(_currentXP);
+            CurrentXP += xpValue;
+            OnXpChanged?.Invoke(CurrentXP);
         }
         else
         {
-            _currentXP = xpValue - (PlayerData.XPThresholdBase - _currentXP);
+            CurrentXP = xpValue - (PlayerData.XPThresholdBase - CurrentXP);
             LevelUp();
         }
     }
     private void LevelUp()
     {
-        _currentLevel++;
+        CurrentLevel++;
         PlayerData.XPThresholdBase *= PlayerData.XPThresholdMultiplier;
         List<StatParam> randomParams = new List<StatParam>();
         while (randomParams.Count < _upgradesPerLevel)
@@ -325,7 +331,7 @@ public class Player : MonoBehaviour
             randomUpgrades.Add(GlobalUpgradePath.Upgrades.Find(x => x.UpgradeParam == param));
         }
 
-        OnLevelUp?.Invoke(_currentXP, PlayerData.XPThresholdBase, _currentLevel, randomUpgrades);
+        OnLevelUp?.Invoke(CurrentXP, PlayerData.XPThresholdBase, CurrentLevel, randomUpgrades);
     }
     public void AddGlobalMod(StatModifier mod)
     {

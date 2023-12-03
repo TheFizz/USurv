@@ -25,4 +25,5 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128
+  Description: Pushes back foes
   PushbackEffect: {fileID: 11400000, guid: d4d2cf9d823fdab419f4ddbf83115c48, type: 2}

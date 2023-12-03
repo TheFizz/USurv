@@ -1834,7 +1834,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8690783069517833984}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 643eebabe7af962438d5b9fd4e4b0f11, type: 3}
   m_Name: 
@@ -1857,6 +1857,8 @@ MonoBehaviour:
   GameUI: {fileID: 8690783069517833984}
   LevelUpWindow: {fileID: 3497010923527361530, guid: 3f25a2cc68f2a2541a4b7b5ff001e1c2, type: 3}
   UpgradeWindow: {fileID: 4376732646555303847, guid: 40d8ccc327fafdc49976fd5b1577ef1b, type: 3}
+  TrinketWindow: {fileID: 6662119761521796123, guid: b95de80d41083d7428d29969993a325a, type: 3}
+  TabWindow: {fileID: 7222604085491935501, guid: df61851ab8405cc4fa7cc30eec0becc9, type: 3}
 --- !u!114 &7493650805111642440
 MonoBehaviour:
   m_ObjectHideFlags: 0

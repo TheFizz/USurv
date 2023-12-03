@@ -12,6 +12,7 @@ public abstract class WeaponBaseSO : ScriptableObject
     public bool AimAssist = false;
     public LayerMask EnemyLayer;
     public string WeaponName;
+    public string AttackDescription;
 
     public List<Stat> Stats = new List<Stat>();
     public List<StatModifier> PassiveModifiers = new List<StatModifier>();

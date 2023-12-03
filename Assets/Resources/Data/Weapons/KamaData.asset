@@ -20,6 +20,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Kama
+  AttackDescription: It does a swoosh in an arc and everyone gets hurt T_T
   Stats:
   - BaseValue: 0.75
     Parameter: 0

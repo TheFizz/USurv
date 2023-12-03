@@ -30,7 +30,7 @@ public class PlayerInteractionManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(option.Item1) && Game.Room.PlayerInMenu == false)
                 {
-                    OnInteracted?.Invoke(option.Item2, _wi.InteractionTitle);
+                    OnInteracted?.Invoke(option.Item2, _wi);
                     Destroy(_wi.transform.gameObject);
                     return;
                 }
@@ -51,6 +51,7 @@ public class PlayerInteractionManager : MonoBehaviour
             var weapons = Game.PSystems.GetWeaponNames();
             if (weapons.Contains(interaction.InteractionTitle))
                 _options.RemoveAt(0);
+
             ShowInteraction(true);
         }
         else
@@ -59,13 +60,14 @@ public class PlayerInteractionManager : MonoBehaviour
             _options = null;
             ShowInteraction(false);
         }
+
     }
 
     void ShowInteraction(bool show)
     {
         if (show != _interactionShown)
             _interactionShown = show;
-        else
+        else 
             return;
 
         OnInteraction?.Invoke(_options, _wi?.InteractionTitle);

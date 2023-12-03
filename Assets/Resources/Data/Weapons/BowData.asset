@@ -20,6 +20,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Bow
+  AttackDescription: Shoots an arrow and sometimes more than one.
   Stats:
   - BaseValue: 1
     Parameter: 0

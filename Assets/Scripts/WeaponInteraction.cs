@@ -34,7 +34,6 @@ public class PillarInteraction : Interaction
     }
 }
 
-
 public class Interaction : MonoBehaviour
 {
     [HideInInspector] public string InteractionTitle;

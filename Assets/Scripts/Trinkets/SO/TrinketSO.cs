@@ -6,4 +6,5 @@ public class TrinketSO : ScriptableObject
 {
     public string Name;
     public GameObject PickupObject;
+    public string Description;
 }

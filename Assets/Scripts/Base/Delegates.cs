@@ -8,7 +8,7 @@ public delegate void LevelUpHandler(float newCurrentXp, float newMaxXP, int leve
 public delegate void HpChangedHandler(float newCurrentHp, float newMaxHp = -1);
 public delegate void XpChangedHandler(float newCurrentXp);
 public delegate void InteractionHandler(List<Tuple<KeyCode, InteractionType>> options, string name = null);
-public delegate void InteractedHandler(InteractionType type, string auxName);
+public delegate void InteractedHandler(InteractionType type, Interaction interaction);
 public delegate void WeaponPickupHandler(List<WeaponBase> currentWeapons, InteractionType type, string pickupName);
 public delegate void WindowCloseHandler(ModalWindow source);
 public delegate void WeaponIconsHandler(List<WeaponBase> weaponQueue, bool swap = false, int idxA = -1, int idxB = -1);

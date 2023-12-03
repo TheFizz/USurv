@@ -20,6 +20,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Spear
+  AttackDescription: It pokes fools in front of it and they become very sad.
   Stats:
   - BaseValue: 1.5
     Parameter: 0
