@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask _mouseHitMask;
     private Rigidbody _RB;
     private Collider _collider;
+    private bool _dashing;
     public TextMeshProUGUI debugSpeedText;
 
     public bool lockPosition = false, lockRotation = false;
@@ -20,9 +21,11 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Update()
     {
-        float delta = Time.deltaTime;
-        Game.InputHandler.TickInput(delta);
-
+        if (!_dashing)
+        {
+            float delta = Time.deltaTime;
+            Game.InputHandler.TickInput(delta);
+        }
         if (!lockPosition)
             HandleMovement();
         if (!lockRotation)
@@ -67,10 +70,12 @@ public class PlayerMovementController : MonoBehaviour
     {
         lockPosition = true;
         _collider.enabled = false;
+        _dashing = true;
         _RB.velocity = force;
         yield return new WaitForSeconds(time);
         _RB.velocity = Vector3.zero;
         _collider.enabled = true;
         lockPosition = false;
+        _dashing = false;
     }
 }

@@ -225,7 +225,7 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
         _baseMat.SetColor("_Overlay", _baseColor);
     }
 
-
+    /*
     [CustomEditor(typeof(NewEnemyBase))]
     public class NewEnemyBaseEditor : Editor
     {
@@ -263,4 +263,5 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
             DrawDefaultInspector();
         }
     }
+    */
 }
