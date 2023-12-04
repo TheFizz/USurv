@@ -1677,6 +1677,7 @@ MonoBehaviour:
   Header: {fileID: 3077452568328886492}
   AttackInfo: {fileID: 6117055433236320284}
   AbilityInfo: {fileID: 294289858218983450}
+  AbilityHeader: {fileID: 1766092011185758539}
   StatContent: {fileID: 6700140432122003662}
   TextPrefab: {fileID: 5083337648302461291, guid: e568df143da7b4c468cd169eb2cc2a55, type: 3}
   WeaponObjects:

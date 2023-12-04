@@ -9,6 +9,7 @@ public class ModalWindow : MonoBehaviour
     public event WindowCloseHandler OnWindowClose;
 
     [SerializeField] TextMeshProUGUI _headerText;
+    [SerializeField] CurrentTrinketPanel _curTrinketPanel;
     [SerializeField] Transform _content;
     [SerializeField] GameObject _perkPrefab;
     public void ShowUpgrades(List<GlobalUpgrade> upgrades)
@@ -51,6 +52,7 @@ public class ModalWindow : MonoBehaviour
             var panelScript = panel.GetComponent<TrinketPanel>();
             panelScript.Setup(wpn, this, newTrinket);
         }
+        _curTrinketPanel.SetText(newTrinket.Name, newTrinket.Description);
     }
     public void CloseWindow()
     {

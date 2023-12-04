@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d159ee881c7d335439f3c03f5054dd2c, type: 3}
   m_Name: AbilityPushback
   m_EditorClassIdentifier: 
-  AbilityName: Fear
+  AbilityName: Force field
   AbilityCooldown: 10
   Stats:
   - BaseValue: 7

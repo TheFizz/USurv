@@ -11,7 +11,7 @@ public class TrinketInteraction : Interaction
     {
         Options = new List<Tuple<KeyCode, InteractionType>>
         {
-            new Tuple<KeyCode, InteractionType>(KeyCode.E, InteractionType.Take),
+            new Tuple<KeyCode, InteractionType>(KeyCode.F, InteractionType.Take),
         };
     }
     private void Start()

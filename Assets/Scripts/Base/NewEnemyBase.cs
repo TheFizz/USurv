@@ -215,7 +215,7 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
             return;
         var pos = gameObject.transform.position;
         pos.y = 1f;
-        Instantiate(DropOnDeath, pos, Quaternion.identity);
+        //Instantiate(DropOnDeath, pos, Quaternion.identity);
         Destroy(gameObject);
     }
     IEnumerator ShowDamage()

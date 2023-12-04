@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5b4a898f962524a89a83eacb1002e1, type: 3}
   m_Name: AbiltyAreaDamage
   m_EditorClassIdentifier: 
-  AbilityName: AreaDamage
+  AbilityName: Inferno
   AbilityCooldown: 20
   Stats:
   - BaseValue: 7
@@ -25,4 +25,4 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128
-  Description: Flames around you burns enemies in 7 units   for 20 damage
+  Description: Flames around you burn enemies in 7 units  for 20 damage

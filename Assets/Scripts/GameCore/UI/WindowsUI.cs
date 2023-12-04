@@ -62,6 +62,7 @@ public class WindowsUI : MonoBehaviour
     {
         var weapon = weaponObj.RefWeapon;
         var trioScript = tabtrio.GetComponent<TabTrio>();
+        trioScript.Weapons.AbilityHeader.text = $"Ability - {weapon.WeaponAbility.AbilityName}:";
         trioScript.Weapons.ClearText();
         trioScript.Weapons.SetHeader(weapon.WeaponData.WeaponName);
         trioScript.Weapons.AttackInfo.text = weapon.WeaponData.AttackDescription;
@@ -86,7 +87,7 @@ public class WindowsUI : MonoBehaviour
                     {
                         total += mod.Value;
                     }
-                    statString += $" +{Mathf.RoundToInt(total).ToString()}";
+                    statString += $" (+{Mathf.RoundToInt(total).ToString()})";
                     isGreen = true;
                 }
                 if (percadd.Count > 0)

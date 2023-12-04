@@ -70,6 +70,7 @@ public class Game : MonoBehaviour
     {
         UI = Instantiate(_uiPrefab, Vector3.zero, Quaternion.identity);
         GameUI = Instantiate(_gameUiPrefab, UI.transform.GetComponentInChildren<Canvas>().transform);
+        GameUI.SetActive(false);
     }
 
     private void CreateRoom()

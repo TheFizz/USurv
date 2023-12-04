@@ -9,6 +9,7 @@ public class TrioWeaponPanel : MonoBehaviour
     public TextMeshProUGUI Header;
     public TextMeshProUGUI AttackInfo;
     public TextMeshProUGUI AbilityInfo;
+    public TextMeshProUGUI AbilityHeader;
     public Transform StatContent;
     public GameObject TextPrefab;
     public List<WeaponTrioObj> WeaponObjects;

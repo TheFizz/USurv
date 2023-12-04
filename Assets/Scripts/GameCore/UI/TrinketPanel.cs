@@ -32,7 +32,7 @@ public class TrinketPanel : MonoBehaviour
             if (trinket == null)
             {
                 tsb.SetText("Empty Slot");
-                tsb.SetColor(Color.white);
+                tsb.SetColor(Color.grey);
                 ttrig.Header = "Empty slot";
                 ttrig.Content = "Put your new trinket here";
                 var cap = i;
