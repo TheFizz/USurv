@@ -108,7 +108,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: afe21f179766c7a4ca170e7ff305e97c, type: 2}
+  - {fileID: 2100000, guid: c7ace15f39c5e854b9779883164b0704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -161,6 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6729644614831042658}
   - component: {fileID: 1448838834512487494}
+  - component: {fileID: 668411940756521912}
   m_Layer: 10
   m_Name: TrinketPickup
   m_TagString: Untagged
@@ -205,3 +206,17 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &668411940756521912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4049566454107741526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7f381a10d298f4095bfc46491253af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionTitle: 
+  pool: {fileID: 11400000, guid: f59254170cec58941bfa0dd95baca008, type: 2}

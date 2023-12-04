@@ -25,4 +25,4 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128
-  Description: You fart around you and they get sick
+  Description: Flames around you burns enemies in 7 units   for 20 damage

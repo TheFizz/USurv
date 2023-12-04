@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c104f878c402864fb5e5db174667577, type: 3}
   m_Name: OnHitStackTimedTrinket
   m_EditorClassIdentifier: 
-  Name: OnHitStackTimedTrinket
+  Name: Goo'Sin's Rage Belt
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
-  Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu orci
-    et nulla condimentum congue quis eget urna. Nulla laoreet nisl ac tempus finibus.
+  Description: Consecutive successfull attacks applies attack speed bonus for 5 seconds
+    up to 10 times
   Duration: 5
   MaxStacks: 10
   StackBonus:

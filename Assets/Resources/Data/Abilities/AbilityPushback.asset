@@ -17,7 +17,7 @@ MonoBehaviour:
   Stats:
   - BaseValue: 7
     Parameter: 11
-  - BaseValue: 15
+  - BaseValue: 5
     Parameter: 10
   - BaseValue: 0
     Parameter: 13
@@ -25,5 +25,5 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128
-  Description: Pushes back foes
+  Description: Pushes back foes in 7 units range, dealing 5 damage
   PushbackEffect: {fileID: 11400000, guid: d4d2cf9d823fdab419f4ddbf83115c48, type: 2}

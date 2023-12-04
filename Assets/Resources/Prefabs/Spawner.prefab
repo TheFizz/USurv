@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9150097732807427218}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -57,26 +57,35 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.059810784
     - serializedVersion: 3
-      time: 30.944468
-      value: 0.5655575
-      inSlope: -0.022455225
-      outSlope: -0.022455225
+      time: 11.451502
+      value: -0.0010783225
+      inSlope: 0.000263323
+      outSlope: 0.000263323
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.17089522
-      outWeight: 0.09130123
+      inWeight: 0.33333334
+      outWeight: 0.21007869
     - serializedVersion: 3
-      time: 72.64408
-      value: 1.2170806
-      inSlope: 0
-      outSlope: 0
+      time: 24.22382
+      value: 0.6858405
+      inSlope: -0.003604767
+      outSlope: -0.003604767
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.03938539
+      inWeight: 0.22083825
+      outWeight: 0.07832204
+    - serializedVersion: 3
+      time: 55.882946
+      value: 1.146326
+      inSlope: 0.030181613
+      outSlope: 0.030181613
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.087216176
       outWeight: 0.30596069
     - serializedVersion: 3
       time: 95.79426
-      value: 1.226917
+      value: 1.5806906
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -137,8 +146,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _enemyPrefab: {fileID: 8187575255379672180, guid: 6ce306a0982e528478152f4e0e8c6d28, type: 3}
+  SpawnablePrefabs:
+  - {fileID: 1925848324074780070, guid: 2a4a397b0fad735408e2f118f441018f, type: 3}
+  - {fileID: 1249202405025110382, guid: f018a23cca68668479d0a2d196698060, type: 3}
+  - {fileID: 1925848324074780070, guid: e7c59ce4fe2a9814499d91b4f701a89a, type: 3}
   _player: {fileID: 0}
-  _secondsToSpawn: 0.5
+  _secondsToSpawn: 0.25
   _spawnLimit: 200
   debug: {fileID: 0}

@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101134422368806632, guid: f018a23cca68668479d0a2d196698060, type: 3}
       propertyPath: _invulnerable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1249202405025110382, guid: f018a23cca68668479d0a2d196698060, type: 3}
       propertyPath: m_Name

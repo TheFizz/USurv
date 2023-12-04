@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: OnAbilityPrayer
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
-  Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu orci
-    et nulla condimentum congue quis eget urna. Nulla laoreet nisl ac tempus finibus.
+  Description: Ability damage applies Prayer
   ChancePerc: 100
   Effect: {fileID: 11400000, guid: 1ed040995a08673419d46ab58e3376f3, type: 2}

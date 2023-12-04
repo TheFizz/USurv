@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: SlowTrinket
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
-  Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu orci
-    et nulla condimentum congue quis eget urna. Nulla laoreet nisl ac tempus finibus.
+  Description: 25% chance to apply Chill on hit
   ChancePerc: 25
   Effect: {fileID: 11400000, guid: 10a563fdd17525540b9029c897458f66, type: 2}

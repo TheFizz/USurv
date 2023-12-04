@@ -440,7 +440,7 @@ MonoBehaviour:
   _platingMatMatch: M_Zombie_Gradiented
   _baseMatMatch: M_Plating
   _canMove: 1
-  _invulnerable: 1
+  _invulnerable: 0
   _damageTextAnchor: {fileID: 5181587534091408390}
   ID: 
   _damageText: {fileID: 5344042329446152507, guid: d0744fbf6ca1c30429fcc83ab47916df, type: 3}

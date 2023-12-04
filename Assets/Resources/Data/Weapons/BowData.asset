@@ -20,7 +20,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   WeaponName: Bow
-  AttackDescription: Shoots an arrow and sometimes more than one.
+  AttackDescription: Shoots an arrow. Arc upgrade adds more arrows on certain thresholds
   Stats:
   - BaseValue: 1
     Parameter: 0
