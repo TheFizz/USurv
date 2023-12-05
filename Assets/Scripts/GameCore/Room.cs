@@ -138,7 +138,7 @@ public class Room : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         foreach (var enemy in Game.EnemyPool.Values)
         {
-            enemy.Kill();
+            Destroy(enemy.gameObject);
         }
         Game.EnemyPool.Clear();
         StartCoroutine(CollectXP());
