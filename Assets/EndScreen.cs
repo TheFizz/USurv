@@ -83,7 +83,6 @@ public class EndScreen : MonoBehaviour
                 }
                 );
         trailSeq.Play();
-
     }
 
     private void End()
@@ -91,7 +90,7 @@ public class EndScreen : MonoBehaviour
 
         var buttons = new List<Button>(deathUI.GetComponentsInChildren<Button>());
         buttons.Find(b => b.name == "RetryBTN").onClick.AddListener(() => SceneSwitcher.Instance.RestartGame());
-        buttons.Find(b => b.name == "QuitBTN").onClick.AddListener(() => Game.Room.QuitGame());
+        buttons.Find(b => b.name == "QuitBTN").onClick.AddListener(() => SceneSwitcher.Instance.GoToMenu());
 
     }
 

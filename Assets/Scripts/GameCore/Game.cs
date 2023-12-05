@@ -126,8 +126,8 @@ public class Game : MonoBehaviour
     public static bool IsInLayerMask(int layer, LayerMask layerMask) { return layerMask == (layerMask | (1 << layer)); }
     public void Destroy()
     {
-        //PlayerSystems.instantiated = false;
-        Destroy(Instance.gameObject);
+        if (Instance != null)
+            Destroy(Instance.gameObject);
     }
     private void OnDestroy()
     {

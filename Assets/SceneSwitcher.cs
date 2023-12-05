@@ -20,7 +20,7 @@ public class SceneSwitcher : MonoBehaviour
     }
     public void LoadScene(string name, LoadSceneMode mode = LoadSceneMode.Single)
     {
-        if (name == "BootScene")
+        if (name == "BootScene" || name == "MainMenu")
             Game.Instance?.Destroy();
 
         SceneManager.LoadScene(name, mode);
@@ -43,8 +43,21 @@ public class SceneSwitcher : MonoBehaviour
             LoadScene("Room0");
     }
 
+    public void QuitGame()
+    {
+        // save any game data here
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+    }
     internal void RestartGame()
     {
         LoadScene("BootScene");
+    }
+    internal void GoToMenu()
+    {
+        LoadScene("MainMenu");
     }
 }

@@ -55,7 +55,6 @@ public class GateAnimations : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
 
-            Debug.Log("OnPlayerSpawned");
             Game.GameUI.SetActive(true);
 
             Game.PSystems.SetPlayerActive(true);

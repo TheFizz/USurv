@@ -28,6 +28,7 @@ public class InputHandler : MonoBehaviour
     private Vector2 _movementInput;
 
 
+    public event Action<int> OnEscPress;
     public event Action<int> OnTabPress;
     public event Action<int> OnTabRelease;
 
@@ -55,20 +56,27 @@ public class InputHandler : MonoBehaviour
         MoveInput(delta);
         MousePosition = Input.mousePosition;
 
-        if (Input.GetKey(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = 0;
-            Game.PSystems.SetPlayerLocked(true);
-            OnTabPress?.Invoke(1);
+            OnEscPress?.Invoke(1);
         }
 
-        else
-        {  
-            Time.timeScale = 1;
-            Game.PSystems.SetPlayerLocked(false);
-            OnTabRelease?.Invoke(1);
-        }
+        if (Game.Room.PlayerInMenu == false)
+        {
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                Time.timeScale = 0;
+                Game.PSystems.SetPlayerLocked(true);
+                OnTabPress?.Invoke(1);
+            }
 
+            else
+            {
+                Time.timeScale = 1;
+                Game.PSystems.SetPlayerLocked(false);
+                OnTabRelease?.Invoke(1);
+            }
+        }
         if (Input.GetKeyDown("space"))
             UseAbility = true;
         else

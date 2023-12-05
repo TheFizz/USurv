@@ -10,6 +10,7 @@ public class WindowsUI : MonoBehaviour
     public GameObject LevelUpWindow;
     public GameObject UpgradeWindow;
     public GameObject TrinketWindow;
+    public GameObject PauseWindow;
     public GameObject TabWindow;
 
     GameObject tabtrio;
@@ -20,8 +21,15 @@ public class WindowsUI : MonoBehaviour
         Game.PSystems.OnWeaponPickup += OnWeaponPickup;
         Game.PSystems.OnTrinketPickup += OnTrinketPickup;
 
+
+        Game.InputHandler.OnEscPress += OnEscPress;
         Game.InputHandler.OnTabPress += OnTabPress;
         Game.InputHandler.OnTabRelease += OnTabRelease;
+    }
+
+    private void OnEscPress(int obj)
+    {
+        CreatePauseWindow();
     }
 
     private void OnTabRelease(int a)
@@ -54,7 +62,6 @@ public class WindowsUI : MonoBehaviour
 
         ShowWeaponTrio(trioScript.Weapons.WeaponObjects[0]);
         Game.InputHandler.SetMouseInputEnabled(false);
-        Game.Room.PlayerInMenu = true;
 
     }
 
@@ -197,6 +204,27 @@ public class WindowsUI : MonoBehaviour
         window.OnWindowClose += OnWindowClose;
         window.ShowWeapons(currentWeapons, type, pickupName);
     }
+
+    void CreatePauseWindow()
+    {
+        Time.timeScale = 0;
+        Game.InputHandler.SetInputEnabled(false);
+        Game.Room.PlayerInMenu = true;
+
+        var window = Instantiate(PauseWindow, Game.GameUI.transform).GetComponent<PauseWindow>();
+        window.OnPauseWindowClose += OnPauseWindowClose;
+    }
+
+    private void OnPauseWindowClose(PauseWindow source)
+    {
+        Time.timeScale = 1;
+        Game.InputHandler.SetInputEnabled(true);
+        Game.Room.PlayerInMenu = false;
+
+        source.OnPauseWindowClose -= OnPauseWindowClose;
+        Destroy(source.transform.gameObject);
+    }
+
     ModalWindow CreateWindow(GameObject prefab)
     {
         Time.timeScale = 0;

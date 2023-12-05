@@ -8,4 +8,8 @@ public class SwitchSceneButton : MonoBehaviour
     {
         SceneSwitcher.Instance.LoadScene(name);
     }
+    public void Quit()
+    {
+        SceneSwitcher.Instance.QuitGame();
+    }
 }

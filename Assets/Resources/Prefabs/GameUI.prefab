@@ -1858,6 +1858,7 @@ MonoBehaviour:
   LevelUpWindow: {fileID: 3497010923527361530, guid: 3f25a2cc68f2a2541a4b7b5ff001e1c2, type: 3}
   UpgradeWindow: {fileID: 4376732646555303847, guid: 40d8ccc327fafdc49976fd5b1577ef1b, type: 3}
   TrinketWindow: {fileID: 6662119761521796123, guid: b95de80d41083d7428d29969993a325a, type: 3}
+  PauseWindow: {fileID: 1015738177938364402, guid: 748b474ca1dbb4247b1791dc9539c3fa, type: 3}
   TabWindow: {fileID: 7222604085491935501, guid: df61851ab8405cc4fa7cc30eec0becc9, type: 3}
 --- !u!114 &7493650805111642440
 MonoBehaviour:

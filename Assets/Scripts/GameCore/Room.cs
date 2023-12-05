@@ -106,25 +106,18 @@ public class Room : MonoBehaviour
     }
     public void ReloadScene()
     {
+        Debug.Log("ReloadScene");
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void RestartGame()
     {
+        Debug.Log("RestartGame");
         Time.timeScale = 1;
         Destroy(Game.PSystems.gameObject);
         Game.Instance.Destroy();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void QuitGame()
-    {
-        // save any game data here
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
     }
 
     public void NextLevel()
