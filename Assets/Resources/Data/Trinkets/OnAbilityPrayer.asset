@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed90a29e63c448f44bdb8714909bffd3, type: 3}
   m_Name: OnAbilityPrayer
   m_EditorClassIdentifier: 
-  Name: OnAbilityPrayer
+  Name: Sacred Knowledge
   PickupObject: {fileID: 4049566454107741526, guid: 3e2fc86fe46fda540a1e63f47bdd113c, type: 3}
   Description: Ability damage applies Prayer
   ChancePerc: 100

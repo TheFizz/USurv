@@ -45,7 +45,7 @@ public class XPDrop : MonoBehaviour
         Game.XPDropsPool.Add(ID, this);
 
         _mat = GetComponentInChildren<MeshRenderer>().material;
-        XpValue = Random.Range(0.5f, 1.5f);
+        XpValue = Random.Range(0.25f, 1.25f);
 
         if (XpValue > 1.2f)
         {
