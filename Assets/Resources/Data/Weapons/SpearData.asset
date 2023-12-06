@@ -36,11 +36,7 @@ MonoBehaviour:
     Parameter: 9
   - BaseValue: 15
     Parameter: 14
-  PassiveModifiers:
-  - Value: 15
-    Type: 100
-    Param: 8
-    Order: 0
+  PassiveModifiers: []
   UpgradePath:
   - UpgradeNumber: 1
     SelfStatMods:
