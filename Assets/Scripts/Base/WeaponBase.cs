@@ -22,7 +22,7 @@ public abstract class WeaponBase : MonoBehaviour
     [HideInInspector] public WeaponIcon UIWeaponIcon;
 
 
-    [HideInInspector] public int WeaponLevel = 0;
+    public int WeaponLevel = 0;
 
     protected Transform Source;
 

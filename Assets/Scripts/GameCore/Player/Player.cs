@@ -328,9 +328,8 @@ public class Player : MonoBehaviour
         List<GlobalUpgrade> randomUpgrades = new List<GlobalUpgrade>();
         foreach (var param in randomParams)
         {
-            randomUpgrades.Add(GlobalUpgradePath.Upgrades.Find(x => x.UpgradeParam == param));
+            randomUpgrades.Add(GlobalUpgradePath.Upgrades.Find(x => x.UpgradeParam == param && x.UpgradeNumber < x.Modifiers.Count));
         }
-
         OnLevelUp?.Invoke(CurrentXP, PlayerData.XPThresholdBase, CurrentLevel, randomUpgrades);
     }
     public void AddGlobalMod(StatModifier mod)

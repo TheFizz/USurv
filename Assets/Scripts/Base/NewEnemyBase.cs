@@ -46,7 +46,7 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
 
     private readonly Dictionary<EffectSO, TimedEffect> _effects = new Dictionary<EffectSO, TimedEffect>();
 
-    bool isDying = false;
+    public bool IsDying = false;
     public Plating Plating;
     private Transform _myTransform;
 
@@ -99,7 +99,11 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
         var damage = DamageAmount * OutDmgFactor;
         Game.PSystems.DamageManager.Damage(damage, false, ID);
     }
-
+    private void OnDestroy()
+    {
+        Game.EnemyPool.Remove(ID);
+        IsDying = true;
+    }
 
     //IDamageable
     public void Damage(float damageAmount, bool isCrit, string attackerID, bool overrideITime = false)
@@ -126,13 +130,13 @@ public class NewEnemyBase : MonoBehaviour, IDamageable, IForceable, IStunnable, 
     }
     public void Die()
     {
-        if (isDying)
+        if (IsDying)
             return;
-        isDying = true;
+        IsDying = true;
         var pos = gameObject.transform.position;
         pos.y = 1f;
         Instantiate(DropOnDeath, pos, Quaternion.identity);
-        Game.EnemyPool.Remove(ID);
+        //Game.EnemyPool.Remove(ID);
         Destroy(gameObject);
         Game.Room.KillIncrease(1);
     }

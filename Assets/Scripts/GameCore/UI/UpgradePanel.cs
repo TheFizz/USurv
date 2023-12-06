@@ -22,6 +22,11 @@ public class UpgradePanel : MonoBehaviour
         _parent = parent;
         _weapon = weapon;
         _upgrade = _weapon.WeaponData.UpgradePath.Find(x => x.UpgradeNumber == _weapon.WeaponLevel + 1);
+        if (_upgrade == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         _slfText.text = "(SLF) " + _upgrade.SelfStatMods[0].ToString();
         _pasText.text = "(PAS) " + _upgrade.PassiveStatMods[0].ToString();
         _ablText.text = "(ABL) " + _upgrade.AbilityStatMods[0].ToString();

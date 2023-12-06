@@ -92,11 +92,11 @@ public class Room : MonoBehaviour
     private void SpawnReward()
     {
         //FindObjectOfType<RewardGenerator>().InstantiateRewards();
-        
+
         var i = Instantiate(Reward);
         i.AddComponent<WeaponInteraction>();
         i.transform.position = new Vector3(0, 0, 5);
-        
+
     }
 
     public void PlayerDeath()
@@ -138,7 +138,8 @@ public class Room : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         foreach (var enemy in Game.EnemyPool.Values)
         {
-            Destroy(enemy.gameObject);
+            if (!enemy.IsDying)
+                Destroy(enemy.gameObject);
         }
         Game.EnemyPool.Clear();
         StartCoroutine(CollectXP());

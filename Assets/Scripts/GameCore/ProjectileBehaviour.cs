@@ -105,7 +105,8 @@ public class ProjectileBehaviour : MonoBehaviour
         if (_pierceCount <= 0)
         {
             Destroy(ArrowModel);
-            Particles?.Stop();
+            if (Particles != null)
+                Particles?.Stop();
             _canMove = false;
         }
         _pierceCount--;

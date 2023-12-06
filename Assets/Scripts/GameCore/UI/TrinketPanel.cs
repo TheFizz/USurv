@@ -57,7 +57,7 @@ public class TrinketPanel : MonoBehaviour
         else
         {
             var pickup = Instantiate(TrinketPickup, Game.PSystems.PlayerObject.transform.position, Quaternion.identity);
-            pickup.AddComponent<TrinketInteraction>().SetTrinket(wpn.PassiveTrinkets[SlotIndex]);
+            pickup.GetComponent<TrinketInteraction>().SetTrinket(wpn.PassiveTrinkets[SlotIndex]);
             wpn.PassiveTrinkets[SlotIndex] = trinket;
         }
         _parent.CloseWindow();

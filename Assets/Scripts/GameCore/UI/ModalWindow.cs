@@ -36,11 +36,21 @@ public class ModalWindow : MonoBehaviour
             default:
                 break;
         }
+        bool noWeapons = true;
         foreach (var wpn in weapons)
         {
+            if (wpn.WeaponLevel >= wpn.WeaponData.UpgradePath.Count)
+                continue;
+
             var perkPanel = Instantiate(_perkPrefab, _content);
             var panelScript = perkPanel.GetComponent<UpgradePanel>();
             panelScript.Setup(wpn, $"{actionString} {wpn.WeaponData.WeaponName}", this);
+            noWeapons = false;
+        }
+        if (noWeapons)
+        {
+            CloseWindow();
+            Game.Room.RewardTaken = true;
         }
     }
     public void ShowTrinkets(List<WeaponBase> weapons, TrinketSO newTrinket)
