@@ -77,7 +77,7 @@ public class ProjectileBehaviour : MonoBehaviour
             if (_weapon.Plating.PlatingType != enemy.Plating.PlatingType)
             {
                 dmg *= 0.75f;
-                disableProcs = true;
+                //disableProcs = true;
             }
         }
 
